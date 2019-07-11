@@ -59,6 +59,10 @@
             this.DirIndice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DirSig = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuAtributos = new System.Windows.Forms.MenuStrip();
+            this.altaAtributo = new System.Windows.Forms.ToolStripMenuItem();
+            this.modificarAtributo = new System.Windows.Forms.ToolStripMenuItem();
+            this.consultaAtributo = new System.Windows.Forms.ToolStripMenuItem();
+            this.eliminarAtributo = new System.Windows.Forms.ToolStripMenuItem();
             this.toolBar.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabEntidades.SuspendLayout();
@@ -66,6 +70,7 @@
             this.menuEntidades.SuspendLayout();
             this.tabAtributos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridAtrib)).BeginInit();
+            this.menuAtributos.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolBar
@@ -257,7 +262,7 @@
             this.tabAtributos.Location = new System.Drawing.Point(4, 22);
             this.tabAtributos.Name = "tabAtributos";
             this.tabAtributos.Padding = new System.Windows.Forms.Padding(3);
-            this.tabAtributos.Size = new System.Drawing.Size(810, 341);
+            this.tabAtributos.Size = new System.Drawing.Size(810, 337);
             this.tabAtributos.TabIndex = 1;
             this.tabAtributos.Text = "Atributos";
             // 
@@ -340,12 +345,45 @@
             // 
             // menuAtributos
             // 
+            this.menuAtributos.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.altaAtributo,
+            this.modificarAtributo,
+            this.consultaAtributo,
+            this.eliminarAtributo});
             this.menuAtributos.Location = new System.Drawing.Point(3, 3);
             this.menuAtributos.Name = "menuAtributos";
             this.menuAtributos.Size = new System.Drawing.Size(804, 24);
             this.menuAtributos.TabIndex = 1;
             this.menuAtributos.Text = "menuStrip1";
             this.menuAtributos.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.atributos_Clicked);
+            // 
+            // altaAtributo
+            // 
+            this.altaAtributo.AccessibleName = "Alta";
+            this.altaAtributo.Name = "altaAtributo";
+            this.altaAtributo.Size = new System.Drawing.Size(40, 20);
+            this.altaAtributo.Text = "Alta";
+            // 
+            // modificarAtributo
+            // 
+            this.modificarAtributo.AccessibleName = "Modificar";
+            this.modificarAtributo.Name = "modificarAtributo";
+            this.modificarAtributo.Size = new System.Drawing.Size(70, 20);
+            this.modificarAtributo.Text = "Modificar";
+            // 
+            // consultaAtributo
+            // 
+            this.consultaAtributo.AccessibleName = "Consulta";
+            this.consultaAtributo.Name = "consultaAtributo";
+            this.consultaAtributo.Size = new System.Drawing.Size(66, 20);
+            this.consultaAtributo.Text = "Consulta";
+            // 
+            // eliminarAtributo
+            // 
+            this.eliminarAtributo.AccessibleName = "Eliminar";
+            this.eliminarAtributo.Name = "eliminarAtributo";
+            this.eliminarAtributo.Size = new System.Drawing.Size(62, 20);
+            this.eliminarAtributo.Text = "Eliminar";
             // 
             // ManejadorDeArchivos
             // 
@@ -369,6 +407,8 @@
             this.tabAtributos.ResumeLayout(false);
             this.tabAtributos.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridAtrib)).EndInit();
+            this.menuAtributos.ResumeLayout(false);
+            this.menuAtributos.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -406,6 +446,10 @@
         private System.Windows.Forms.ToolStripMenuItem modificarEntidad;
         private System.Windows.Forms.ToolStripMenuItem consultaEntidad;
         private System.Windows.Forms.ToolStripMenuItem eliminarEntidad;
+        private System.Windows.Forms.ToolStripMenuItem altaAtributo;
+        private System.Windows.Forms.ToolStripMenuItem modificarAtributo;
+        private System.Windows.Forms.ToolStripMenuItem consultaAtributo;
+        private System.Windows.Forms.ToolStripMenuItem eliminarAtributo;
     }
 }
 

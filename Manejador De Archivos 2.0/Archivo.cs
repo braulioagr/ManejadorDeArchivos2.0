@@ -45,21 +45,66 @@ namespace Manejador_De_Archivos_2._0
         #region Metodos
 
         #region Busqueda
+
+        public bool existeEntidad(string nombre)
+        {
+            bool band;
+            band = false;
+            foreach(Entidad entidad in this.entidades)
+            {
+                if (entidad.Nombre.Equals(nombre))
+                {
+                    band = true;
+                    break;
+                }
+            }
+            return band;
+        }
+
         #endregion
 
         #region Entidades
-        public void altaEntidad()
+
+        public void altaEntidad(string nombre, long dirActual, long dirAtributos, long dirRegistros, long dirSig)
         {
-            throw new NotImplementedException();
+            Entidad entidad;
+            entidad = new Entidad(nombre, dirActual, dirAtributos, dirRegistros, dirSig);
+            this.entidades.Add(entidad);
+            this.ajustaDirecciones();
         }
+
         public void modificaEntidad()
         {
             throw new NotImplementedException();
         }
+        
         public void eliminaEntidad()
         {
             throw new NotImplementedException();
         }
+
+
+        /**
+         * Este metodo se dedica a ordenar la lista tanto en memoria como en archivo siendo en memoria ordenada mediante el metodo
+         * OrderBy usando como directriz el nombre de las entidades, y despues organizar las direcciones siguiente y volviendo a
+         * grabar todas las entidades en el archivo.
+         */
+        public void ajustaDirecciones()
+        {
+            this.entidades = this.entidades.OrderBy(entidad => entidad.Nombre).ToList();//Manda ordenar la lista en base al nombre
+            for (int i = 0; i < this.entidades.Count - 1; i++)
+            {
+                this.entidades[i].DirSig = this.entidades[i + 1].DirActual;//Iguala la direccion siguiente a la direccion actual de la siguiente entidad en la lista
+            }
+            this.entidades.Last().DirSig = -1;//Iguala a -1 la direccion siguiente del ultimo elemento de la lista
+            this.cabecera = entidades.First().DirActual;//A la cabecera le asigna el valor de la primera entidad
+            this.grabaCabecera();//Manda grabar la cabecera
+            foreach (Entidad entidad in entidades)
+            {
+                this.grabaEntidad(entidad);//Manda grabar las entidades con su direccion actual
+            }
+        }
+        
         #endregion
 
         #region Atributos
@@ -76,7 +121,6 @@ namespace Manejador_De_Archivos_2._0
             throw new NotImplementedException();
         }
         #endregion
-
 
         #region Grabado de datos
 
@@ -135,7 +179,7 @@ namespace Manejador_De_Archivos_2._0
             try
             {
                 using (writer = new BinaryWriter(new FileStream(this.Nombre, FileMode.Open)))//Abre el archivo con el BinaryWriter
-                {/*
+                {
                     writer.Seek((int)atributo.DirActual, SeekOrigin.Current);//Posiciona el grabado del archivo en la dirección actual
                     writer.Write(atributo.Nombre);//Graba el Nombre
                     writer.Write(atributo.Tipo);//Graba el Tipo
@@ -143,7 +187,7 @@ namespace Manejador_De_Archivos_2._0
                     writer.Write(atributo.DirActual);//Graba la Direccion Actual
                     writer.Write(atributo.Indice);//Graba el Indice
                     writer.Write(atributo.DirIndice);//Graba la dirección del indice
-                    writer.Write(atributo.DirSig);//Graba la Direccion siguiente*/
+                    writer.Write(atributo.DirSig);//Graba la Direccion siguiente
                 }
             }
             catch (Exception e)
@@ -155,5 +199,6 @@ namespace Manejador_De_Archivos_2._0
         #endregion
 
         #endregion
+
     }
 }

@@ -1,0 +1,67 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Manejador_De_Archivos_2._0
+{
+    class MetodosAuxiliares
+    {
+        #region Manipulacion de Cadenas
+        public static string ajustaCadena(string cadena, int tam)
+        {
+            if (cadena.Length < tam)
+            {
+                do
+                {
+                    cadena += "&";
+                } while (cadena.Length < tam);
+            }
+            if (cadena.Length > tam)
+            {
+                cadena = cadena.Substring(0, tam);
+            }
+            return cadena;
+        }
+
+        public static string truncaCadena(string cad)
+        {
+            String aux;
+            aux = cad.Replace("&", "");
+            return aux;
+        }
+        #endregion
+
+        #region Indices
+        public static string traduceIndice(int i)
+        {
+            string indice;
+            indice = "";
+            switch (i)
+            {
+                case 0:
+                    indice = "0: Sin indice";
+                    break;
+                case 1:
+                    indice = "1: Clave de Busqueda";
+                    break;
+                case 2:
+                    indice = "2: Indice Primario";
+                    break;
+                case 3:
+                    indice = "3: Indice Secundario";
+                    break;
+                case 4:
+                    indice = "4: Multi-Lista";
+                    break;
+                case 5:
+                    indice = "5: Arbol B+";
+                    break;
+            }
+            return indice;
+        }
+        #endregion
+
+    }
+}

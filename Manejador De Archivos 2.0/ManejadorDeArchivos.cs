@@ -17,7 +17,9 @@ namespace Manejador_De_Archivos_2._0
         private Archivo archivo;
         string directorio;
         #endregion
+
         #region Constructores
+
         public ManejadorDeArchivos()
         {
             InitializeComponent();
@@ -40,6 +42,7 @@ namespace Manejador_De_Archivos_2._0
             }
             this.directorio = Environment.CurrentDirectory + @"..\BasesDeDatos";
         }
+
         #endregion
 
         #region Eventos
@@ -50,7 +53,7 @@ namespace Manejador_De_Archivos_2._0
             switch (e.ClickedItem.AccessibleName)
             {
                 case "Nuevo":
-                    if (this.archivo == null)
+                    if (this.archivo == null)//Verifica que no exista una base abierta
                     {
                         NuevaBase nuevaBase;
                         string nombre;
@@ -58,15 +61,15 @@ namespace Manejador_De_Archivos_2._0
                         nuevaBase = new NuevaBase();
                         if(nuevaBase.ShowDialog().Equals(DialogResult.OK))
                         {
-                            this.directorio += @"..\" + nuevaBase.Nombre;
-                            if (!Directory.Exists(this.directorio))
+                            this.directorio += @"..\" + nuevaBase.Nombre;//Crea la dirección del archivo
+                            if (!Directory.Exists(this.directorio))//Verifica si la carpeta existe
                             {
-                                Directory.CreateDirectory(this.directorio);
-                                nombre = this.directorio + "\\" + nuevaBase.Nombre + ".diccionario";
-                                this.archivo = new Archivo(nombre);
-                                file = new FileStream(nombre, FileMode.Create);
+                                Directory.CreateDirectory(this.directorio);//Si no existe La crea
+                                nombre = this.directorio + "\\" + nuevaBase.Nombre + ".diccionario";//Crea el nombre del archivo
+                                this.archivo = new Archivo(nombre);//Construye el objeto archivo
+                                file = new FileStream(nombre, FileMode.Create);//Crea el archivo en disco
                                 file.Close();
-                                archivo.grabaCabecera();
+                                archivo.grabaCabecera();//Graba la cabecera del archivo
                             }
                             else
                             {
@@ -84,6 +87,7 @@ namespace Manejador_De_Archivos_2._0
                     {
                         this.directorio = Environment.CurrentDirectory + @"..\BasesDeDatos";
                         this.archivo = null;
+                        this.borraDataGreed();
                     }
                 break;
                 default:
@@ -94,20 +98,58 @@ namespace Manejador_De_Archivos_2._0
         
         private void entidades_Clicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            switch (e.ClickedItem.AccessibleName)
+            #region Entidades
+            if (this.archivo != null)
             {
-                case "Alta":
-                break;
-                case "Modificar":
-                break;
-                case "Consulta":
-                break;
-                case "Eliminar":
-                break;
-                default:
-                    MessageBox.Show("Opción incorrecta o no implementada", "Atención");
-                break;
+                switch (e.ClickedItem.AccessibleName)
+                {
+                    case "Alta":
+                        #region Alta
+                        AltaEntidad altaEntidad = new AltaEntidad(archivo.Nombre);
+                        if (altaEntidad.ShowDialog() == DialogResult.OK)
+                        {
+                            string nombre;
+                            long dir;
+                            nombre = MetodosAuxiliares.ajustaCadena(altaEntidad.Nombre, Constantes.tam);
+                            if (!archivo.existeEntidad(nombre))//Verifica que la entidad no exista en el archivo
+                            {
+                                FileStream abierto;
+                                abierto = new FileStream(archivo.Nombre, FileMode.Append);//abre el archivo en un file stream
+                                dir = (long)abierto.Seek(0, SeekOrigin.End);//Calcula la direccion final del archivo y lo mete en un long
+                                abierto.Close();//Cierra el file Stream
+                                archivo.altaEntidad(nombre, dir, -1, -1, -1);//Da de alta la entidad
+                                this.actualizaTodo();//Actualiza todos los Data Grid
+                            }
+                            else
+                            {
+                                MessageBox.Show("Esa entidad esta dada de alta", "Invalido");//Arroja un mensaje de error si la entidad existe
+                            }
+                        }
+                        altaEntidad.Dispose();//Eliminamos el objeto
+                        #endregion
+                    break;
+                    case "Modificar":
+                    break;
+                    case "Consulta":
+                        #region Consulta
+                        ConsultaEntidad consultaEntidad;
+                        consultaEntidad = new ConsultaEntidad(this.archivo);
+                        consultaEntidad.ShowDialog();
+                        consultaEntidad.Dispose();
+                        #endregion
+                    break;
+                    case "Eliminar":
+                    break;
+                    default:
+                        MessageBox.Show("Opción incorrecta o no implementada", "Atención");
+                    break;
+                }
             }
+            else
+            {
+                MessageBox.Show("Por favor abra una base de datos", "Error");
+            }
+            #endregion
         }
 
         private void atributos_Clicked(object sender, ToolStripItemClickedEventArgs e)
@@ -141,13 +183,13 @@ namespace Manejador_De_Archivos_2._0
             dataGridEntidad.Rows.Clear();
             if (dataGridEntidad.Columns.Count > 0)
             {
-                foreach (Entidad busca in archivo.Entidades)
+                foreach (Entidad entidad in archivo.Entidades)
                 {
-                    /*dataGridEntidad.Rows.Add(MetodosAuxiliares.truncaCadena(busca.Nombre),
-                                                busca.DirActual,
-                                                busca.DirRegistros,
-                                                busca.DirAtributos,
-                                                busca.DirSig);*/
+                    dataGridEntidad.Rows.Add(MetodosAuxiliares.truncaCadena(entidad.Nombre),
+                                                entidad.DirActual,
+                                                entidad.DirRegistros,
+                                                entidad.DirAtributos,
+                                                entidad.DirSig);
                 }
             }
         }
@@ -159,14 +201,14 @@ namespace Manejador_De_Archivos_2._0
             {
                 foreach(Atributo atributo in entidad.Atributos)
                 {
-                    /*dataGridAtrib.Rows.Add(MetodosAuxiliares.truncaCadena(entidad.Nombre),
+                    dataGridAtrib.Rows.Add(MetodosAuxiliares.truncaCadena(entidad.Nombre),
                                            MetodosAuxiliares.truncaCadena(atributo.Nombre),
                                            atributo.DirActual,
                                            atributo.Tipo,
                                            MetodosAuxiliares.traduceIndice(atributo.Indice),
                                            atributo.Longitud,
                                            atributo.DirIndice,
-                                           atributo.DirSig);*/
+                                           atributo.DirSig);
                 }
                 if (entidad.Atributos.Count != 0)
                 {

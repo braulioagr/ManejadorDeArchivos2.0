@@ -44,8 +44,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AltaEntidad.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AltaEntidad.Designer.cs">
+      <DependentUpon>AltaEntidad.cs</DependentUpon>
+    </Compile>
     <Compile Include="Archivo.cs" />
     <Compile Include="Atributo.cs" />
+    <Compile Include="Constantes.cs" />
+    <Compile Include="ConsultaEntidad.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConsultaEntidad.Designer.cs">
+      <DependentUpon>ConsultaEntidad.cs</DependentUpon>
+    </Compile>
     <Compile Include="Entidad.cs" />
     <Compile Include="ManejadorDeArchivos.cs">
       <SubType>Form</SubType>
@@ -53,6 +66,7 @@
     <Compile Include="ManejadorDeArchivos.Designer.cs">
       <DependentUpon>ManejadorDeArchivos.cs</DependentUpon>
     </Compile>
+    <Compile Include="MetodosAuxiliares.cs" />
     <Compile Include="NuevaBase.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -61,6 +75,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AltaEntidad.resx">
+      <DependentUpon>AltaEntidad.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConsultaEntidad.resx">
+      <DependentUpon>ConsultaEntidad.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ManejadorDeArchivos.resx">
       <DependentUpon>ManejadorDeArchivos.cs</DependentUpon>
     </EmbeddedResource>
