@@ -129,6 +129,17 @@ namespace Manejador_De_Archivos_2._0
                         #endregion
                     break;
                     case "Modificar":
+                        #region Modificar
+                        ModificaEntidad modificaEntidad;
+                        modificaEntidad = new ModificaEntidad(this.archivo);
+                        if (modificaEntidad.ShowDialog().Equals(DialogResult.OK))
+                        {
+                            archivo.modificaEntidad(MetodosAuxiliares.ajustaCadena(modificaEntidad.Entidad,Constantes.tam),
+                                                    MetodosAuxiliares.ajustaCadena(modificaEntidad.Cambio,Constantes.tam));
+                            this.actualizaTodo();
+                        }
+                        modificaEntidad.Dispose();
+                        #endregion
                     break;
                     case "Consulta":
                         #region Consulta
@@ -139,6 +150,16 @@ namespace Manejador_De_Archivos_2._0
                         #endregion
                     break;
                     case "Eliminar":
+                        #region Eliminar
+                        EliminaEntidad eliminaEntidad;
+                        eliminaEntidad = new EliminaEntidad(this.archivo);
+                        if (eliminaEntidad.ShowDialog().Equals(DialogResult.OK))
+                        {
+                            archivo.eliminaEntidad(MetodosAuxiliares.ajustaCadena(eliminaEntidad.Entidad, Constantes.tam));
+                            actualizaTodo();
+                        }
+                        eliminaEntidad.Dispose();
+                        #endregion
                     break;
                     default:
                         MessageBox.Show("Opción incorrecta o no implementada", "Atención");

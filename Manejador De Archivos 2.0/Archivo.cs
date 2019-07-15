@@ -45,6 +45,20 @@ namespace Manejador_De_Archivos_2._0
         #region Metodos
 
         #region Busqueda
+        private Entidad buscaEntidad(string nombre)
+        {
+            Entidad destino;
+            destino = null;
+            foreach (Entidad entidad in this.entidades)
+            {
+                if(entidad.Nombre.Equals(nombre))
+                {
+                    destino = entidad;
+                    break;
+                }
+            }
+            return destino;
+        }
 
         public bool existeEntidad(string nombre)
         {
@@ -73,14 +87,34 @@ namespace Manejador_De_Archivos_2._0
             this.ajustaDirecciones();
         }
 
-        public void modificaEntidad()
+        public void modificaEntidad(string nombre, string cambio)
         {
-            throw new NotImplementedException();
+            if (this.existeEntidad(nombre))
+            {
+                Entidad destino;
+                destino = this.buscaEntidad(nombre);
+                destino.Nombre = cambio;
+                this.ajustaDirecciones();
+            }
+            else
+            {
+                MessageBox.Show("La entidad seleccionada no existe","Error");
+            }
         }
         
-        public void eliminaEntidad()
+        public void eliminaEntidad(string nombre)
         {
-            throw new NotImplementedException();
+            if (this.existeEntidad(nombre))
+            {
+                Entidad entidad;
+                entidad = this.buscaEntidad(nombre);
+                this.entidades.Remove(entidad);
+                this.ajustaDirecciones();
+            }
+            else
+            {
+                MessageBox.Show("La entidad seleccionada no existe", "Error");
+            }
         }
 
 

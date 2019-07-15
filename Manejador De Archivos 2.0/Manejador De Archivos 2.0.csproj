@@ -59,6 +59,12 @@
     <Compile Include="ConsultaEntidad.Designer.cs">
       <DependentUpon>ConsultaEntidad.cs</DependentUpon>
     </Compile>
+    <Compile Include="EliminaEntidad.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EliminaEntidad.Designer.cs">
+      <DependentUpon>EliminaEntidad.cs</DependentUpon>
+    </Compile>
     <Compile Include="Entidad.cs" />
     <Compile Include="ManejadorDeArchivos.cs">
       <SubType>Form</SubType>
@@ -67,6 +73,12 @@
       <DependentUpon>ManejadorDeArchivos.cs</DependentUpon>
     </Compile>
     <Compile Include="MetodosAuxiliares.cs" />
+    <Compile Include="ModificaEntidad.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ModificaEntidad.Designer.cs">
+      <DependentUpon>ModificaEntidad.cs</DependentUpon>
+    </Compile>
     <Compile Include="NuevaBase.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -81,8 +93,14 @@
     <EmbeddedResource Include="ConsultaEntidad.resx">
       <DependentUpon>ConsultaEntidad.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="EliminaEntidad.resx">
+      <DependentUpon>EliminaEntidad.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ManejadorDeArchivos.resx">
       <DependentUpon>ManejadorDeArchivos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModificaEntidad.resx">
+      <DependentUpon>ModificaEntidad.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NuevaBase.resx">
       <DependentUpon>NuevaBase.cs</DependentUpon>
