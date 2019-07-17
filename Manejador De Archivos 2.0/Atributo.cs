@@ -13,7 +13,7 @@ namespace Manejador_De_Archivos_2._0
         private string entidad;//Nombre de la entidad en la que pertenece
         private long dirActual;//Direccion en el archivo
         private string nombre;//Nombre del atributo
-        private string tipo;//Tipo de dato de este atributo
+        private char tipo;//Tipo de dato de este atributo
         private int indice;//Tipo de indice al que pertenece
         private int longitud;//Longitud del tipo de dato
         private long dirIndice;//Direccion del inicio del indice de este atributo en el archivo
@@ -22,7 +22,7 @@ namespace Manejador_De_Archivos_2._0
         #endregion
 
         #region Constructores
-        public Atributo(long dirActual, string entidad, string nombre, string tipo, int indice, int longitud, long dirIndice, long dirSig)
+        public Atributo(string entidad, string nombre, long dirActual, char tipo, int indice, int longitud, long dirIndice, long dirSig)
         {
             this.dirActual = dirActual;
             this.entidad = entidad;
@@ -55,7 +55,7 @@ namespace Manejador_De_Archivos_2._0
             //set { this.nombre = value; }
         }
 
-        public string Tipo
+        public char Tipo
         {
             get { return this.tipo; }
             //set { this.tipo = value; }
@@ -82,7 +82,7 @@ namespace Manejador_De_Archivos_2._0
         public long DirSig
         {
             get { return this.dirSig; }
-            //set { this.dirSig = value; }
+            set { this.dirSig = value; }
         }
         #endregion
         

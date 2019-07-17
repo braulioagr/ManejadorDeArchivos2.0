@@ -45,6 +45,7 @@ namespace Manejador_De_Archivos_2._0
         #region Metodos
 
         #region Busqueda
+
         private Entidad buscaEntidad(string nombre)
         {
             Entidad destino;
@@ -69,6 +70,22 @@ namespace Manejador_De_Archivos_2._0
                 if (entidad.Nombre.Equals(nombre))
                 {
                     band = true;
+                    break;
+                }
+            }
+            return band;
+        }
+
+        public bool existeEntidad(string nombre, ref Entidad entidad)
+        {
+            bool band;
+            band = false;
+            foreach (Entidad entidad2 in this.entidades)
+            {
+                if (entidad2.Nombre.Equals(nombre))
+                {
+                    band = true;
+                    entidad = entidad2;
                     break;
                 }
             }
@@ -142,11 +159,26 @@ namespace Manejador_De_Archivos_2._0
         #endregion
 
         #region Atributos
-        public void altaAtributo()
-        {
-            throw new NotImplementedException();
+
+        public void altaAtributo(string entidad, string nombre, char tipo, int longitud, int indice, long dir)
+        {            
+            Entidad ent;
+            ent = null;
+            if (this.existeEntidad(entidad, ref ent))
+            {
+                ent.altaAtributo(nombre, tipo, longitud, indice,dir);
+                this.grabaEntidad(ent);
+                foreach (Atributo atributo in ent.Atributos)
+                {
+                    this.grabaAtributo(atributo);
+                }
+            }
+            else
+            {
+                MessageBox.Show("La entidad que selecciono no existe", "Error");
+            }
         }
-        public void modificaAtributo()
+        public void modificaAtributo(string entidad, string nombre, char tipo, int longitud, int indice)
         {
             throw new NotImplementedException();
         }
@@ -233,6 +265,5 @@ namespace Manejador_De_Archivos_2._0
         #endregion
 
         #endregion
-
     }
 }

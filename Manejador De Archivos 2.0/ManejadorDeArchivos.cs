@@ -27,6 +27,11 @@ namespace Manejador_De_Archivos_2._0
 
         private void ManejadorDeArchivos_Load(object sender, EventArgs e)
         {
+            this.directorio = Environment.CurrentDirectory + @"..\BasesDeDatos";
+            if (!Directory.Exists(this.directorio))//Verifica si la carpeta existe
+            {
+                Directory.CreateDirectory(this.directorio);
+            }
             /*Cargador de la ventana principal*/
             this.dataGridEntidad.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             for (int i = 0; i < dataGridEntidad.ColumnCount; i++)
@@ -40,7 +45,6 @@ namespace Manejador_De_Archivos_2._0
                 /*Aliniamiento del texto de las celdas del data grid de los atributos*/
                 this.dataGridAtrib.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             }
-            this.directorio = Environment.CurrentDirectory + @"..\BasesDeDatos";
         }
 
         #endregion
@@ -109,10 +113,10 @@ namespace Manejador_De_Archivos_2._0
                         if (altaEntidad.ShowDialog() == DialogResult.OK)
                         {
                             string nombre;
-                            long dir;
                             nombre = MetodosAuxiliares.ajustaCadena(altaEntidad.Nombre, Constantes.tam);
                             if (!archivo.existeEntidad(nombre))//Verifica que la entidad no exista en el archivo
                             {
+                                long dir;
                                 FileStream abierto;
                                 abierto = new FileStream(archivo.Nombre, FileMode.Append);//abre el archivo en un file stream
                                 dir = (long)abierto.Seek(0, SeekOrigin.End);//Calcula la direccion final del archivo y lo mete en un long
@@ -175,20 +179,54 @@ namespace Manejador_De_Archivos_2._0
 
         private void atributos_Clicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            switch (e.ClickedItem.AccessibleName)
+            #region Atributos
+            if (this.archivo != null)
             {
-                case "Alta":
-                    break;
-                case "Modificar":
-                    break;
-                case "Consulta":
-                    break;
-                case "Eliminar":
-                    break;
-                default:
-                    MessageBox.Show("Opción incorrecta o no implementada", "Atención");
-                    break;
+                if (this.archivo.Entidades.Count != 0)
+                {
+                    #region Existen Entidades
+                    switch (e.ClickedItem.AccessibleName)
+                    {
+                        case "Alta":
+                            #region Alta
+                            AltaAtributo altaAtributo;
+                            altaAtributo = new AltaAtributo(this.archivo);
+                            if (altaAtributo.ShowDialog().Equals(DialogResult.OK))
+                            {
+                                long dir;
+                                FileStream abierto;
+                                abierto = new FileStream(archivo.Nombre, FileMode.Append);//abre el archivo en un file stream
+                                dir = (long)abierto.Seek(0, SeekOrigin.End);//Calcula la direccion final del archivo y lo mete en un long
+                                abierto.Close();//Cierra el file Stream
+                                archivo.altaAtributo(MetodosAuxiliares.ajustaCadena(altaAtributo.Entidad, Constantes.tam),
+                                                     MetodosAuxiliares.ajustaCadena(altaAtributo.Nombre, Constantes.tam),
+                                                     altaAtributo.Tipo, altaAtributo.Longitud, altaAtributo.Indice, dir);
+                                this.actualizaTodo();
+                            }
+                            #endregion
+                            break;
+                        case "Modificar":
+                            break;
+                        case "Consulta":
+                            break;
+                        case "Eliminar":
+                            break;
+                        default:
+                            MessageBox.Show("Opción incorrecta o no implementada", "Atención");
+                            break;
+                    }
+                    #endregion
+                }
+                else
+                {
+                    MessageBox.Show("Por favor Agregue Entidades primero", "Imposible");
+                }
             }
+            else
+            {
+                MessageBox.Show("Por favor cree una base de d   atos primero", "Error");
+            }
+            #endregion
         }
 
         #endregion

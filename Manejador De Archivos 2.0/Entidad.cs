@@ -61,6 +61,47 @@ namespace Manejador_De_Archivos_2._0
         }
         #endregion
         #region Metodos
+
+        #region Busqueda
+        public bool existeAtributo(string nombre)
+        {
+            bool band;
+            band = false;
+            return band;
+
+        }
         #endregion
+
+        #region Atributos
+        public void altaAtributo(string nombre, char tipo, int longitud, int indice, long dir)
+        {
+            if (!this.existeAtributo(nombre))
+            {
+                if (this.dirAtributos == -1)
+                {
+                    this.dirAtributos = dir;
+                }
+                Atributo atributo;
+                atributo = new Atributo(this.nombre, nombre, dir, tipo, indice, longitud, -1, -1);
+                this.atributos.Add(atributo);
+                this.ajustaDirecciones();
+            }
+        }
+
+        private void ajustaDirecciones()
+        {
+            this.atributos = this.atributos.OrderBy(atrib => atrib.Nombre).ToList();
+            for (int i = 0; i < this.atributos.Count - 1; i++)
+            {
+                this.atributos[i].DirSig = this.atributos[i + 1].DirActual;//Iguala la direccion siguiente a la direccion actual de la siguiente entidad en la lista
+            }
+            this.atributos.Last().DirSig = -1;//Iguala a -1 la direccion siguiente del ultimo elemento de la lista
+            this.dirAtributos = this.atributos.First().DirActual;//A la cabecera le asigna el valor de la primera entidad
+        }
+
+        #endregion
+
+        #endregion
+
     }
 }
