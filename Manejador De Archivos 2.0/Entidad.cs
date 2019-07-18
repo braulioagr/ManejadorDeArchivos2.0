@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Manejador_De_Archivos_2._0
 {
@@ -63,6 +64,22 @@ namespace Manejador_De_Archivos_2._0
         #region Metodos
 
         #region Busqueda
+
+        private Atributo buscaAtributo(string nombre)
+        {
+            Atributo atributo;
+            atributo = null;
+            foreach (Atributo atrib in this.atributos)
+            {
+                if (atrib.Nombre.Equals(nombre))
+                {
+                    atributo = atrib;
+                    break;
+                }
+            }
+            return atributo;
+        }
+
         public bool existeAtributo(string nombre)
         {
             bool band;
@@ -70,6 +87,22 @@ namespace Manejador_De_Archivos_2._0
             return band;
 
         }
+
+        private bool ExisteClaveDeBusqueda()
+        {
+            bool band;
+            band = false;
+            foreach (Atributo atributo in this.atributos)
+            {
+                if (atributo.Indice == 1)
+                {
+                    band = true;
+                    break;
+                }
+            }
+            return band;
+        }
+
         #endregion
 
         #region Atributos
@@ -77,14 +110,49 @@ namespace Manejador_De_Archivos_2._0
         {
             if (!this.existeAtributo(nombre))
             {
-                if (this.dirAtributos == -1)
+                if (indice != 1 || !this.ExisteClaveDeBusqueda())
                 {
-                    this.dirAtributos = dir;
+                    Atributo atributo;
+                    atributo = new Atributo(this.nombre, nombre, dir, tipo, indice, longitud, -1, -1);
+                    this.atributos.Add(atributo);
+                    this.ajustaDirecciones();
                 }
-                Atributo atributo;
-                atributo = new Atributo(this.nombre, nombre, dir, tipo, indice, longitud, -1, -1);
-                this.atributos.Add(atributo);
-                this.ajustaDirecciones();
+                else
+                {
+                    MessageBox.Show("Ya existe una clave de busqueda", "Error");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Ya existe un atributo con ese nombre", "Error");
+            }
+        }
+
+        public void modificaAtributo(string nombre,string nuevoNombre, char tipo, int longitud, int indice)
+        {
+
+            if (!this.existeAtributo(nuevoNombre))
+            {
+                if (indice != 1 || !this.ExisteClaveDeBusqueda())
+                {
+                    Atributo atributo;
+                    atributo = buscaAtributo(nombre);
+                    if (this.dirRegistros == -1)
+                    {
+                        this.atributos.Remove(atributo);
+                        atributo = new Atributo(this.nombre, nuevoNombre, atributo.DirActual, tipo, indice, longitud, -1, -1);
+                        this.atributos.Add(atributo);
+                        this.ajustaDirecciones();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Ya existe una clave de busqueda", "Error");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Ya existe un atributo con ese nombre", "Error");
             }
         }
 
