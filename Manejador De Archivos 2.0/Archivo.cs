@@ -110,8 +110,15 @@ namespace Manejador_De_Archivos_2._0
             {
                 Entidad destino;
                 destino = this.buscaEntidad(nombre);
-                destino.Nombre = cambio;
-                this.ajustaDirecciones();
+                if (destino.DirRegistros == -1)
+                {
+                    destino.Nombre = cambio;
+                    this.ajustaDirecciones();
+                }
+                else
+                {
+                    MessageBox.Show("La entidad seleccionada no se puede modificar", "Error");
+                }
             }
             else
             {
@@ -190,18 +197,32 @@ namespace Manejador_De_Archivos_2._0
         {
             Entidad ent;
             ent = buscaEntidad(entidad);
-            ent.modificaAtributo(nombre, nuevoNombre, tipo, longitud, indice);
-            Atributo atributo;
-            atributo = ent.buscaAtributo(MetodosAuxiliares.ajustaCadena(nuevoNombre,Constantes.tam));
-            this.grabaAtributo(atributo);
+            if (ent.DirRegistros == -1)
+            {
+                ent.modificaAtributo(nombre, nuevoNombre, tipo, longitud, indice);
+                Atributo atributo;
+                atributo = ent.buscaAtributo(MetodosAuxiliares.ajustaCadena(nuevoNombre, Constantes.tam));
+                this.grabaAtributo(atributo);
+            }
+            else
+            {
+                MessageBox.Show("El atributo pertenece a una entidad no se puede modificar", "Error");
+            }
         }
         
         public void eliminaAtributo(string entidad, string nombre)
         {
             Entidad ent;
             ent = buscaEntidad(entidad);
-            ent.eliminaAtributo(nombre);
-            this.grabaEntidad(ent);
+            if (ent.DirRegistros == -1)
+            {
+                ent.eliminaAtributo(nombre);
+                this.grabaEntidad(ent);
+            }
+            else
+            {
+                MessageBox.Show("El atributo pertenece a una entidad no se puede modificar", "Error");
+            }
         }
         #endregion
 
