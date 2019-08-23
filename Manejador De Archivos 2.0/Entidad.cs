@@ -17,8 +17,8 @@ namespace Manejador_De_Archivos_2._0
         private long dirRegistros;//Direccion en el archivo de los registros
         private long dirSig;//Direccion en el archivo de la siguiente entidad
         private List<Atributo> atributos;
-        private BinaryReader reader;//Objeto para leer el archivo
-        private BinaryWriter writer;//Objeto para guardar el archivo
+        //private BinaryReader reader;//Objeto para leer el archivo
+        //private BinaryWriter writer;//Objeto para guardar el archivo
         #endregion
         
         #region Constructores
@@ -61,11 +61,12 @@ namespace Manejador_De_Archivos_2._0
             get { return this.atributos; }
         }
         #endregion
+
         #region Metodos
 
         #region Busqueda
 
-        private Atributo buscaAtributo(string nombre)
+        public Atributo buscaAtributo(string nombre)
         {
             Atributo atributo;
             atributo = null;
@@ -108,68 +109,104 @@ namespace Manejador_De_Archivos_2._0
         #region Atributos
         public void altaAtributo(string nombre, char tipo, int longitud, int indice, long dir)
         {
-            if (!this.existeAtributo(nombre))
+            if (this.dirRegistros == -1)
             {
-                if (indice != 1 || !this.ExisteClaveDeBusqueda())
+                if (!this.existeAtributo(nombre))
                 {
-                    Atributo atributo;
-                    atributo = new Atributo(this.nombre, nombre, dir, tipo, indice, longitud, -1, -1);
-                    this.atributos.Add(atributo);
-                    this.ajustaDirecciones();
+                    if (indice != 1 || !this.ExisteClaveDeBusqueda())
+                    {
+                        Atributo atributo;
+                        atributo = new Atributo(this.nombre, nombre, dir, tipo, indice, longitud, -1, -1);
+                        this.atributos.Add(atributo);
+                        this.ajustaDirecciones();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Ya existe una clave de busqueda", "Error");
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Ya existe una clave de busqueda", "Error");
+                    MessageBox.Show("Ya existe un atributo con ese nombre", "Error");
                 }
             }
             else
             {
-                MessageBox.Show("Ya existe un atributo con ese nombre", "Error");
+                MessageBox.Show("Esta entidad ya tiene registros", "Error");
             }
         }
 
         public void modificaAtributo(string nombre,string nuevoNombre, char tipo, int longitud, int indice)
         {
-
-            if (!this.existeAtributo(nuevoNombre))
+            if (this.dirRegistros == -1)
             {
-                if (indice != 1 || !this.ExisteClaveDeBusqueda())
+                if (!this.existeAtributo(nuevoNombre))
                 {
                     Atributo atributo;
                     atributo = buscaAtributo(nombre);
-                    if (this.dirRegistros == -1)
+                    if (indice != 1|| !this.ExisteClaveDeBusqueda() || indice == atributo.Indice)
                     {
-                        this.atributos.Remove(atributo);
-                        atributo = new Atributo(this.nombre, nuevoNombre, atributo.DirActual, tipo, indice, longitud, -1, -1);
-                        this.atributos.Add(atributo);
-                        this.ajustaDirecciones();
+                        if (this.dirRegistros == -1)
+                        {
+                            this.atributos.Remove(atributo);
+                            atributo = new Atributo(this.nombre, nuevoNombre, atributo.DirActual, tipo, indice, longitud, -1, -1);
+                            this.atributos.Add(atributo);
+                            this.ajustaDirecciones();
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Ya existe una clave de busqueda", "Error");
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Ya existe una clave de busqueda", "Error");
+                    MessageBox.Show("Ya existe un atributo con ese nombre", "Error");
                 }
             }
             else
             {
-                MessageBox.Show("Ya existe un atributo con ese nombre", "Error");
+                MessageBox.Show("Esta entidad ya tiene registros", "Error");
+            }
+        }
+
+        public void eliminaAtributo(string nombre)
+        {
+            if (this.dirRegistros == -1)
+            {
+                Atributo atributo;
+                atributo = this.buscaAtributo(nombre);
+                this.atributos.Remove(atributo);
+                this.ajustaDirecciones();
+            }
+            else
+            {
+                MessageBox.Show("Esta entidad ya tiene registros", "Error");
             }
         }
 
         private void ajustaDirecciones()
         {
-            this.atributos = this.atributos.OrderBy(atrib => atrib.Nombre).ToList();
-            for (int i = 0; i < this.atributos.Count - 1; i++)
+            if (this.atributos.Count > 0)
             {
-                this.atributos[i].DirSig = this.atributos[i + 1].DirActual;//Iguala la direccion siguiente a la direccion actual de la siguiente entidad en la lista
+                this.atributos = this.atributos.OrderBy(atrib => atrib.Nombre).ToList();
+                for (int i = 0; i < this.atributos.Count - 1; i++)
+                {
+                    this.atributos[i].DirSig = this.atributos[i + 1].DirActual;//Iguala la direccion siguiente a la direccion actual de la siguiente entidad en la lista
+                }
+                this.atributos.Last().DirSig = -1;//Iguala a -1 la direccion siguiente del ultimo elemento de la lista
+                this.dirAtributos = this.atributos.First().DirActual;//A la cabecera le asigna el valor de la primera entidad
             }
-            this.atributos.Last().DirSig = -1;//Iguala a -1 la direccion siguiente del ultimo elemento de la lista
-            this.dirAtributos = this.atributos.First().DirActual;//A la cabecera le asigna el valor de la primera entidad
+            else
+            {
+                this.dirAtributos = -1;
+            }
         }
 
         #endregion
 
         #endregion
+
 
     }
 }

@@ -37,6 +37,7 @@
             this.cerrar = new System.Windows.Forms.ToolStripButton();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabEntidades = new System.Windows.Forms.TabPage();
+            this.label1 = new System.Windows.Forms.Label();
             this.dataGridEntidad = new System.Windows.Forms.DataGridView();
             this.nombreEntidad = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.direccionEntidad = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -63,6 +64,7 @@
             this.modificarAtributo = new System.Windows.Forms.ToolStripMenuItem();
             this.consultaAtributo = new System.Windows.Forms.ToolStripMenuItem();
             this.eliminarAtributo = new System.Windows.Forms.ToolStripMenuItem();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.toolBar.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabEntidades.SuspendLayout();
@@ -145,6 +147,7 @@
             // tabEntidades
             // 
             this.tabEntidades.BackColor = System.Drawing.SystemColors.Control;
+            this.tabEntidades.Controls.Add(this.label1);
             this.tabEntidades.Controls.Add(this.dataGridEntidad);
             this.tabEntidades.Controls.Add(this.menuEntidades);
             this.tabEntidades.Location = new System.Drawing.Point(4, 22);
@@ -153,6 +156,15 @@
             this.tabEntidades.Size = new System.Drawing.Size(810, 337);
             this.tabEntidades.TabIndex = 0;
             this.tabEntidades.Text = "Entidades";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(8, 56);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(56, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Cabecera ";
             // 
             // dataGridEntidad
             // 
@@ -178,7 +190,7 @@
             this.dataGridEntidad.ShowCellToolTips = false;
             this.dataGridEntidad.ShowEditingIcon = false;
             this.dataGridEntidad.ShowRowErrors = false;
-            this.dataGridEntidad.Size = new System.Drawing.Size(810, 265);
+            this.dataGridEntidad.Size = new System.Drawing.Size(807, 265);
             this.dataGridEntidad.TabIndex = 2;
             this.dataGridEntidad.TabStop = false;
             // 
@@ -385,6 +397,10 @@
             this.eliminarAtributo.Size = new System.Drawing.Size(62, 20);
             this.eliminarAtributo.Text = "Eliminar";
             // 
+            // openFileDialog
+            // 
+            this.openFileDialog.FileName = "openFileDialog1";
+            // 
             // ManejadorDeArchivos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -396,6 +412,7 @@
             this.Name = "ManejadorDeArchivos";
             this.Text = "Manejador de Archivos";
             this.Load += new System.EventHandler(this.ManejadorDeArchivos_Load);
+            this.Resize += new System.EventHandler(this.ManejadorDeArchivos_Resize);
             this.toolBar.ResumeLayout(false);
             this.toolBar.PerformLayout();
             this.tabControl.ResumeLayout(false);
@@ -450,6 +467,8 @@
         private System.Windows.Forms.ToolStripMenuItem modificarAtributo;
         private System.Windows.Forms.ToolStripMenuItem consultaAtributo;
         private System.Windows.Forms.ToolStripMenuItem eliminarAtributo;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.Label label1;
     }
 }
 

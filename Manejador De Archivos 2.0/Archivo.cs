@@ -46,7 +46,7 @@ namespace Manejador_De_Archivos_2._0
 
         #region Busqueda
 
-        private Entidad buscaEntidad(string nombre)
+        public Entidad buscaEntidad(string nombre)
         {
             Entidad destino;
             destino = null;
@@ -142,18 +142,25 @@ namespace Manejador_De_Archivos_2._0
          */
         public void ajustaDirecciones()
         {
-            this.entidades = this.entidades.OrderBy(entidad => entidad.Nombre).ToList();//Manda ordenar la lista en base al nombre
-            for (int i = 0; i < this.entidades.Count - 1; i++)
+            if (this.entidades.Count > 0)
             {
-                this.entidades[i].DirSig = this.entidades[i + 1].DirActual;//Iguala la direccion siguiente a la direccion actual de la siguiente entidad en la lista
+                this.entidades = this.entidades.OrderBy(entidad => entidad.Nombre).ToList();//Manda ordenar la lista en base al nombre
+                for (int i = 0; i < this.entidades.Count - 1; i++)
+                {
+                    this.entidades[i].DirSig = this.entidades[i + 1].DirActual;//Iguala la direccion siguiente a la direccion actual de la siguiente entidad en la lista
+                }
+                this.entidades.Last().DirSig = -1;//Iguala a -1 la direccion siguiente del ultimo elemento de la lista
+                this.cabecera = entidades.First().DirActual;//A la cabecera le asigna el valor de la primera entidad
+                foreach (Entidad entidad in entidades)
+                {
+                    this.grabaEntidad(entidad);//Manda grabar las entidades con su direccion actual
+                }
             }
-            this.entidades.Last().DirSig = -1;//Iguala a -1 la direccion siguiente del ultimo elemento de la lista
-            this.cabecera = entidades.First().DirActual;//A la cabecera le asigna el valor de la primera entidad
+            else
+            {
+                this.cabecera = -1;
+            }
             this.grabaCabecera();//Manda grabar la cabecera
-            foreach (Entidad entidad in entidades)
-            {
-                this.grabaEntidad(entidad);//Manda grabar las entidades con su direccion actual
-            }
         }
         
         #endregion
@@ -178,13 +185,23 @@ namespace Manejador_De_Archivos_2._0
                 MessageBox.Show("La entidad que selecciono no existe", "Error");
             }
         }
-        public void modificaAtributo(string entidad, string nombre, char tipo, int longitud, int indice)
+
+        public void modificaAtributo(string entidad, string nombre, string nuevoNombre, char tipo, int longitud, int indice)
         {
-            throw new NotImplementedException();
+            Entidad ent;
+            ent = buscaEntidad(entidad);
+            ent.modificaAtributo(nombre, nuevoNombre, tipo, longitud, indice);
+            Atributo atributo;
+            atributo = ent.buscaAtributo(MetodosAuxiliares.ajustaCadena(nuevoNombre,Constantes.tam));
+            this.grabaAtributo(atributo);
         }
-        public void eliminaAtributo()
+        
+        public void eliminaAtributo(string entidad, string nombre)
         {
-            throw new NotImplementedException();
+            Entidad ent;
+            ent = buscaEntidad(entidad);
+            ent.eliminaAtributo(nombre);
+            this.grabaEntidad(ent);
         }
         #endregion
 
@@ -264,6 +281,103 @@ namespace Manejador_De_Archivos_2._0
 
         #endregion
 
+
+        #region Lectura de datos
+
+        /**
+         * Metodo que se encarga de leer el archivo primero leyendo
+         *        las entidades despues los atributos
+         */
+        public void leeArchivo(string directorio)
+        {
+            try
+            {
+                this.leeEntidades();
+                this.leeAtributos();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        /**
+         * Metodo que se encarga de leer las entidades guardadas
+         * en el diccionario de datos utilizando un BinaryReader
+         * y una secuencia con un while para que se detenga cuando
+         * el valor de la dirección siguiente sea igual a -1
+         */
+        private void leeEntidades()
+        {
+            long dirSigEntidad;//Crea un long que servira como iterador
+            long actual;
+            string nombre;
+            long dirAtributo;
+            long dirRegistros;
+            Entidad entidad;
+            dirSigEntidad = 0;
+            while (dirSigEntidad != -1)//Se cicla mientras
+            {
+                using (reader = new BinaryReader(new FileStream(this.Nombre, FileMode.Open)))//Abre el archivo con el BinaryReader
+                {
+                    if ((int)dirSigEntidad == 0)//Si es 0 o lo que es lo mismo entrar por primera vez
+                    {
+                        this.cabecera = dirSigEntidad = reader.ReadInt64();//La cabecera y el iterador  son iguales al resultado de leer un long
+                        continue;
+                    }
+                    reader.ReadBytes((int)dirSigEntidad);//Se posciona en la posición del iterador
+                    actual = reader.ReadInt64();//Lee un long que de la dirección actual
+                    nombre = reader.ReadString();//Lee el string del nombre
+                    dirAtributo = reader.ReadInt64();//Lee un long que de la dirección de los atributos
+                    dirRegistros = reader.ReadInt64();//Lee un long que de la dirección de los registros
+                    dirSigEntidad = reader.ReadInt64();////Lee un long que de la dirección de la siguiente entidad
+                    entidad = new Entidad(nombre, actual, dirAtributo, dirRegistros, dirSigEntidad);//Crea una nueva entidad con los datos leidos
+                    entidades.Add(entidad);//Añade la entidad a la lista de entidades
+                }
+            }
+        }
+
+        /**
+         * Metodo que se encarga de leer las entidades guardadas
+         * en el diccionario de datos utilizando un BinaryReader
+         * y una secuencia con un foreach que contiene dentro un
+         * ciclo while que se cicla si y solo si la direccion del
+         * siguiente atributo es diferente de -1
+         */
+        private void leeAtributos()
+        {
+            long dirSiguienteAtributo;//Crea un long que servira como iterador
+            string nombre;
+            char tipo;
+            int longitud;
+            long dirActual;
+            int tipoIndice;
+            long dirIndice;
+            Atributo atributo;
+            dirSiguienteAtributo = 0;
+            foreach (Entidad entidad in this.entidades)
+            {
+                dirSiguienteAtributo = (int)entidad.DirAtributos;
+                while (dirSiguienteAtributo != -1)
+                {
+                    using (reader = new BinaryReader(new FileStream(this.Nombre, FileMode.Open)))//Abre el archivo con un BinaryReader
+                    {
+                        reader.ReadBytes((int)dirSiguienteAtributo);//Se posciona en la posición del iterador
+                        nombre = reader.ReadString();//Se lee el string del nombre
+                        tipo = reader.ReadChar();//Se lee el string del tipo de dato
+                        longitud = reader.ReadInt32();//Se lee el int de la longitud del tipo de dato
+                        dirActual = reader.ReadInt64();//Se lee el long de la dirección actual
+                        tipoIndice = reader.ReadInt32();//Se lee el int del tipo de indice
+                        dirIndice = reader.ReadInt64();//Se lee el long de la dirección del indice
+                        dirSiguienteAtributo = reader.ReadInt64();//Se lee el long de la dirección del siguiente atributo
+                        atributo = new Atributo(entidad.Nombre, nombre, dirActual, tipo, tipoIndice, longitud, dirIndice, dirSiguienteAtributo);//Crea un nuevo atributo con los datos leidos
+                        entidad.Atributos.Add(atributo);//Se añade el atributo a la lista de la entidad
+                    }
+                }
+            }
+        }
+
+        #endregion
         #endregion
     }
-}
+}  
