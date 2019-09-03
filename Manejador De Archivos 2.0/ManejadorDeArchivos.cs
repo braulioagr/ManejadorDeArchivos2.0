@@ -75,6 +75,7 @@ namespace Manejador_De_Archivos_2._0
                                 file = new FileStream(nombre, FileMode.Create);//Crea el archivo en disco
                                 file.Close();
                                 archivo.grabaCabecera();//Graba la cabecera del archivo
+                                this.actualizaTodo();
                             }
                             else
                             {
@@ -199,8 +200,8 @@ namespace Manejador_De_Archivos_2._0
                     break;
                     case "Eliminar":
                         #region Eliminar
-                        EliminaEntidad eliminaEntidad;
-                        eliminaEntidad = new EliminaEntidad(this.archivo);
+                        SeleccionEntidad eliminaEntidad;
+                        eliminaEntidad = new SeleccionEntidad(this.archivo);
                         if (eliminaEntidad.ShowDialog().Equals(DialogResult.OK))
                         {
                             string nombreAuxiliar;
@@ -308,6 +309,47 @@ namespace Manejador_De_Archivos_2._0
             #endregion
         }
 
+
+        private void registros_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            #region Registros
+            if (this.archivo != null)
+            {
+                switch (e.ClickedItem.AccessibleName)
+                {
+                    case "Alta":
+                        SeleccionEntidad seleccion;
+                        seleccion = new SeleccionEntidad(this.archivo);
+                        if(seleccion.ShowDialog().Equals(DialogResult.OK))
+                        {
+                            AltaRegistro altaRegistro;
+                            altaRegistro = new AltaRegistro(this.archivo.buscaEntidad(seleccion.Entidad));
+                            if (altaRegistro.ShowDialog().Equals(DialogResult.OK))
+                            {
+                                this.archivo.altaRegistro(MetodosAuxiliares.ajustaCadena(seleccion.Entidad,Constantes.tam),
+                                                         this.directorio,altaRegistro.Informacion);
+                                this.actualizaTodo();
+                            }
+                            altaRegistro.Dispose();
+                        }
+                        seleccion.Dispose();
+                    break;
+                    case "Modificar":
+                    break;
+                    case "Eliminar":
+                    break;
+                    default:
+                        MessageBox.Show("Opción incorrecta o no implementada", "Atención");
+                    break;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Por favor abra una base de datos o cree", "Error");
+            }
+            #endregion
+        }
+
         #endregion
 
         #region Area Cliente
@@ -316,8 +358,8 @@ namespace Manejador_De_Archivos_2._0
         {
             Size size;
             size = new Size(this.Size.Width - 16, this.Size.Height - 85);
-            tabControl.Size = size;
-            size = new Size(this.tabControl.Width - 11, this.tabControl.Height - 98);
+            tabRegistros.Size = size;
+            size = new Size(this.tabRegistros.Width - 11, this.tabRegistros.Height - 98);
             this.dataGridEntidad.Size = size;
             this.dataGridAtrib.Size = size;
         }
@@ -388,9 +430,7 @@ namespace Manejador_De_Archivos_2._0
         }
 
         #endregion
-
-
-
+        
         #endregion
     }
 }

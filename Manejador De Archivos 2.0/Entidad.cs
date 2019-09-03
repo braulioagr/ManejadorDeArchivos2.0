@@ -17,8 +17,9 @@ namespace Manejador_De_Archivos_2._0
         private long dirRegistros;//Direccion en el archivo de los registros
         private long dirSig;//Direccion en el archivo de la siguiente entidad
         private List<Atributo> atributos;
-        //private BinaryReader reader;//Objeto para leer el archivo
-        //private BinaryWriter writer;//Objeto para guardar el archivo
+        private List<Registro> registros;
+        private BinaryReader reader;//Objeto para leer el archivo
+        private BinaryWriter writer;//Objeto para guardar el archivo
         #endregion
         
         #region Constructores
@@ -30,6 +31,7 @@ namespace Manejador_De_Archivos_2._0
             this.dirRegistros = dirRegistros;
             this.dirSig = dirSig;
             this.atributos = new List<Atributo>();
+            this.registros = new List<Registro>();
         }
         #endregion
 
@@ -89,7 +91,7 @@ namespace Manejador_De_Archivos_2._0
 
         }
 
-        private bool ExisteClaveDeBusqueda()
+        private bool existeClaveDeBusqueda()
         {
             bool band;
             band = false;
@@ -104,6 +106,36 @@ namespace Manejador_De_Archivos_2._0
             return band;
         }
 
+        private bool existeIndicePrimario()
+        {
+            bool band;
+            band = false;
+            foreach (Atributo atributo in this.atributos)
+            {
+                if (atributo.Indice == 2)
+                {
+                    band = true;
+                    break;
+                }
+            }
+            return band;
+        }
+
+        private int buscaIndiceClaveDeBusqueda()
+        {
+            int indice;
+            indice = -1;
+            for (int i = 0; i < this.atributos.Count; i++)
+            {
+                if (this.atributos[i].Indice == 1)
+                {
+                    indice = i;
+                    break;
+                }
+            }
+            return indice;
+        }
+
         #endregion
 
         #region Atributos
@@ -113,12 +145,15 @@ namespace Manejador_De_Archivos_2._0
             {
                 if (!this.existeAtributo(nombre))
                 {
-                    if (indice != 1 || !this.ExisteClaveDeBusqueda())
+                    if (indice != 1 || !this.existeClaveDeBusqueda())
                     {
-                        Atributo atributo;
-                        atributo = new Atributo(this.nombre, nombre, dir, tipo, indice, longitud, -1, -1);
-                        this.atributos.Add(atributo);
-                        this.ajustaDirecciones();
+                        if (indice != 2 || !this.existeIndicePrimario())
+                        {
+                            Atributo atributo;
+                            atributo = new Atributo(this.nombre, nombre, dir, tipo, indice, longitud, -1, -1);
+                            this.atributos.Add(atributo);
+                            this.ajustaDireccionesAtributos();
+                        }
                     }
                     else
                     {
@@ -144,14 +179,14 @@ namespace Manejador_De_Archivos_2._0
                 {
                     Atributo atributo;
                     atributo = buscaAtributo(nombre);
-                    if (indice != 1|| !this.ExisteClaveDeBusqueda() || indice == atributo.Indice)
+                    if (indice != 1|| !this.existeClaveDeBusqueda() || indice == atributo.Indice)
                     {
                         if (this.dirRegistros == -1)
                         {
                             this.atributos.Remove(atributo);
                             atributo = new Atributo(this.nombre, nuevoNombre, atributo.DirActual, tipo, indice, longitud, -1, -1);
                             this.atributos.Add(atributo);
-                            this.ajustaDirecciones();
+                            this.ajustaDireccionesAtributos();
                         }
                     }
                     else
@@ -177,7 +212,7 @@ namespace Manejador_De_Archivos_2._0
                 Atributo atributo;
                 atributo = this.buscaAtributo(nombre);
                 this.atributos.Remove(atributo);
-                this.ajustaDirecciones();
+                this.ajustaDireccionesAtributos();
             }
             else
             {
@@ -185,7 +220,7 @@ namespace Manejador_De_Archivos_2._0
             }
         }
 
-        private void ajustaDirecciones()
+        private void ajustaDireccionesAtributos()
         {
             if (this.atributos.Count > 0)
             {
@@ -202,6 +237,81 @@ namespace Manejador_De_Archivos_2._0
                 this.dirAtributos = -1;
             }
         }
+
+        #endregion
+
+        #region Registros
+
+
+        public void altaRegistro(string directorio, List<string> informacion)
+        {
+            if(this.existeClaveDeBusqueda() && this.existeIndicePrimario())
+            {
+                int indiceClaveBusqueda;
+                string archivoDat;
+                Registro registro;
+                archivoDat = directorio + "\\" + this.nombre + ".dat";
+                indiceClaveBusqueda = this.buscaIndiceClaveDeBusqueda();
+                registro = new Registro(-1, informacion[indiceClaveBusqueda], informacion);
+                this.registros.Add(registro);
+                this.ajustaDireccionesRegistros();
+                foreach (Registro registroAux in this.registros)
+                {
+                    this.grabaRegistro(registroAux,archivoDat);
+                }
+            }
+        }
+
+        private void ajustaDireccionesRegistros()
+        {
+            if (this.registros.Count > 0)
+            {
+                this.registros = this.registros.OrderBy(reg => reg.ClaveDeBusqueda).ToList();
+                for (int i = 0; i < this.registros.Count - 1; i++)
+                {
+                    this.registros[i].DirSig = this.registros[i + 1].DirAct;//Iguala la direccion siguiente a la direccion actual de la siguiente entidad en la lista
+                }
+                this.registros.Last().DirSig = -1;//Iguala a -1 la direccion siguiente del ultimo elemento de la lista
+                this.dirAtributos = this.registros.First().DirAct;//A la cabecera le asigna el valor de la primera entidad
+            }
+            else
+            {
+                this.dirAtributos = -1;
+            }
+        }
+
+        #endregion
+
+        #region Grabado
+
+
+        private void grabaRegistro(Registro registro, string directorio)
+        {
+            try
+            {
+                using (writer = new BinaryWriter(new FileStream(directorio, FileMode.Open)))//Abre el archivo con el BinaryWriter
+                {
+                    this.writer.Seek((int)registro.DirAct, SeekOrigin.Current);//Posiciona el grabado del archivo en la dirección actual
+                    for(int i = 0 ; i < this.atributos.Count ; i++)
+                    {
+                        if (this.atributos[i].Tipo.Equals('E'))
+                        {
+                            this.writer.Write(Int32.Parse(registro.Datos[i]));
+                        }
+                        else if (this.atributos[i].Tipo.Equals('C'))
+                        {
+                            this.writer.Write(registro.Datos[i]);
+                        }
+                    }
+                    this.writer.Write(registro.DirSig);
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
 
         #endregion
 

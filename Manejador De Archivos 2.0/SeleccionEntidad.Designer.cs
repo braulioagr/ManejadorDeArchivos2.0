@@ -1,6 +1,6 @@
 ﻿namespace Manejador_De_Archivos_2._0
 {
-    partial class EliminaEntidad
+    partial class SeleccionEntidad
     {
         /// <summary>
         /// Required designer variable.
@@ -71,7 +71,7 @@
             this.comboEntidades.Size = new System.Drawing.Size(259, 21);
             this.comboEntidades.TabIndex = 8;
             // 
-            // EliminaEntidad
+            // SeleccionEntidad
             // 
             this.AcceptButton = this.Aceptar;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -83,8 +83,8 @@
             this.Controls.Add(this.Aceptar);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboEntidades);
-            this.Name = "EliminaEntidad";
-            this.Text = "EliminaEntidad";
+            this.Name = "SeleccionEntidad";
+            this.Text = "Seleccion Entidad";
             this.Load += new System.EventHandler(this.EliminaEntidad_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -56,6 +56,12 @@
     <Compile Include="AltaEntidad.Designer.cs">
       <DependentUpon>AltaEntidad.cs</DependentUpon>
     </Compile>
+    <Compile Include="AltaRegistro.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AltaRegistro.Designer.cs">
+      <DependentUpon>AltaRegistro.cs</DependentUpon>
+    </Compile>
     <Compile Include="Archivo.cs" />
     <Compile Include="Atributo.cs" />
     <Compile Include="Constantes.cs" />
@@ -71,11 +77,11 @@
     <Compile Include="ConsultaEntidad.Designer.cs">
       <DependentUpon>ConsultaEntidad.cs</DependentUpon>
     </Compile>
-    <Compile Include="EliminaEntidad.cs">
+    <Compile Include="SeleccionEntidad.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EliminaEntidad.Designer.cs">
-      <DependentUpon>EliminaEntidad.cs</DependentUpon>
+    <Compile Include="SeleccionEntidad.Designer.cs">
+      <DependentUpon>SeleccionEntidad.cs</DependentUpon>
     </Compile>
     <Compile Include="EliminarAtributo.cs">
       <SubType>Form</SubType>
@@ -111,11 +117,15 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Registro.cs" />
     <EmbeddedResource Include="AltaAtributo.resx">
       <DependentUpon>AltaAtributo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AltaEntidad.resx">
       <DependentUpon>AltaEntidad.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AltaRegistro.resx">
+      <DependentUpon>AltaRegistro.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConsultaAtributo.resx">
       <DependentUpon>ConsultaAtributo.cs</DependentUpon>
@@ -123,8 +133,8 @@
     <EmbeddedResource Include="ConsultaEntidad.resx">
       <DependentUpon>ConsultaEntidad.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="EliminaEntidad.resx">
-      <DependentUpon>EliminaEntidad.cs</DependentUpon>
+    <EmbeddedResource Include="SeleccionEntidad.resx">
+      <DependentUpon>SeleccionEntidad.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EliminarAtributo.resx">
       <DependentUpon>EliminarAtributo.cs</DependentUpon>

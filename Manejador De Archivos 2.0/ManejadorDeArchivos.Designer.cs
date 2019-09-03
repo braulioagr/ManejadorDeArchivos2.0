@@ -35,7 +35,7 @@
             this.abrir = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.cerrar = new System.Windows.Forms.ToolStripButton();
-            this.tabControl = new System.Windows.Forms.TabControl();
+            this.tabRegistros = new System.Windows.Forms.TabControl();
             this.tabEntidades = new System.Windows.Forms.TabPage();
             this.label1 = new System.Windows.Forms.Label();
             this.dataGridEntidad = new System.Windows.Forms.DataGridView();
@@ -64,15 +64,26 @@
             this.modificarAtributo = new System.Windows.Forms.ToolStripMenuItem();
             this.consultaAtributo = new System.Windows.Forms.ToolStripMenuItem();
             this.eliminarAtributo = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.menuRegistros = new System.Windows.Forms.MenuStrip();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.altaRegistros = new System.Windows.Forms.ToolStripMenuItem();
+            this.modificarRegistros = new System.Windows.Forms.ToolStripMenuItem();
+            this.eliminarRegistros = new System.Windows.Forms.ToolStripMenuItem();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.toolBar.SuspendLayout();
-            this.tabControl.SuspendLayout();
+            this.tabRegistros.SuspendLayout();
             this.tabEntidades.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridEntidad)).BeginInit();
             this.menuEntidades.SuspendLayout();
             this.tabAtributos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridAtrib)).BeginInit();
             this.menuAtributos.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.menuRegistros.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // toolBar
@@ -134,15 +145,16 @@
             this.cerrar.Size = new System.Drawing.Size(34, 34);
             this.cerrar.Text = "Cerrar";
             // 
-            // tabControl
+            // tabRegistros
             // 
-            this.tabControl.Controls.Add(this.tabEntidades);
-            this.tabControl.Controls.Add(this.tabAtributos);
-            this.tabControl.Location = new System.Drawing.Point(0, 44);
-            this.tabControl.Name = "tabControl";
-            this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(818, 363);
-            this.tabControl.TabIndex = 1;
+            this.tabRegistros.Controls.Add(this.tabEntidades);
+            this.tabRegistros.Controls.Add(this.tabAtributos);
+            this.tabRegistros.Controls.Add(this.tabPage1);
+            this.tabRegistros.Location = new System.Drawing.Point(0, 44);
+            this.tabRegistros.Name = "tabRegistros";
+            this.tabRegistros.SelectedIndex = 0;
+            this.tabRegistros.Size = new System.Drawing.Size(818, 363);
+            this.tabRegistros.TabIndex = 1;
             // 
             // tabEntidades
             // 
@@ -295,7 +307,7 @@
             this.Longitud,
             this.DirIndice,
             this.DirSig});
-            this.dataGridAtrib.Location = new System.Drawing.Point(0, 75);
+            this.dataGridAtrib.Location = new System.Drawing.Point(0, 72);
             this.dataGridAtrib.MultiSelect = false;
             this.dataGridAtrib.Name = "dataGridAtrib";
             this.dataGridAtrib.RowHeadersVisible = false;
@@ -397,16 +409,90 @@
             this.eliminarAtributo.Size = new System.Drawing.Size(62, 20);
             this.eliminarAtributo.Text = "Eliminar";
             // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.label2);
+            this.tabPage1.Controls.Add(this.comboBox1);
+            this.tabPage1.Controls.Add(this.dataGridView1);
+            this.tabPage1.Controls.Add(this.menuRegistros);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(810, 337);
+            this.tabPage1.TabIndex = 2;
+            this.tabPage1.Text = "Registros";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // menuRegistros
+            // 
+            this.menuRegistros.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.altaRegistros,
+            this.modificarRegistros,
+            this.eliminarRegistros});
+            this.menuRegistros.Location = new System.Drawing.Point(3, 3);
+            this.menuRegistros.Name = "menuRegistros";
+            this.menuRegistros.Size = new System.Drawing.Size(804, 24);
+            this.menuRegistros.TabIndex = 0;
+            this.menuRegistros.Text = "menuStrip1";
+            this.menuRegistros.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.registros_ItemClicked);
+            // 
             // openFileDialog
             // 
             this.openFileDialog.FileName = "openFileDialog1";
+            // 
+            // altaRegistros
+            // 
+            this.altaRegistros.AccessibleName = "Alta";
+            this.altaRegistros.Name = "altaRegistros";
+            this.altaRegistros.Size = new System.Drawing.Size(40, 20);
+            this.altaRegistros.Text = "Alta";
+            // 
+            // modificarRegistros
+            // 
+            this.modificarRegistros.AccessibleName = "Modificar";
+            this.modificarRegistros.Name = "modificarRegistros";
+            this.modificarRegistros.Size = new System.Drawing.Size(70, 20);
+            this.modificarRegistros.Text = "Modificar";
+            // 
+            // eliminarRegistros
+            // 
+            this.eliminarRegistros.AccessibleName = "Eliminar";
+            this.eliminarRegistros.Name = "eliminarRegistros";
+            this.eliminarRegistros.Size = new System.Drawing.Size(62, 20);
+            this.eliminarRegistros.Text = "Eliminar";
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(0, 72);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(810, 265);
+            this.dataGridView1.TabIndex = 1;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(681, 45);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.TabIndex = 2;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(633, 48);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(43, 13);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Entidad";
             // 
             // ManejadorDeArchivos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(818, 409);
-            this.Controls.Add(this.tabControl);
+            this.Controls.Add(this.tabRegistros);
             this.Controls.Add(this.toolBar);
             this.MainMenuStrip = this.menuEntidades;
             this.Name = "ManejadorDeArchivos";
@@ -415,7 +501,7 @@
             this.Resize += new System.EventHandler(this.ManejadorDeArchivos_Resize);
             this.toolBar.ResumeLayout(false);
             this.toolBar.PerformLayout();
-            this.tabControl.ResumeLayout(false);
+            this.tabRegistros.ResumeLayout(false);
             this.tabEntidades.ResumeLayout(false);
             this.tabEntidades.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridEntidad)).EndInit();
@@ -426,6 +512,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridAtrib)).EndInit();
             this.menuAtributos.ResumeLayout(false);
             this.menuAtributos.PerformLayout();
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
+            this.menuRegistros.ResumeLayout(false);
+            this.menuRegistros.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -433,7 +524,7 @@
 
         #endregion
 
-        private System.Windows.Forms.TabControl tabControl;
+        private System.Windows.Forms.TabControl tabRegistros;
         private System.Windows.Forms.TabPage tabEntidades;
         private System.Windows.Forms.MenuStrip menuEntidades;
         private System.Windows.Forms.TabPage tabAtributos;
@@ -469,6 +560,14 @@
         private System.Windows.Forms.ToolStripMenuItem eliminarAtributo;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.MenuStrip menuRegistros;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.ToolStripMenuItem altaRegistros;
+        private System.Windows.Forms.ToolStripMenuItem modificarRegistros;
+        private System.Windows.Forms.ToolStripMenuItem eliminarRegistros;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
 

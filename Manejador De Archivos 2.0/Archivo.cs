@@ -180,11 +180,18 @@ namespace Manejador_De_Archivos_2._0
             ent = null;
             if (this.existeEntidad(entidad, ref ent))
             {
-                ent.altaAtributo(nombre, tipo, longitud, indice,dir);
-                this.grabaEntidad(ent);
-                foreach (Atributo atributo in ent.Atributos)
+                if (ent.DirRegistros == -1)
                 {
-                    this.grabaAtributo(atributo);
+                    ent.altaAtributo(nombre, tipo, longitud, indice, dir);
+                    this.grabaEntidad(ent);
+                    foreach (Atributo atributo in ent.Atributos)
+                    {
+                        this.grabaAtributo(atributo);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("A la entidad seleccionada ya no se pueden dar de alta Atributos","Error");
                 }
             }
             else
@@ -223,6 +230,15 @@ namespace Manejador_De_Archivos_2._0
             {
                 MessageBox.Show("El atributo pertenece a una entidad no se puede modificar", "Error");
             }
+        }
+        #endregion
+
+        #region Registros
+        public void altaRegistro(string nombre, string directorio, List<string> informacion)
+        {
+            Entidad entidad;
+            entidad = buscaEntidad(nombre);
+            entidad.altaRegistro(directorio,informacion);
         }
         #endregion
 
@@ -301,7 +317,6 @@ namespace Manejador_De_Archivos_2._0
         }
 
         #endregion
-
 
         #region Lectura de datos
 

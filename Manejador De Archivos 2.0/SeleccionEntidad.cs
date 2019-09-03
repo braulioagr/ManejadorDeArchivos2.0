@@ -10,13 +10,13 @@ using System.Windows.Forms;
 
 namespace Manejador_De_Archivos_2._0
 {
-    partial class EliminaEntidad : Form
+    partial class SeleccionEntidad : Form
     {
         #region Variables de Instancia
         List<string> entidades;
         #endregion
         #region Constructores
-        public EliminaEntidad(Archivo archivo)
+        public SeleccionEntidad(Archivo archivo)
         {
             entidades = new List<string>();
             foreach(Entidad entidad in archivo.Entidades)
