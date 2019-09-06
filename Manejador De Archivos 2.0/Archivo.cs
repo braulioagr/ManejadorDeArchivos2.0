@@ -239,6 +239,7 @@ namespace Manejador_De_Archivos_2._0
             Entidad entidad;
             entidad = buscaEntidad(nombre);
             entidad.altaRegistro(directorio,informacion);
+            this.grabaEntidad(entidad);
         }
         #endregion
 
@@ -330,12 +331,17 @@ namespace Manejador_De_Archivos_2._0
             {
                 this.leeEntidades();
                 this.leeAtributos();
+                foreach (Entidad entidad in this.entidades)
+                {
+                    entidad.leeRegistros(directorio);
+                }
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
             }
         }
+
 
         /**
          * Metodo que se encarga de leer las entidades guardadas
@@ -414,6 +420,7 @@ namespace Manejador_De_Archivos_2._0
         }
 
         #endregion
+        
         #endregion
     }
 }  

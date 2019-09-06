@@ -97,6 +97,7 @@ namespace Manejador_De_Archivos_2._0
         {
             if (!this.vacios())
             {
+                
                 try
                 {
                     int i = Int32.Parse(textBoxLong.Text);

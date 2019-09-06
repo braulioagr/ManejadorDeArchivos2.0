@@ -82,6 +82,7 @@ namespace Manejador_De_Archivos_2._0
                                 MessageBox.Show("Ya existe esa base de datos", "Error");
                             }
                         }
+                        nuevaBase.Dispose();
                     }
                     else
                     {
@@ -124,7 +125,7 @@ namespace Manejador_De_Archivos_2._0
                         nuevo.Enabled = true;//Habilita la opcion de crear un nuevo archivo
                         abrir.Enabled = true;//Habilita la opcion de abrir un nuevo archivo
                         cerrar.Enabled = false;//Deshabilita la opcion de cerrar el archivo
-                        this.borraDataGreed();
+                        this.borraTodo();
                     }
                 break;
                 default:
@@ -323,7 +324,7 @@ namespace Manejador_De_Archivos_2._0
                         if(seleccion.ShowDialog().Equals(DialogResult.OK))
                         {
                             AltaRegistro altaRegistro;
-                            altaRegistro = new AltaRegistro(this.archivo.buscaEntidad(seleccion.Entidad));
+                            altaRegistro = new AltaRegistro(this.archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(seleccion.Entidad, Constantes.tam)));
                             if (altaRegistro.ShowDialog().Equals(DialogResult.OK))
                             {
                                 this.archivo.altaRegistro(MetodosAuxiliares.ajustaCadena(seleccion.Entidad,Constantes.tam),
@@ -347,8 +348,9 @@ namespace Manejador_De_Archivos_2._0
             {
                 MessageBox.Show("Por favor abra una base de datos o cree", "Error");
             }
-            #endregion
+            
         }
+        #endregion
 
         #endregion
 
@@ -364,6 +366,42 @@ namespace Manejador_De_Archivos_2._0
             this.dataGridAtrib.Size = size;
         }
 
+        #endregion
+
+        #region ComboBox
+        private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Entidad entidad;
+            entidad = archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(comboBox1.Text,Constantes.tam));
+            dataGridRegistros.Columns.Clear();
+            dataGridRegistros.ColumnCount = 0;
+            dataGridRegistros.Rows.Clear();
+            dataGridRegistros.ColumnCount = entidad.Atributos.Count + 2;
+            dataGridRegistros.Columns[0].Name = "Dirección Actual";
+            dataGridRegistros.Columns[dataGridRegistros.ColumnCount - 1].Name = "Dirección Siguiente";
+            int i;
+            i = 1;
+            foreach (Atributo atributo in entidad.Atributos)
+            {
+                dataGridRegistros.Columns[i].Name = MetodosAuxiliares.truncaCadena(atributo.Nombre);
+                i++;
+            }
+            i = 0;
+            foreach (Registro registro in entidad.Registros)
+            {
+                int j = 1;
+                int k = 0;
+                dataGridRegistros.Rows.Add();
+                dataGridRegistros.Rows[i].Cells[0].Value = registro.DirAct;
+                dataGridRegistros.Rows[i].Cells[dataGridRegistros.ColumnCount - 1].Value = registro.DirSig;
+                foreach (Atributo atributo in entidad.Atributos)
+                {
+                    dataGridRegistros.Rows[i].Cells[j].Value = MetodosAuxiliares.truncaCadena(registro.Datos[k++]);
+                    j++;
+                }
+                i++;
+            }
+        }
         #endregion
 
         #endregion
@@ -411,26 +449,44 @@ namespace Manejador_De_Archivos_2._0
             }
         }
 
-        private void borraDataGreed()
+        private void borraTodo()
         {
             this.dataGridAtrib.Rows.Clear();
             this.dataGridEntidad.Rows.Clear();
             this.label1.Text = "Cabecera = ?";
-            /*this.dataGridRegistros.Rows.Clear();
-            this.comboEntidadRegistros.Items.Clear();*/
+            this.dataGridRegistros.Rows.Clear();
+            this.dataGridRegistros.ColumnCount = 0;
+            this.comboBox1.Items.Clear();
+            this.comboBox1.Text = "";
         }
 
         private void actualizaTodo()
         {
-            this.borraDataGreed();
+            this.borraTodo();
             this.actualizaDataGreedEntidad();
             this.actualizaDataGreedAtrib();
+            this.actualizaComboEntidadRegistros();
             this.label1.Text = "Cabecera = " + this.archivo.Cabecera.ToString();
-            //this.actualizaComboEntidadRegistros();
         }
 
         #endregion
-        
+
+        #region ComboBox
+        private void actualizaComboEntidadRegistros()
+        {
+            this.comboBox1.Items.Clear();
+            foreach (Entidad entidad in archivo.Entidades)
+            {
+                if (entidad.DirRegistros != -1)
+                {
+                    this.comboBox1.Items.Add(MetodosAuxiliares.truncaCadena(entidad.Nombre));
+                }
+            }
+        }
         #endregion
+
+        #endregion
+
+
     }
 }

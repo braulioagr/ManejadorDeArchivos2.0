@@ -11,17 +11,15 @@ namespace Manejador_De_Archivos_2._0
 
         #region Variables de Instancia
         private long dirAct;
-        private string claveDeBusqueda;
         private List<string> datos;
         private long dirSig;
         #endregion
 
         #region Constructores
-        public Registro(long dirAct, string claveDeBusqueda, List<string> datos)
+        public Registro(long dirAct,List<string> datos)
         {
             this.dirAct = dirAct;
             this.datos = datos;
-            this.claveDeBusqueda = claveDeBusqueda;
             this.dirSig = -1;
         }
         #endregion
@@ -32,11 +30,12 @@ namespace Manejador_De_Archivos_2._0
             get { return this.dirAct; }
         }
 
+        /*
         public string ClaveDeBusqueda
         {
             get { return this.claveDeBusqueda; }
         }
-
+        */
 
         public List<string> Datos
         {

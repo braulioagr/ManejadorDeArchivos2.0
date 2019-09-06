@@ -149,121 +149,76 @@
   <data name="cerrar.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        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
+        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
 </value>
   </data>
+  <metadata name="nombreEntidad.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="direccionEntidad.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="direccioDeDatos.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="DirAtrib.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="dirSiguiente.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <metadata name="menuEntidades.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>108, 17</value>
+  </metadata>
+  <metadata name="Entidad.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="Nombre.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="DirActual.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="Tipo.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="TipoDeIndice.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="Longitud.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="DirIndice.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="DirSig.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
   </metadata>
   <metadata name="menuAtributos.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>223, 17</value>
   </metadata>
   <metadata name="menuRegistros.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>489, 17</value>
-  </metadata>
-  <metadata name="nombreEntidad.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="direccionEntidad.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="direccioDeDatos.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="DirAtrib.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="dirSiguiente.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="nombreEntidad.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="direccionEntidad.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="direccioDeDatos.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="DirAtrib.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="dirSiguiente.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="menuEntidades.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>108, 17</value>
-  </metadata>
-  <metadata name="Entidad.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Nombre.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="DirActual.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Tipo.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TipoDeIndice.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Longitud.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="DirIndice.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="DirSig.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Entidad.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Nombre.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="DirActual.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Tipo.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="TipoDeIndice.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Longitud.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="DirIndice.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="DirSig.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="menuAtributos.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>223, 17</value>
   </metadata>
   <metadata name="openFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>356, 17</value>

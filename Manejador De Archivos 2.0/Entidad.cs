@@ -17,7 +17,7 @@ namespace Manejador_De_Archivos_2._0
         private long dirRegistros;//Direccion en el archivo de los registros
         private long dirSig;//Direccion en el archivo de la siguiente entidad
         private List<Atributo> atributos;
-        private List<Registro> registros;
+        private Dictionary<string,Registro> registros;
         private BinaryReader reader;//Objeto para leer el archivo
         private BinaryWriter writer;//Objeto para guardar el archivo
         #endregion
@@ -31,7 +31,7 @@ namespace Manejador_De_Archivos_2._0
             this.dirRegistros = dirRegistros;
             this.dirSig = dirSig;
             this.atributos = new List<Atributo>();
-            this.registros = new List<Registro>();
+            this.registros = new Dictionary<string,Registro>();
         }
         #endregion
 
@@ -61,6 +61,15 @@ namespace Manejador_De_Archivos_2._0
         public List<Atributo> Atributos
         {
             get { return this.atributos; }
+        }
+        public List<Registro> Registros
+        {
+            get { return this.registros.Values.ToList(); }
+        }
+
+        public List<string> ClavesDeBusqueda
+        {
+            get { return this.registros.Keys.ToList(); }
         }
         #endregion
 
@@ -248,17 +257,33 @@ namespace Manejador_De_Archivos_2._0
             if(this.existeClaveDeBusqueda() && this.existeIndicePrimario())
             {
                 int indiceClaveBusqueda;
+                long dir;
                 string archivoDat;
                 Registro registro;
-                archivoDat = directorio + "\\" + this.nombre + ".dat";
+                FileStream abierto;
+                archivoDat = directorio + "\\" + MetodosAuxiliares.truncaCadena(this.nombre) + ".dat";
                 indiceClaveBusqueda = this.buscaIndiceClaveDeBusqueda();
-                registro = new Registro(-1, informacion[indiceClaveBusqueda], informacion);
-                this.registros.Add(registro);
-                this.ajustaDireccionesRegistros();
-                foreach (Registro registroAux in this.registros)
+                abierto = new FileStream(archivoDat, FileMode.Append);//abre el archivo en un file stream
+                dir = (long)abierto.Seek(0, SeekOrigin.End);//Calcula la direccion final del archivo y lo mete en un long
+                abierto.Close();//Cierra el file Strea
+                registro = new Registro(dir, informacion);
+                this.registros.Add(informacion[indiceClaveBusqueda],registro);
+                this.ajustaDireccionesRegistros();                
+                foreach (Registro registroAux in this.registros.Values)
                 {
                     this.grabaRegistro(registroAux,archivoDat);
                 }
+            }
+        }
+
+        public void eliminarRegistro(string directorio, string claveDeBusqueda)
+        {
+            directorio += "\\" + MetodosAuxiliares.truncaCadena(this.nombre) + ".dat";
+            this.registros.Remove(claveDeBusqueda);
+            this.ajustaDireccionesRegistros();
+            foreach (Registro registroAux in this.registros.Values)
+            {
+                this.grabaRegistro(registroAux, directorio);
             }
         }
 
@@ -266,23 +291,23 @@ namespace Manejador_De_Archivos_2._0
         {
             if (this.registros.Count > 0)
             {
-                this.registros = this.registros.OrderBy(reg => reg.ClaveDeBusqueda).ToList();
+                this.registros = this.registros.OrderBy(registro => registro.Key).ToDictionary(registro => registro.Key , registro => registro.Value);
                 for (int i = 0; i < this.registros.Count - 1; i++)
                 {
-                    this.registros[i].DirSig = this.registros[i + 1].DirAct;//Iguala la direccion siguiente a la direccion actual de la siguiente entidad en la lista
+                    this.registros.Values.ElementAt(i).DirSig = this.registros.Values.ElementAt(i + 1).DirAct;//Iguala la direccion siguiente a la direccion actual de la siguiente entidad en la lista
                 }
-                this.registros.Last().DirSig = -1;//Iguala a -1 la direccion siguiente del ultimo elemento de la lista
-                this.dirAtributos = this.registros.First().DirAct;//A la cabecera le asigna el valor de la primera entidad
+                this.registros.Last().Value.DirSig = -1;//Iguala a -1 la direccion siguiente del ultimo elemento de la lista
+                this.dirRegistros = this.registros.First().Value.DirAct;//A la cabecera le asigna el valor de la primera entidad
             }
             else
             {
-                this.dirAtributos = -1;
+                this.dirRegistros = -1;
             }
         }
 
         #endregion
 
-        #region Grabado
+        #region Grabado y Lectura de Datos
 
 
         private void grabaRegistro(Registro registro, string directorio)
@@ -304,6 +329,47 @@ namespace Manejador_De_Archivos_2._0
                         }
                     }
                     this.writer.Write(registro.DirSig);
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+
+        public void leeRegistros(string directorio)
+        {
+            try
+            {
+                Registro registro;
+                List<string> informacion = new List<string>();
+                int i;
+                long dirSig;
+                directorio += "\\" + MetodosAuxiliares.truncaCadena(this.nombre) + ".dat";
+                i = 0;
+                dirSig = this.dirRegistros;
+                while (dirSig != -1)
+                {
+                    using (reader = new BinaryReader(new FileStream(directorio, FileMode.Open)))//Abre el archivo con el BinaryWriter
+                    {
+                        this.reader.ReadBytes((int)dirSig);//Posiciona el grabado del archivo en la dirección actual
+                        foreach (Atributo atributo in this.Atributos)
+                        {
+                            if (atributo.Tipo.Equals('E'))
+                            {
+                                informacion.Add(this.reader.ReadInt32().ToString());
+                            }
+                            else if (atributo.Tipo.Equals('C'))
+                            {
+                                informacion.Add(this.reader.ReadString());
+                            }
+                            i++;
+                        }
+                        registro = new Registro(dirSig, informacion);
+                        this.registros.Add(informacion[this.buscaIndiceClaveDeBusqueda()],registro);
+                        dirSig = registro.DirSig = this.reader.ReadInt64();
+                    }
                 }
             }
             catch (Exception e)
