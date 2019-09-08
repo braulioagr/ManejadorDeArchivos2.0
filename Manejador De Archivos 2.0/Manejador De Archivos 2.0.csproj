@@ -77,6 +77,12 @@
     <Compile Include="ConsultaEntidad.Designer.cs">
       <DependentUpon>ConsultaEntidad.cs</DependentUpon>
     </Compile>
+    <Compile Include="ModificaRegistro.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ModificaRegistro.Designer.cs">
+      <DependentUpon>ModificaRegistro.cs</DependentUpon>
+    </Compile>
     <Compile Include="SeleccionRegistro.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -138,6 +144,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConsultaEntidad.resx">
       <DependentUpon>ConsultaEntidad.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModificaRegistro.resx">
+      <DependentUpon>ModificaRegistro.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SeleccionRegistro.resx">
       <DependentUpon>SeleccionRegistro.cs</DependentUpon>

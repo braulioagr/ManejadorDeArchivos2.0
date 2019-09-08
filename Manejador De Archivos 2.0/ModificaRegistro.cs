@@ -10,32 +10,68 @@ using System.Windows.Forms;
 
 namespace Manejador_De_Archivos_2._0
 {
-    partial class AltaRegistro : Form
+    partial class ModificaRegistro : Form
     {
-
-        #region Variables de Instancia
-
-        private Stack<string> atributos;
+        #region variables de Instancia
         private Entidad entidad;
+        private Registro registro;
         private int indice;
+        private Stack<string> atributos;
         #endregion
 
         #region Constructores
-
-        public AltaRegistro(Entidad entidad)
+        public ModificaRegistro(Entidad entidad, string claveDeBusqueda)
         {
             this.entidad = entidad;
+            this.registro = entidad.buscaRegistro(claveDeBusqueda);
             this.atributos = new Stack<string>();
             this.indice = 0;
             InitializeComponent();
         }
-        private void AltaRegistro_Load(object sender, EventArgs e)
+        
+        private void ModificaRegistro_Load(object sender, EventArgs e)
         {
             actualizaLabel();
             Anterior.Enabled = false;
         }
-
         #endregion
+
+        #region Metodos
+        private void actualizaLabel()
+        {
+            this.textBoxDato.Enabled = true;
+            if (indice == 1)
+            {
+                Anterior.Enabled = true;
+            }
+            if (!Siguiente.Enabled)
+            {
+                Siguiente.Enabled = true;
+            }
+            if (Aceptar.Visible)
+            {
+                Aceptar.Visible = false;
+            }
+            if (indice == 0)
+            {
+                Anterior.Enabled = false;
+            }
+            if (indice == entidad.Atributos.Count - 1)
+            {
+                Siguiente.Enabled = false;
+                Aceptar.Visible = true;
+            }
+            textBoxAtributo.Text = MetodosAuxiliares.truncaCadena(entidad.Atributos[indice].Nombre);
+            textBoxTipo.Text = entidad.Atributos[indice].Tipo.ToString();
+            textBoxIndice.Text = MetodosAuxiliares.traduceIndice(entidad.Atributos[indice].Indice);
+            this.textBoxDato.Text = MetodosAuxiliares.truncaCadena(this.registro.Datos[indice]);
+            if (entidad.Atributos[indice].Indice == 1)
+            {
+                this.textBoxDato.Enabled = false;
+            }
+        }
+        #endregion
+
 
         #region Eventos
 
@@ -80,7 +116,7 @@ namespace Manejador_De_Archivos_2._0
                     }
                     indice++;
                     actualizaLabel();
-                    textBoxDato.Text = "";
+                    //textBoxDato.Text = "";
                 }
                 else
                 {
@@ -94,7 +130,7 @@ namespace Manejador_De_Archivos_2._0
             }
         }
 
-        
+
         private void Anterior_Click(object sender, EventArgs e)
         {
             indice--;
@@ -103,54 +139,6 @@ namespace Manejador_De_Archivos_2._0
         }
 
         #endregion
-
-        #endregion
-
-        #region Metodos
-        private void actualizaLabel()
-        {
-            if (indice == 1)
-            {
-                Anterior.Enabled = true;
-            }
-            if (!Siguiente.Enabled)
-            {
-                Siguiente.Enabled = true;
-            }
-            if (Aceptar.Visible)
-            {
-                Aceptar.Visible = false;
-            }
-            if (indice == 0)
-            {
-                Anterior.Enabled = false;
-            }
-            if (indice == entidad.Atributos.Count - 1)
-            {
-                Siguiente.Enabled = false;
-                Aceptar.Visible = true;
-            }
-            textBoxAtributo.Text = MetodosAuxiliares.truncaCadena(entidad.Atributos[indice].Nombre);
-            textBoxTipo.Text = entidad.Atributos[indice].Tipo.ToString();
-            textBoxIndice.Text = MetodosAuxiliares.traduceIndice(entidad.Atributos[indice].Indice);
-        }
-        #endregion
-
-        #region Gets & Sets
-
-        public List<string> Informacion
-        {
-            get
-            {
-                List<string> registro = new List<string>();
-                foreach (string reg in this.atributos)
-                {
-                    registro.Add(reg);
-                }
-                registro.Reverse();
-                return registro;
-            }
-        }
 
         #endregion
 

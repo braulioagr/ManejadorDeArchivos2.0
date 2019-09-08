@@ -332,6 +332,19 @@ namespace Manejador_De_Archivos_2._0
                         seleccionEntidad.Dispose();
                         break;
                     case "Modificar":
+                        seleccionEntidad = new SeleccionEntidad(this.archivo);
+                        if(seleccionEntidad.ShowDialog().Equals(DialogResult.OK))
+                        {
+                            Entidad entidad;
+                            entidad = this.archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(seleccionEntidad.Entidad, Constantes.tam));
+                            seleccionRegistro = new SeleccionRegistro(entidad);
+                            if (seleccionRegistro.ShowDialog().Equals(DialogResult.OK))
+                            {
+                                ModificaRegistro modificaRegistro;
+                                modificaRegistro = new ModificaRegistro(entidad, seleccionRegistro.ClaveDeBusqueda);
+                                modificaRegistro.ShowDialog();
+                            }
+                        }
                     break;
                     case "Eliminar":
                         seleccionEntidad = new SeleccionEntidad(this.archivo);

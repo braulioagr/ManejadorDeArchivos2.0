@@ -92,6 +92,15 @@ namespace Manejador_De_Archivos_2._0
             return atributo;
         }
 
+        public Registro buscaRegistro(string claveDeBusqueda)
+        {
+            if (this.atributos[this.buscaIndiceClaveDeBusqueda()].Tipo.Equals('C'))
+            {
+                claveDeBusqueda = MetodosAuxiliares.ajustaCadena(claveDeBusqueda, this.atributos[this.buscaIndiceClaveDeBusqueda()].Longitud);
+            }
+            return this.registros[claveDeBusqueda];
+        }
+
         public bool existeAtributo(string nombre)
         {
             bool band;
