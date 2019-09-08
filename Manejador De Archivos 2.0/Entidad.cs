@@ -268,17 +268,22 @@ namespace Manejador_De_Archivos_2._0
                 abierto.Close();//Cierra el file Strea
                 registro = new Registro(dir, informacion);
                 this.registros.Add(informacion[indiceClaveBusqueda],registro);
-                this.ajustaDireccionesRegistros();                
+                this.ajustaDireccionesRegistros();
                 foreach (Registro registroAux in this.registros.Values)
                 {
-                    this.grabaRegistro(registroAux,archivoDat);
+                    this.grabaRegistro(registroAux, archivoDat);
                 }
+                
             }
         }
 
         public void eliminarRegistro(string directorio, string claveDeBusqueda)
         {
             directorio += "\\" + MetodosAuxiliares.truncaCadena(this.nombre) + ".dat";
+            if (this.atributos[this.buscaIndiceClaveDeBusqueda()].Tipo.Equals('C'))
+            {
+                claveDeBusqueda = MetodosAuxiliares.ajustaCadena(claveDeBusqueda, this.atributos[this.buscaIndiceClaveDeBusqueda()].Longitud);
+            };
             this.registros.Remove(claveDeBusqueda);
             this.ajustaDireccionesRegistros();
             foreach (Registro registroAux in this.registros.Values)
@@ -368,6 +373,7 @@ namespace Manejador_De_Archivos_2._0
                         }
                         registro = new Registro(dirSig, informacion);
                         this.registros.Add(informacion[this.buscaIndiceClaveDeBusqueda()],registro);
+                        informacion = new List<string>();
                         dirSig = registro.DirSig = this.reader.ReadInt64();
                     }
                 }

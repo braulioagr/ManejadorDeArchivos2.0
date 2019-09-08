@@ -1,21 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Manejador_De_Archivos_2._0
 {
     public partial class ManejadorDeArchivos : Form
     {
+
         #region Variables de Instancia
         private Archivo archivo;
-        string directorio;
+        private string directorio;
         #endregion
 
         #region Constructores
@@ -47,11 +42,12 @@ namespace Manejador_De_Archivos_2._0
             }
         }
 
-        #endregion
+        #endregion 
 
         #region Eventos
 
         #region Menu
+
         private void tool_Clicked(object sender, ToolStripItemClickedEventArgs e)
         {
             switch (e.ClickedItem.AccessibleName)
@@ -64,7 +60,7 @@ namespace Manejador_De_Archivos_2._0
                         string nombre;
                         FileStream file;
                         nuevaBase = new NuevaBase();
-                        if(nuevaBase.ShowDialog().Equals(DialogResult.OK))
+                        if (nuevaBase.ShowDialog().Equals(DialogResult.OK))
                         {
                             this.directorio += @"..\" + nuevaBase.Nombre;//Crea la dirección del archivo
                             if (!Directory.Exists(this.directorio))//Verifica si la carpeta existe
@@ -89,7 +85,7 @@ namespace Manejador_De_Archivos_2._0
                         MessageBox.Show("Por favor cierre primero la base de datos", "Error");
                     }
                     #endregion
-                break;
+                    break;
                 case "Abrir":
                     #region Abrir
                     try
@@ -106,7 +102,7 @@ namespace Manejador_De_Archivos_2._0
                             abrir.Enabled = false;//Des habilita la opcion de abrir un nuevo archivo
                             cerrar.Enabled = true;//Habilita la opcion de cerrar el archivo
                             archivo = new Archivo(openFileDialog.FileName);//Crea el objeto archivo
-                            this.directorio += "\\" + openFileDialog.SafeFileName.Substring(0,openFileDialog.SafeFileName.Length-3);
+                            this.directorio += "\\" + openFileDialog.SafeFileName.Substring(0, openFileDialog.SafeFileName.Length - 3);
                             this.archivo.leeArchivo(this.directorio);//Lee el archivo y construye la lista de listas
                             this.actualizaTodo();//Manda actualizar los combo box y los data grid
                         }
@@ -116,9 +112,9 @@ namespace Manejador_De_Archivos_2._0
                         MessageBox.Show("Archivo No Entcontrado");
                     }
                     #endregion
-                break;
+                    break;
                 case "Cerrar":
-                    if(this.archivo != null)
+                    if (this.archivo != null)
                     {
                         this.directorio = Environment.CurrentDirectory + @"..\BasesDeDatos";
                         this.archivo = null;
@@ -127,13 +123,13 @@ namespace Manejador_De_Archivos_2._0
                         cerrar.Enabled = false;//Deshabilita la opcion de cerrar el archivo
                         this.borraTodo();
                     }
-                break;
+                    break;
                 default:
-                    MessageBox.Show("Opción incorrecta o no implementada","Atención");
-                break;
+                    MessageBox.Show("Opción incorrecta o no implementada", "Atención");
+                    break;
             }
         }
-        
+
         private void entidades_Clicked(object sender, ToolStripItemClickedEventArgs e)
         {
             #region Entidades
@@ -169,7 +165,7 @@ namespace Manejador_De_Archivos_2._0
                         }
                         altaEntidad.Dispose();//Eliminamos el objeto
                         #endregion
-                    break;
+                        break;
                     case "Modificar":
                         #region Modificar
                         ModificaEntidad modificaEntidad;
@@ -178,7 +174,7 @@ namespace Manejador_De_Archivos_2._0
                         {
                             string original;
                             string nuevo;
-                            archivo.modificaEntidad(MetodosAuxiliares.ajustaCadena(modificaEntidad.Entidad,Constantes.tam),
+                            archivo.modificaEntidad(MetodosAuxiliares.ajustaCadena(modificaEntidad.Entidad, Constantes.tam),
                                                     MetodosAuxiliares.ajustaCadena(modificaEntidad.Cambio, Constantes.tam));
                             original = this.directorio + "\\" + modificaEntidad.Entidad + ".dat";
                             nuevo = this.directorio + "\\" + modificaEntidad.Cambio + ".dat";
@@ -190,7 +186,7 @@ namespace Manejador_De_Archivos_2._0
                         }
                         modificaEntidad.Dispose();
                         #endregion
-                    break;
+                        break;
                     case "Consulta":
                         #region Consulta
                         ConsultaEntidad consultaEntidad;
@@ -198,7 +194,7 @@ namespace Manejador_De_Archivos_2._0
                         consultaEntidad.ShowDialog();
                         consultaEntidad.Dispose();
                         #endregion
-                    break;
+                        break;
                     case "Eliminar":
                         #region Eliminar
                         SeleccionEntidad eliminaEntidad;
@@ -214,10 +210,10 @@ namespace Manejador_De_Archivos_2._0
                         }
                         eliminaEntidad.Dispose();
                         #endregion
-                    break;
+                        break;
                     default:
                         MessageBox.Show("Opción incorrecta o no implementada", "Atención");
-                    break;
+                        break;
                 }
             }
             else
@@ -255,7 +251,7 @@ namespace Manejador_De_Archivos_2._0
                             }
                             altaAtributo.Dispose();
                             #endregion
-                        break;
+                            break;
                         case "Modificar":
                             #region Modificar
                             ModificaAtributo modificaAtributo;
@@ -270,7 +266,7 @@ namespace Manejador_De_Archivos_2._0
                             }
                             modificaAtributo.Dispose();
                             #endregion
-                        break;
+                            break;
                         case "Consulta":
                             #region Consulta
                             ConsultaAtributo consultaAtributo;
@@ -278,20 +274,20 @@ namespace Manejador_De_Archivos_2._0
                             consultaAtributo.ShowDialog();
                             consultaAtributo.Dispose();
                             #endregion
-                        break;
+                            break;
                         case "Eliminar":
                             #region Eliminar
                             EliminarAtributo eliminarAtributo;
                             eliminarAtributo = new EliminarAtributo(this.archivo);
                             if (eliminarAtributo.ShowDialog().Equals(DialogResult.OK))
                             {
-                                this.archivo.eliminaAtributo(MetodosAuxiliares.ajustaCadena(eliminarAtributo.Entidad,Constantes.tam),
+                                this.archivo.eliminaAtributo(MetodosAuxiliares.ajustaCadena(eliminarAtributo.Entidad, Constantes.tam),
                                                              MetodosAuxiliares.ajustaCadena(eliminarAtributo.Atributo, Constantes.tam));
                                 this.actualizaTodo();
                             }
                             eliminarAtributo.Dispose();
                             #endregion
-                        break;
+                            break;
                         default:
                             MessageBox.Show("Opción incorrecta o no implementada", "Atención");
                             break;
@@ -310,46 +306,59 @@ namespace Manejador_De_Archivos_2._0
             #endregion
         }
 
-
         private void registros_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             #region Registros
             if (this.archivo != null)
             {
+                SeleccionEntidad seleccionEntidad;
+                SeleccionRegistro seleccionRegistro;
                 switch (e.ClickedItem.AccessibleName)
                 {
                     case "Alta":
-                        SeleccionEntidad seleccion;
-                        seleccion = new SeleccionEntidad(this.archivo);
-                        if(seleccion.ShowDialog().Equals(DialogResult.OK))
+                        seleccionEntidad = new SeleccionEntidad(this.archivo);
+                        if (seleccionEntidad.ShowDialog().Equals(DialogResult.OK))
                         {
                             AltaRegistro altaRegistro;
-                            altaRegistro = new AltaRegistro(this.archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(seleccion.Entidad, Constantes.tam)));
+                            altaRegistro = new AltaRegistro(this.archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(seleccionEntidad.Entidad, Constantes.tam)));
                             if (altaRegistro.ShowDialog().Equals(DialogResult.OK))
                             {
-                                this.archivo.altaRegistro(MetodosAuxiliares.ajustaCadena(seleccion.Entidad,Constantes.tam),
-                                                         this.directorio,altaRegistro.Informacion);
+                                this.archivo.altaRegistro(MetodosAuxiliares.ajustaCadena(seleccionEntidad.Entidad, Constantes.tam),
+                                                         this.directorio, altaRegistro.Informacion);
                                 this.actualizaTodo();
                             }
                             altaRegistro.Dispose();
                         }
-                        seleccion.Dispose();
-                    break;
+                        seleccionEntidad.Dispose();
+                        break;
                     case "Modificar":
                     break;
                     case "Eliminar":
+                        seleccionEntidad = new SeleccionEntidad(this.archivo);
+                        if (seleccionEntidad.ShowDialog().Equals(DialogResult.OK))
+                        {
+                            seleccionRegistro = new SeleccionRegistro(this.archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(seleccionEntidad.Entidad, Constantes.tam)));
+                            if (seleccionRegistro.ShowDialog().Equals(DialogResult.OK))
+                            {
+                                this.archivo.eliminaRegistro(MetodosAuxiliares.ajustaCadena(seleccionEntidad.Entidad,Constantes.tam),
+                                                             seleccionRegistro.ClaveDeBusqueda, this.directorio);
+                                this.actualizaTodo();
+                            }
+                        }
+                        seleccionEntidad.Dispose();
                     break;
                     default:
                         MessageBox.Show("Opción incorrecta o no implementada", "Atención");
-                    break;
+                        break;
                 }
             }
             else
             {
                 MessageBox.Show("Por favor abra una base de datos o cree", "Error");
             }
-            
+
         }
+        
         #endregion
 
         #endregion
@@ -372,7 +381,7 @@ namespace Manejador_De_Archivos_2._0
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             Entidad entidad;
-            entidad = archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(comboBox1.Text,Constantes.tam));
+            entidad = archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(comboBox1.Text, Constantes.tam));
             dataGridRegistros.Columns.Clear();
             dataGridRegistros.ColumnCount = 0;
             dataGridRegistros.Rows.Clear();
@@ -431,7 +440,7 @@ namespace Manejador_De_Archivos_2._0
             dataGridAtrib.Rows.Clear();
             foreach (Entidad entidad in archivo.Entidades)
             {
-                foreach(Atributo atributo in entidad.Atributos)
+                foreach (Atributo atributo in entidad.Atributos)
                 {
                     dataGridAtrib.Rows.Add(MetodosAuxiliares.truncaCadena(entidad.Nombre),
                                            MetodosAuxiliares.truncaCadena(atributo.Nombre),

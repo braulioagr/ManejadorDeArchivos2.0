@@ -241,6 +241,13 @@ namespace Manejador_De_Archivos_2._0
             entidad.altaRegistro(directorio,informacion);
             this.grabaEntidad(entidad);
         }
+        public void eliminaRegistro(string nombreEntidad, string claveDeBusqueda, string directorio)
+        {
+            Entidad entidad;
+            entidad = this.buscaEntidad(nombreEntidad);
+            entidad.eliminarRegistro(directorio, claveDeBusqueda);
+            this.grabaEntidad(entidad);
+        }
         #endregion
 
         #region Grabado de datos
@@ -419,8 +426,13 @@ namespace Manejador_De_Archivos_2._0
             }
         }
 
+        internal void eliminaRegistro(string v1, string v2)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
-        
+
         #endregion
     }
 }  

@@ -1,6 +1,6 @@
 ﻿namespace Manejador_De_Archivos_2._0
 {
-    partial class SeleccionEntidad
+    partial class SeleccionRegistro
     {
         /// <summary>
         /// Required designer variable.
@@ -37,42 +37,41 @@
             // Cancelar
             // 
             this.Cancelar.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancelar.Location = new System.Drawing.Point(12, 58);
+            this.Cancelar.Location = new System.Drawing.Point(12, 56);
             this.Cancelar.Name = "Cancelar";
             this.Cancelar.Size = new System.Drawing.Size(75, 23);
-            this.Cancelar.TabIndex = 11;
+            this.Cancelar.TabIndex = 15;
             this.Cancelar.Text = "Cancelar";
             this.Cancelar.UseVisualStyleBackColor = true;
             // 
             // Aceptar
             // 
             this.Aceptar.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.Aceptar.Location = new System.Drawing.Point(197, 58);
+            this.Aceptar.Location = new System.Drawing.Point(197, 56);
             this.Aceptar.Name = "Aceptar";
             this.Aceptar.Size = new System.Drawing.Size(75, 23);
-            this.Aceptar.TabIndex = 10;
+            this.Aceptar.TabIndex = 14;
             this.Aceptar.Text = "Aceptar";
             this.Aceptar.UseVisualStyleBackColor = true;
-            this.Aceptar.Click += new System.EventHandler(this.Aceptar_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 10);
+            this.label1.Location = new System.Drawing.Point(13, 8);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(43, 13);
-            this.label1.TabIndex = 9;
+            this.label1.TabIndex = 13;
             this.label1.Text = "Entidad";
             // 
             // comboEntidades
             // 
             this.comboEntidades.FormattingEnabled = true;
-            this.comboEntidades.Location = new System.Drawing.Point(13, 29);
+            this.comboEntidades.Location = new System.Drawing.Point(13, 27);
             this.comboEntidades.Name = "comboEntidades";
             this.comboEntidades.Size = new System.Drawing.Size(259, 21);
-            this.comboEntidades.TabIndex = 8;
+            this.comboEntidades.TabIndex = 12;
             // 
-            // SeleccionEntidad
+            // SeleccionRegistro
             // 
             this.AcceptButton = this.Aceptar;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -84,9 +83,9 @@
             this.Controls.Add(this.Aceptar);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboEntidades);
-            this.Name = "SeleccionEntidad";
-            this.Text = "Seleccion Entidad";
-            this.Load += new System.EventHandler(this.EliminaEntidad_Load);
+            this.Name = "SeleccionRegistro";
+            this.Text = "SeleccionaClaveDeBusqueda";
+            this.Load += new System.EventHandler(this.SeleccionRegistro_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

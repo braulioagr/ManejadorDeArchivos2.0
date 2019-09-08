@@ -42,5 +42,10 @@ namespace Manejador_De_Archivos_2._0
             get { return this.comboEntidades.Text; }
         }
         #endregion
+
+        private void Aceptar_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
