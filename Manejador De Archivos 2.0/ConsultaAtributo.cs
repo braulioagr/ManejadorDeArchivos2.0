@@ -76,6 +76,8 @@ namespace Manejador_De_Archivos_2._0
                 this.textBoxLong.Text = atributo.Longitud.ToString();
                 this.textBoxIndicie.Text = MetodosAuxiliares.traduceIndice(atributo.Indice);
                 this.textBoxDir.Text = atributo.DirActual.ToString();
+                this.textBox1.Text = atributo.DirIndice.ToString();
+                this.textBox2.Text = atributo.DirSig.ToString();
             }
             else
             {

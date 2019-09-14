@@ -144,24 +144,17 @@ namespace Manejador_De_Archivos_2._0
                         {
                             string nombre;
                             nombre = MetodosAuxiliares.ajustaCadena(altaEntidad.Nombre, Constantes.tam);
-                            if (!archivo.existeEntidad(nombre))//Verifica que la entidad no exista en el archivo
-                            {
-                                long dir;
-                                FileStream abierto;
-                                abierto = new FileStream(archivo.Nombre, FileMode.Append);//abre el archivo en un file stream
-                                dir = (long)abierto.Seek(0, SeekOrigin.End);//Calcula la direccion final del archivo y lo mete en un long
-                                abierto.Close();//Cierra el file Stream
-                                archivo.altaEntidad(nombre, dir, -1, -1, -1);//Da de alta la entidad
-                                abierto = new FileStream(this.directorio + "\\" + altaEntidad.Nombre + ".dat", FileMode.Create);//Crea el archivo .dat de la entidad
-                                abierto.Close();
-                                abierto = new FileStream(this.directorio + "\\" + altaEntidad.Nombre + ".idx", FileMode.Create);//Crea el archivo .idx de la entidad
-                                abierto.Close();
-                                this.actualizaTodo();//Actualiza todos los Data Grid
-                            }
-                            else
-                            {
-                                MessageBox.Show("Esa entidad esta dada de alta", "Invalido");//Arroja un mensaje de error si la entidad existe
-                            }
+                            long dir;
+                            FileStream abierto;
+                            abierto = new FileStream(archivo.Nombre, FileMode.Append);//abre el archivo en un file stream
+                            dir = (long)abierto.Seek(0, SeekOrigin.End);//Calcula la direccion final del archivo y lo mete en un long
+                            abierto.Close();//Cierra el file Stream
+                            archivo.altaEntidad(nombre, dir, -1, -1, -1);//Da de alta la entidad
+                            abierto = new FileStream(this.directorio + "\\" + altaEntidad.Nombre + ".dat", FileMode.Create);//Crea el archivo .dat de la entidad
+                            abierto.Close();
+                            abierto = new FileStream(this.directorio + "\\" + altaEntidad.Nombre + ".idx", FileMode.Create);//Crea el archivo .idx de la entidad
+                            abierto.Close();
+                            this.actualizaTodo();//Actualiza todos los Data Grid
                         }
                         altaEntidad.Dispose();//Eliminamos el objeto
                         #endregion
@@ -246,7 +239,7 @@ namespace Manejador_De_Archivos_2._0
                                 abierto.Close();//Cierra el file Stream
                                 archivo.altaAtributo(MetodosAuxiliares.ajustaCadena(altaAtributo.Entidad, Constantes.tam),
                                                      MetodosAuxiliares.ajustaCadena(altaAtributo.Nombre, Constantes.tam),
-                                                     altaAtributo.Tipo, altaAtributo.Longitud, altaAtributo.Indice, dir);
+                                                     altaAtributo.Tipo, altaAtributo.Longitud, altaAtributo.Indice, altaAtributo.DirIndice,  dir);
                                 this.actualizaTodo();
                             }
                             altaAtributo.Dispose();
@@ -261,7 +254,7 @@ namespace Manejador_De_Archivos_2._0
                                 archivo.modificaAtributo(MetodosAuxiliares.ajustaCadena(modificaAtributo.Entidad, Constantes.tam),
                                                          MetodosAuxiliares.ajustaCadena(modificaAtributo.Atributo, Constantes.tam),
                                                          MetodosAuxiliares.ajustaCadena(modificaAtributo.Nombre, Constantes.tam),
-                                                         modificaAtributo.Tipo, modificaAtributo.Longitud, modificaAtributo.Indice);
+                                                         modificaAtributo.Tipo, modificaAtributo.Longitud, modificaAtributo.Indice,modificaAtributo.DirIndice);
                                 this.actualizaTodo();
                             }
                             modificaAtributo.Dispose();

@@ -62,12 +62,13 @@ namespace Manejador_De_Archivos_2._0
         }
 
         public bool existeEntidad(string nombre)
-        {
+       {
             bool band;
             band = false;
             foreach(Entidad entidad in this.entidades)
+
             {
-                if (entidad.Nombre.Equals(nombre))
+                if (entidad.Nombre==nombre)
                 {
                     band = true;
                     break;
@@ -98,26 +99,40 @@ namespace Manejador_De_Archivos_2._0
 
         public void altaEntidad(string nombre, long dirActual, long dirAtributos, long dirRegistros, long dirSig)
         {
-            Entidad entidad;
-            entidad = new Entidad(nombre, dirActual, dirAtributos, dirRegistros, dirSig);
-            this.entidades.Add(entidad);
-            this.ajustaDirecciones();
+            if (!this.existeEntidad(nombre))
+            {
+                Entidad entidad;
+                entidad = new Entidad(nombre, dirActual, dirAtributos, dirRegistros, dirSig);
+                this.entidades.Add(entidad);
+                this.ajustaDirecciones();
+            }
+            else
+            {
+                MessageBox.Show("Esa entidad ya existe", "Error");
+            }
         }
 
         public void modificaEntidad(string nombre, string cambio)
         {
             if (this.existeEntidad(nombre))
             {
-                Entidad destino;
-                destino = this.buscaEntidad(nombre);
-                if (destino.DirRegistros == -1)
+                if (!this.existeEntidad(cambio))
                 {
-                    destino.Nombre = cambio;
-                    this.ajustaDirecciones();
+                    Entidad destino;
+                    destino = this.buscaEntidad(nombre);
+                    if (destino.DirRegistros == -1)
+                    {
+                        destino.Nombre = cambio;
+                        this.ajustaDirecciones();
+                    }
+                    else
+                    {
+                        MessageBox.Show("La entidad seleccionada no se puede modificar", "Error");
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("La entidad seleccionada no se puede modificar", "Error");
+                    MessageBox.Show("La entidad ya existe", "Error");
                 }
             }
             else
@@ -174,7 +189,7 @@ namespace Manejador_De_Archivos_2._0
 
         #region Atributos
 
-        public void altaAtributo(string entidad, string nombre, char tipo, int longitud, int indice, long dir)
+        public void altaAtributo(string entidad, string nombre, char tipo, int longitud, int indice,long dirIndice, long dir)
         {            
             Entidad ent;
             ent = null;
@@ -182,7 +197,7 @@ namespace Manejador_De_Archivos_2._0
             {
                 if (ent.DirRegistros == -1)
                 {
-                    ent.altaAtributo(nombre, tipo, longitud, indice, dir);
+                    ent.altaAtributo(nombre, tipo, longitud, indice, dirIndice, dir);
                     this.grabaEntidad(ent);
                     foreach (Atributo atributo in ent.Atributos)
                     {
@@ -200,13 +215,13 @@ namespace Manejador_De_Archivos_2._0
             }
         }
 
-        public void modificaAtributo(string entidad, string nombre, string nuevoNombre, char tipo, int longitud, int indice)
+        public void modificaAtributo(string entidad, string nombre, string nuevoNombre, char tipo, int longitud, int indice,long dirIndice)
         {
             Entidad ent;
             ent = buscaEntidad(entidad);
             if (ent.DirRegistros == -1)
             {
-                ent.modificaAtributo(nombre, nuevoNombre, tipo, longitud, indice);
+                ent.modificaAtributo(nombre, nuevoNombre, tipo, longitud, indice,dirIndice);
                 Atributo atributo;
                 atributo = ent.buscaAtributo(MetodosAuxiliares.ajustaCadena(nuevoNombre, Constantes.tam));
                 this.grabaAtributo(atributo);

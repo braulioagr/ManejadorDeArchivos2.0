@@ -43,6 +43,10 @@
             this.label5 = new System.Windows.Forms.Label();
             this.textBoxIndicie = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -65,7 +69,7 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Location = new System.Drawing.Point(6, 9);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(273, 76);
+            this.groupBox1.Size = new System.Drawing.Size(298, 76);
             this.groupBox1.TabIndex = 32;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Seleccion";
@@ -75,7 +79,7 @@
             this.comboEntidad.FormattingEnabled = true;
             this.comboEntidad.Location = new System.Drawing.Point(58, 19);
             this.comboEntidad.Name = "comboEntidad";
-            this.comboEntidad.Size = new System.Drawing.Size(206, 21);
+            this.comboEntidad.Size = new System.Drawing.Size(234, 21);
             this.comboEntidad.TabIndex = 24;
             this.comboEntidad.SelectedIndexChanged += new System.EventHandler(this.comboEntidad_SelectedIndexChanged);
             // 
@@ -93,7 +97,7 @@
             this.comboAtributo.FormattingEnabled = true;
             this.comboAtributo.Location = new System.Drawing.Point(58, 46);
             this.comboAtributo.Name = "comboAtributo";
-            this.comboAtributo.Size = new System.Drawing.Size(206, 21);
+            this.comboAtributo.Size = new System.Drawing.Size(234, 21);
             this.comboAtributo.TabIndex = 25;
             this.comboAtributo.SelectedIndexChanged += new System.EventHandler(this.comboAtributo_SelectedIndexChanged);
             // 
@@ -108,6 +112,10 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.textBox2);
+            this.groupBox2.Controls.Add(this.label8);
+            this.groupBox2.Controls.Add(this.textBox1);
+            this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.textBoxDir);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.textBoxTipo);
@@ -118,7 +126,7 @@
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Location = new System.Drawing.Point(6, 91);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(273, 128);
+            this.groupBox2.Size = new System.Drawing.Size(298, 128);
             this.groupBox2.TabIndex = 33;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Datos";
@@ -145,7 +153,7 @@
             this.textBoxTipo.Enabled = false;
             this.textBoxTipo.Location = new System.Drawing.Point(59, 17);
             this.textBoxTipo.Name = "textBoxTipo";
-            this.textBoxTipo.Size = new System.Drawing.Size(206, 20);
+            this.textBoxTipo.Size = new System.Drawing.Size(233, 20);
             this.textBoxTipo.TabIndex = 19;
             // 
             // label6
@@ -162,7 +170,7 @@
             this.textBoxLong.Enabled = false;
             this.textBoxLong.Location = new System.Drawing.Point(58, 43);
             this.textBoxLong.Name = "textBoxLong";
-            this.textBoxLong.Size = new System.Drawing.Size(206, 20);
+            this.textBoxLong.Size = new System.Drawing.Size(234, 20);
             this.textBoxLong.TabIndex = 18;
             // 
             // label5
@@ -179,7 +187,7 @@
             this.textBoxIndicie.Enabled = false;
             this.textBoxIndicie.Location = new System.Drawing.Point(59, 69);
             this.textBoxIndicie.Name = "textBoxIndicie";
-            this.textBoxIndicie.Size = new System.Drawing.Size(206, 20);
+            this.textBoxIndicie.Size = new System.Drawing.Size(233, 20);
             this.textBoxIndicie.TabIndex = 20;
             // 
             // label4
@@ -191,12 +199,46 @@
             this.label4.TabIndex = 15;
             this.label4.Text = "Indice";
             // 
+            // textBox1
+            // 
+            this.textBox1.Enabled = false;
+            this.textBox1.Location = new System.Drawing.Point(150, 94);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(45, 20);
+            this.textBox1.TabIndex = 30;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(110, 97);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(34, 13);
+            this.label7.TabIndex = 29;
+            this.label7.Text = "DirIdx";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Enabled = false;
+            this.textBox2.Location = new System.Drawing.Point(247, 97);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(45, 20);
+            this.textBox2.TabIndex = 32;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(206, 97);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(35, 13);
+            this.label8.TabIndex = 31;
+            this.label8.Text = "DirSig";
+            // 
             // ConsultaAtributo
             // 
             this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.ClientSize = new System.Drawing.Size(316, 261);
             this.ControlBox = false;
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox1);
@@ -229,5 +271,9 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBoxIndicie;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label7;
     }
 }

@@ -92,6 +92,22 @@ namespace Manejador_De_Archivos_2._0
             return atributo;
         }
 
+
+        public Atributo buscaAtributoForaneo()
+        {
+            Atributo atributo;
+            atributo = null;
+            foreach (Atributo atrib in this.atributos)
+            {
+                if (atrib.Indice == 2)
+                {
+                    atributo = atrib;
+                    break;
+                }
+            }
+            return atributo;
+        }
+
         public Registro buscaRegistro(string claveDeBusqueda)
         {
             if (this.atributos[this.buscaIndiceClaveDeBusqueda()].Tipo.Equals('C'))
@@ -105,6 +121,14 @@ namespace Manejador_De_Archivos_2._0
         {
             bool band;
             band = false;
+            foreach(Atributo atributo in this.atributos)
+            {
+                if(nombre.Equals(atributo.Nombre))
+                {
+                    band = true;
+                    break;
+                }
+            }
             return band;
 
         }
@@ -124,7 +148,7 @@ namespace Manejador_De_Archivos_2._0
             return band;
         }
 
-        private bool existeIndicePrimario()
+        public bool existeIndicePrimario()
         {
             bool band;
             band = false;
@@ -138,6 +162,7 @@ namespace Manejador_De_Archivos_2._0
             }
             return band;
         }
+
 
         private int buscaIndiceClaveDeBusqueda()
         {
@@ -154,10 +179,25 @@ namespace Manejador_De_Archivos_2._0
             return indice;
         }
 
+        private int buscaIncideClavePrimaria()
+        {
+            int indice;
+            indice = -1;
+            for (int i = 0; i < this.atributos.Count; i++)
+            {
+                if (this.atributos[i].Indice == 2)
+                {
+                    indice = i;
+                    break;
+                }
+            }
+            return indice;
+        }
+
         #endregion
 
         #region Atributos
-        public void altaAtributo(string nombre, char tipo, int longitud, int indice, long dir)
+        public void altaAtributo(string nombre, char tipo, int longitud, int indice, long dirIndice, long dir)
         {
             if (this.dirRegistros == -1)
             {
@@ -168,7 +208,7 @@ namespace Manejador_De_Archivos_2._0
                         if (indice != 2 || !this.existeIndicePrimario())
                         {
                             Atributo atributo;
-                            atributo = new Atributo(this.nombre, nombre, dir, tipo, indice, longitud, -1, -1);
+                            atributo = new Atributo(this.nombre, nombre, dir, tipo, indice, longitud, dirIndice, -1);
                             this.atributos.Add(atributo);
                             this.ajustaDireccionesAtributos();
                         }
@@ -189,7 +229,7 @@ namespace Manejador_De_Archivos_2._0
             }
         }
 
-        public void modificaAtributo(string nombre,string nuevoNombre, char tipo, int longitud, int indice)
+        public void modificaAtributo(string nombre,string nuevoNombre, char tipo, int longitud, int indice, long dirIndice)
         {
             if (this.dirRegistros == -1)
             {
@@ -202,7 +242,7 @@ namespace Manejador_De_Archivos_2._0
                         if (this.dirRegistros == -1)
                         {
                             this.atributos.Remove(atributo);
-                            atributo = new Atributo(this.nombre, nuevoNombre, atributo.DirActual, tipo, indice, longitud, -1, -1);
+                            atributo = new Atributo(this.nombre, nuevoNombre, atributo.DirActual, tipo, indice, longitud, dirIndice, -1);
                             this.atributos.Add(atributo);
                             this.ajustaDireccionesAtributos();
                         }
@@ -271,7 +311,7 @@ namespace Manejador_De_Archivos_2._0
                 Registro registro;
                 FileStream abierto;
                 archivoDat = directorio + "\\" + MetodosAuxiliares.truncaCadena(this.nombre) + ".dat";
-                indiceClaveBusqueda = this.buscaIndiceClaveDeBusqueda();
+                indiceClaveBusqueda = this.buscaIncideClavePrimaria();
                 abierto = new FileStream(archivoDat, FileMode.Append);//abre el archivo en un file stream
                 dir = (long)abierto.Seek(0, SeekOrigin.End);//Calcula la direccion final del archivo y lo mete en un long
                 abierto.Close();//Cierra el file Strea

@@ -29,12 +29,28 @@ namespace Manejador_De_Archivos_2._0
         {
             foreach (Entidad entidad in this.archivo.Entidades)
             {
+                this.comboBox1.Items.Add(MetodosAuxiliares.truncaCadena(entidad.Nombre));
                 comboEntidad.Items.Add(MetodosAuxiliares.truncaCadena(entidad.Nombre));
             }
         }
         #endregion
 
         #region Gets & Sets
+        public long DirIndice
+        {
+            get
+            {
+                long direccion;
+                direccion = -1;
+                if (this.comboInidice.Text.Equals("3: Indice Secundario"))
+                {
+                    Entidad entidad;
+                    entidad = this.archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(comboBox1.Text, Constantes.tam));
+                    direccion = entidad.DirActual;
+                }
+                return direccion;
+            }
+        }
 
         public string Entidad
         {
@@ -146,5 +162,38 @@ namespace Manejador_De_Archivos_2._0
         }
         #endregion
 
+        private void ComboInidice_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (this.comboInidice.Text.Equals("3: Indice Secundario"))
+            {
+                comboBox1.Enabled = true;
+                this.comboBoxTipo.Enabled = false;
+                this.textBoxLong.Enabled = false;
+            }
+            else
+            {
+                comboBox1.Enabled = true;
+                this.comboBoxTipo.Enabled = true;
+                this.textBoxLong.Enabled = true;
+            }
+        }
+
+        private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Entidad entidad;
+            Atributo atributo;
+            entidad = this.archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(comboBox1.Text, Constantes.tam));
+            if (entidad.existeIndicePrimario())
+            {
+                atributo = entidad.buscaAtributoForaneo();
+                this.comboBoxTipo.Text = atributo.Tipo.ToString();
+                this.textBoxLong.Text = atributo.Longitud.ToString();
+            }
+            else
+            {
+                this.comboInidice.Text = "0: Sin indice";
+                MessageBox.Show("No existe Indice Primario", "Error");
+            }
+        }
     }
 }

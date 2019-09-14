@@ -15,12 +15,14 @@ namespace Manejador_De_Archivos_2._0
 
         #region Variables de Instancia
         List<string> entidades;
+        Archivo archivo;
         #endregion
 
         #region Constructores
         public AltaAtributo(Archivo archivo)
         {
             this.entidades = new List<string>();
+            this.archivo = archivo;
             foreach (Entidad entidad in archivo.Entidades)
             {
                 this.entidades.Add(MetodosAuxiliares.truncaCadena(entidad.Nombre));
@@ -33,12 +35,28 @@ namespace Manejador_De_Archivos_2._0
             foreach (string entidad in this.entidades)
             {
                 this.comboEntidad.Items.Add(entidad);
+                this.comboBox1.Items.Add(entidad);
             }
             this.comboEntidad.Text = this.entidades.First();
         }
         #endregion
 
         #region  Gets & Sets
+        public long DirIndice
+        {
+            get
+            {
+                long direccion;
+                direccion = -1;
+                if (ComboIndice.Text.Equals("3: Indice Secundario"))
+                {
+                    Entidad entidad;
+                    entidad = this.archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(comboBox1.Text, Constantes.tam));
+                    direccion = entidad.DirActual;
+                }
+                return direccion;
+            }
+        }
         public string Entidad
         {
             get { return this.comboEntidad.Text; }
@@ -126,5 +144,44 @@ namespace Manejador_De_Archivos_2._0
                    string.IsNullOrEmpty(this.ComboIndice.Text);
         }
         #endregion
+
+        private void GroupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Entidad entidad;
+            Atributo atributo;
+            entidad = this.archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(comboBox1.Text, Constantes.tam));
+            if (entidad.existeIndicePrimario())
+            {
+                atributo = entidad.buscaAtributoForaneo();
+                this.comboTipo.Text = atributo.Tipo.ToString();
+                this.textBoxLong.Text = atributo.Longitud.ToString();
+            }
+            else
+            {
+                this.ComboIndice.Text = "0: Sin indice";
+                MessageBox.Show("No existe Indice Primario","Error");
+            }
+        }
+
+        private void ComboIndice_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ComboIndice.Text.Equals("3: Indice Secundario"))
+            {
+                comboBox1.Enabled = true;
+                this.comboTipo.Enabled = false;
+                this.textBoxLong.Enabled = false;
+            }
+            else
+            {
+                comboBox1.Enabled = true;
+                this.comboTipo.Enabled = true;
+                this.textBoxLong.Enabled = true;
+            }
+        }
     }
 }
