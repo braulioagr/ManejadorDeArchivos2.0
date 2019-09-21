@@ -72,6 +72,17 @@ namespace Manejador_De_Archivos_2._0
         }
         #endregion
 
+        #region Gets & Sets
+        public List<string> Datos
+        {
+            get
+            {
+                List<string> datos = this.atributos.ToList();
+                datos.Reverse();
+                return datos;
+            }
+        }
+        #endregion
 
         #region Eventos
 

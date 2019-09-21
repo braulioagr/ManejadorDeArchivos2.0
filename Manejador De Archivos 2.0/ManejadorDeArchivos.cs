@@ -336,8 +336,11 @@ namespace Manejador_De_Archivos_2._0
                                 ModificaRegistro modificaRegistro;
                                 modificaRegistro = new ModificaRegistro(entidad, seleccionRegistro.ClaveDeBusqueda);
                                 modificaRegistro.ShowDialog();
+                                this.archivo.modificaRegistro(seleccionEntidad.Entidad, seleccionRegistro.ClaveDeBusqueda, modificaRegistro.Datos);
                             }
+                            seleccionRegistro.Dispose();
                         }
+                        seleccionEntidad.Dispose();
                     break;
                     case "Eliminar":
                         seleccionEntidad = new SeleccionEntidad(this.archivo);

@@ -303,41 +303,55 @@ namespace Manejador_De_Archivos_2._0
 
         public void altaRegistro(string directorio, List<string> informacion)
         {
-            if(this.existeClaveDeBusqueda() && this.existeIndicePrimario())
+            try
             {
-                int indiceClaveBusqueda;
-                long dir;
-                string archivoDat;
-                Registro registro;
-                FileStream abierto;
-                archivoDat = directorio + "\\" + MetodosAuxiliares.truncaCadena(this.nombre) + ".dat";
-                indiceClaveBusqueda = this.buscaIncideClavePrimaria();
-                abierto = new FileStream(archivoDat, FileMode.Append);//abre el archivo en un file stream
-                dir = (long)abierto.Seek(0, SeekOrigin.End);//Calcula la direccion final del archivo y lo mete en un long
-                abierto.Close();//Cierra el file Strea
-                registro = new Registro(dir, informacion);
-                this.registros.Add(informacion[indiceClaveBusqueda],registro);
-                this.ajustaDireccionesRegistros();
-                foreach (Registro registroAux in this.registros.Values)
+                if (this.existeClaveDeBusqueda() && this.existeIndicePrimario())
                 {
-                    this.grabaRegistro(registroAux, archivoDat);
+                    int indiceClaveBusqueda;
+                    long dir;
+                    string archivoDat;
+                    Registro registro;
+                    FileStream abierto;
+                    archivoDat = directorio + "\\" + MetodosAuxiliares.truncaCadena(this.nombre) + ".dat";
+                    indiceClaveBusqueda = this.buscaIncideClavePrimaria();
+                    abierto = new FileStream(archivoDat, FileMode.Append);//abre el archivo en un file stream
+                    dir = (long)abierto.Seek(0, SeekOrigin.End);//Calcula la direccion final del archivo y lo mete en un long
+                    abierto.Close();//Cierra el file Strea
+                    registro = new Registro(dir, informacion);
+                    this.registros.Add(informacion[indiceClaveBusqueda], registro);
+                    this.ajustaDireccionesRegistros();
+                    foreach (Registro registroAux in this.registros.Values)
+                    {
+                        this.grabaRegistro(registroAux, archivoDat);
+                    }
                 }
-                
+            }
+            catch (ArgumentException e)
+            {
+                MessageBox.Show(e.Message, "Error");
             }
         }
 
-        public void eliminarRegistro(string directorio, string claveDeBusqueda)
+
+        public void eliminarRegistro(string directorio, string llavePrimaria)
         {
-            directorio += "\\" + MetodosAuxiliares.truncaCadena(this.nombre) + ".dat";
-            if (this.atributos[this.buscaIndiceClaveDeBusqueda()].Tipo.Equals('C'))
+            try
             {
-                claveDeBusqueda = MetodosAuxiliares.ajustaCadena(claveDeBusqueda, this.atributos[this.buscaIndiceClaveDeBusqueda()].Longitud);
-            };
-            this.registros.Remove(claveDeBusqueda);
-            this.ajustaDireccionesRegistros();
-            foreach (Registro registroAux in this.registros.Values)
+                directorio += "\\" + MetodosAuxiliares.truncaCadena(this.nombre) + ".dat";
+                if (this.atributos[this.buscaIndiceClaveDeBusqueda()].Tipo.Equals('C'))
+                {
+                    llavePrimaria = MetodosAuxiliares.ajustaCadena(llavePrimaria, this.atributos[this.buscaIndiceClaveDeBusqueda()].Longitud);
+                };
+                this.registros.Remove(llavePrimaria);
+                this.ajustaDireccionesRegistros();
+                foreach (Registro registroAux in this.registros.Values)
+                {
+                    this.grabaRegistro(registroAux, directorio);
+                }
+            }
+            catch (Exception e)
             {
-                this.grabaRegistro(registroAux, directorio);
+                MessageBox.Show(e.Message, "Error");
             }
         }
 
@@ -345,7 +359,7 @@ namespace Manejador_De_Archivos_2._0
         {
             if (this.registros.Count > 0)
             {
-                this.registros = this.registros.OrderBy(registro => registro.Key).ToDictionary(registro => registro.Key , registro => registro.Value);
+                this.registros = this.registros.OrderBy(registro => registro.Value.Datos[this.buscaIndiceClaveDeBusqueda()]).ToDictionary(registro => registro.Key,registro => registro.Value);
                 for (int i = 0; i < this.registros.Count - 1; i++)
                 {
                     this.registros.Values.ElementAt(i).DirSig = this.registros.Values.ElementAt(i + 1).DirAct;//Iguala la direccion siguiente a la direccion actual de la siguiente entidad en la lista
@@ -421,7 +435,7 @@ namespace Manejador_De_Archivos_2._0
                             i++;
                         }
                         registro = new Registro(dirSig, informacion);
-                        this.registros.Add(informacion[this.buscaIndiceClaveDeBusqueda()],registro);
+                        this.registros.Add(informacion[this.buscaIncideClavePrimaria()],registro);
                         informacion = new List<string>();
                         dirSig = registro.DirSig = this.reader.ReadInt64();
                     }

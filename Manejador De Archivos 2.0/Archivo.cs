@@ -446,6 +446,11 @@ namespace Manejador_De_Archivos_2._0
             throw new NotImplementedException();
         }
 
+        internal void modificaRegistro(string entidad, string claveDeBusqueda, List<string> datos)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         #endregion
