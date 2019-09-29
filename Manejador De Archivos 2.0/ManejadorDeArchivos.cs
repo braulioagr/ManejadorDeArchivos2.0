@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -314,6 +315,7 @@ namespace Manejador_De_Archivos_2._0
                         {
                             AltaRegistro altaRegistro;
                             altaRegistro = new AltaRegistro(this.archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(seleccionEntidad.Entidad, Constantes.tam)));
+                            altaRegistro.obtenLllaves += new AltaRegistro.ObtenLlaves(this.obtenLllavesEntidad);
                             if (altaRegistro.ShowDialog().Equals(DialogResult.OK))
                             {
                                 this.archivo.altaRegistro(MetodosAuxiliares.ajustaCadena(seleccionEntidad.Entidad, Constantes.tam),
@@ -335,8 +337,12 @@ namespace Manejador_De_Archivos_2._0
                             {
                                 ModificaRegistro modificaRegistro;
                                 modificaRegistro = new ModificaRegistro(entidad, seleccionRegistro.ClaveDeBusqueda);
-                                modificaRegistro.ShowDialog();
-                                this.archivo.modificaRegistro(seleccionEntidad.Entidad, seleccionRegistro.ClaveDeBusqueda, modificaRegistro.Datos);
+                                modificaRegistro.obtenLllaves += new ModificaRegistro.ObtenLlaves(this.obtenLllavesEntidad);
+                                if (modificaRegistro.ShowDialog().Equals(DialogResult.OK))
+                                {
+                                    this.archivo.modificaRegistro(seleccionEntidad.Entidad, seleccionRegistro.ClaveDeBusqueda, modificaRegistro.Datos,this.directorio);
+                                    this.actualizaTodo();
+                                }
                             }
                             seleccionRegistro.Dispose();
                         }
@@ -500,6 +506,15 @@ namespace Manejador_De_Archivos_2._0
                     this.comboBox1.Items.Add(MetodosAuxiliares.truncaCadena(entidad.Nombre));
                 }
             }
+        }
+        #endregion
+
+        #region delegados
+        public List<string> obtenLllavesEntidad(long direccion)
+        {
+            Entidad referencia;
+            referencia = this.archivo.buscaEntidad(direccion);
+            return referencia.LlavePrimaria;
         }
         #endregion
 

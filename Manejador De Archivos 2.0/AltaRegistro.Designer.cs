@@ -40,6 +40,8 @@
             this.Cancelar = new System.Windows.Forms.Button();
             this.Aceptar = new System.Windows.Forms.Button();
             this.textBoxDato = new System.Windows.Forms.TextBox();
+            this.textBoxLong = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label4
@@ -56,7 +58,7 @@
             this.textBoxIndice.Enabled = false;
             this.textBoxIndice.Location = new System.Drawing.Point(57, 45);
             this.textBoxIndice.Name = "textBoxIndice";
-            this.textBoxIndice.Size = new System.Drawing.Size(276, 20);
+            this.textBoxIndice.Size = new System.Drawing.Size(114, 20);
             this.textBoxIndice.TabIndex = 22;
             // 
             // textBoxTipo
@@ -150,6 +152,23 @@
             this.textBoxDato.Size = new System.Drawing.Size(276, 20);
             this.textBoxDato.TabIndex = 12;
             // 
+            // textBoxLong
+            // 
+            this.textBoxLong.Enabled = false;
+            this.textBoxLong.Location = new System.Drawing.Point(231, 45);
+            this.textBoxLong.Name = "textBoxLong";
+            this.textBoxLong.Size = new System.Drawing.Size(102, 20);
+            this.textBoxLong.TabIndex = 25;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(177, 48);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(48, 13);
+            this.label5.TabIndex = 24;
+            this.label5.Text = "Longitud";
+            // 
             // AltaRegistro
             // 
             this.AcceptButton = this.Aceptar;
@@ -158,6 +177,8 @@
             this.CancelButton = this.Cancelar;
             this.ClientSize = new System.Drawing.Size(347, 131);
             this.ControlBox = false;
+            this.Controls.Add(this.textBoxLong);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.textBoxIndice);
             this.Controls.Add(this.textBoxTipo);
@@ -192,5 +213,7 @@
         private System.Windows.Forms.Button Cancelar;
         private System.Windows.Forms.Button Aceptar;
         private System.Windows.Forms.TextBox textBoxDato;
+        private System.Windows.Forms.TextBox textBoxLong;
+        private System.Windows.Forms.Label label5;
     }
 }

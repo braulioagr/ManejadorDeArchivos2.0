@@ -40,6 +40,7 @@ namespace Manejador_De_Archivos_2._0
         public List<string> Datos
         {
             get { return this.datos; }
+            set { this.datos = value; } 
         }
 
 

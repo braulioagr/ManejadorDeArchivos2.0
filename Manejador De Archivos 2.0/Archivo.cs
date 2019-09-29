@@ -46,6 +46,21 @@ namespace Manejador_De_Archivos_2._0
 
         #region Busqueda
 
+        public Entidad buscaEntidad(long direccion)
+        {
+            Entidad entidad;
+            entidad = null;
+            foreach (Entidad entidad1 in this.entidades)
+            {
+                if (entidad1.DirActual == direccion)
+                {
+                    entidad = entidad1;
+                    break;
+                }
+            }
+            return entidad;
+        }
+
         public Entidad buscaEntidad(string nombre)
         {
             Entidad destino;
@@ -249,6 +264,7 @@ namespace Manejador_De_Archivos_2._0
         #endregion
 
         #region Registros
+
         public void altaRegistro(string nombre, string directorio, List<string> informacion)
         {
             Entidad entidad;
@@ -256,13 +272,24 @@ namespace Manejador_De_Archivos_2._0
             entidad.altaRegistro(directorio,informacion);
             this.grabaEntidad(entidad);
         }
-        public void eliminaRegistro(string nombreEntidad, string claveDeBusqueda, string directorio)
+
+
+        public void modificaRegistro(string entidad, string llavePrimaria, List<string> datos, string directorio)
+        {
+            Entidad entidad1;
+            entidad1 = this.buscaEntidad(MetodosAuxiliares.ajustaCadena(entidad,Constantes.tam));
+            entidad1.modificaRegistro(llavePrimaria,datos,directorio);
+            this.grabaEntidad(entidad1);
+        }
+
+        public void eliminaRegistro(string nombreEntidad, string llavePrimaria, string directorio)
         {
             Entidad entidad;
             entidad = this.buscaEntidad(nombreEntidad);
-            entidad.eliminarRegistro(directorio, claveDeBusqueda);
+            entidad.eliminarRegistro(directorio, llavePrimaria);
             this.grabaEntidad(entidad);
         }
+        
         #endregion
 
         #region Grabado de datos
@@ -440,17 +467,7 @@ namespace Manejador_De_Archivos_2._0
                 }
             }
         }
-
-        internal void eliminaRegistro(string v1, string v2)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal void modificaRegistro(string entidad, string claveDeBusqueda, List<string> datos)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         #endregion
 
         #endregion

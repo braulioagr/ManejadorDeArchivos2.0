@@ -36,41 +36,49 @@ namespace Manejador_De_Archivos_2._0
         #endregion
 
         #region Gets & Sets
+
         public long DirActual
         {
             get { return this.dirActual; }
         }
+
         public long DirAtributos
         {
             get { return this.dirAtributos; }
         }
+
         public long DirRegistros
         {
             get { return this.dirRegistros; }
         }
+
         public long DirSig
         {
             get { return this.dirSig; }
             set { this.dirSig = value; }
         }
+
         public string Nombre
         {
             get { return this.nombre; }
             set { this.nombre = value; }
         }
+
         public List<Atributo> Atributos
         {
             get { return this.atributos; }
         }
+
         public List<Registro> Registros
         {
             get { return this.registros.Values.ToList(); }
         }
 
-        public List<string> ClavesDeBusqueda
+        public List<string> LlavePrimaria
         {
             get { return this.registros.Keys.ToList(); }
         }
+
         #endregion
 
         #region Metodos
@@ -108,13 +116,13 @@ namespace Manejador_De_Archivos_2._0
             return atributo;
         }
 
-        public Registro buscaRegistro(string claveDeBusqueda)
+        public Registro buscaRegistro(string llavePrimaria)
         {
-            if (this.atributos[this.buscaIndiceClaveDeBusqueda()].Tipo.Equals('C'))
+            if (this.atributos[this.buscaIncideClavePrimaria()].Tipo.Equals('C'))
             {
-                claveDeBusqueda = MetodosAuxiliares.ajustaCadena(claveDeBusqueda, this.atributos[this.buscaIndiceClaveDeBusqueda()].Longitud);
+                llavePrimaria = MetodosAuxiliares.ajustaCadena(llavePrimaria, this.atributos[this.buscaIncideClavePrimaria()].Longitud-1);
             }
-            return this.registros[claveDeBusqueda];
+            return this.registros[llavePrimaria];
         }
 
         public bool existeAtributo(string nombre)
@@ -162,7 +170,6 @@ namespace Manejador_De_Archivos_2._0
             }
             return band;
         }
-
 
         private int buscaIndiceClaveDeBusqueda()
         {
@@ -332,6 +339,17 @@ namespace Manejador_De_Archivos_2._0
             }
         }
 
+        public void modificaRegistro(string llavePrimaria, List<string> datos, string directorio)
+        {
+            string archivoDat;
+            this.registros[llavePrimaria].Datos = datos;
+            archivoDat = directorio + "\\" + MetodosAuxiliares.truncaCadena(this.nombre) + ".dat";
+            this.ajustaDireccionesRegistros();
+            foreach(Registro registro in this.registros.Values)
+            {
+                this.grabaRegistro(registro, archivoDat);
+            }
+        }
 
         public void eliminarRegistro(string directorio, string llavePrimaria)
         {
@@ -340,7 +358,7 @@ namespace Manejador_De_Archivos_2._0
                 directorio += "\\" + MetodosAuxiliares.truncaCadena(this.nombre) + ".dat";
                 if (this.atributos[this.buscaIndiceClaveDeBusqueda()].Tipo.Equals('C'))
                 {
-                    llavePrimaria = MetodosAuxiliares.ajustaCadena(llavePrimaria, this.atributos[this.buscaIndiceClaveDeBusqueda()].Longitud);
+                    llavePrimaria = MetodosAuxiliares.ajustaCadena(llavePrimaria, this.atributos[this.buscaIncideClavePrimaria()].Longitud-1);
                 };
                 this.registros.Remove(llavePrimaria);
                 this.ajustaDireccionesRegistros();
@@ -396,6 +414,7 @@ namespace Manejador_De_Archivos_2._0
                             this.writer.Write(registro.Datos[i]);
                         }
                     }
+                    this.writer.Write(registro.DirAct);
                     this.writer.Write(registro.DirSig);
                 }
             }
@@ -435,9 +454,10 @@ namespace Manejador_De_Archivos_2._0
                             i++;
                         }
                         registro = new Registro(dirSig, informacion);
+                        dirSig = registro.DirSig = this.reader.ReadInt64();
+                        dirSig = registro.DirSig = this.reader.ReadInt64();
                         this.registros.Add(informacion[this.buscaIncideClavePrimaria()],registro);
                         informacion = new List<string>();
-                        dirSig = registro.DirSig = this.reader.ReadInt64();
                     }
                 }
             }

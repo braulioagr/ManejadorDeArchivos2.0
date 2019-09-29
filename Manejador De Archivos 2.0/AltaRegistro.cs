@@ -18,6 +18,10 @@ namespace Manejador_De_Archivos_2._0
         private Stack<string> atributos;
         private Entidad entidad;
         private int indice;
+        private ComboBox comboDato;
+        private List<string> llavesForaneas;
+        public delegate List<string> ObtenLlaves(long direccion);
+        public event ObtenLlaves obtenLllaves;
         #endregion
 
         #region Constructores
@@ -52,7 +56,7 @@ namespace Manejador_De_Archivos_2._0
                 }
                 else if (entidad.Atributos[indice].Tipo.Equals('C'))
                 {
-                    atributos.Push(MetodosAuxiliares.ajustaCadena(textBoxDato.Text, entidad.Atributos[indice].Longitud));
+                    atributos.Push(MetodosAuxiliares.ajustaCadena(textBoxDato.Text, entidad.Atributos[indice].Longitud-1));
                 }
                 this.Close();
             }
@@ -76,7 +80,7 @@ namespace Manejador_De_Archivos_2._0
                     }
                     else if (entidad.Atributos[indice].Tipo.Equals('C'))
                     {
-                        atributos.Push(MetodosAuxiliares.ajustaCadena(textBoxDato.Text, entidad.Atributos[indice].Longitud));
+                        atributos.Push(MetodosAuxiliares.ajustaCadena(textBoxDato.Text, entidad.Atributos[indice].Longitud-1));
                     }
                     indice++;
                     actualizaLabel();
@@ -133,6 +137,42 @@ namespace Manejador_De_Archivos_2._0
             textBoxAtributo.Text = MetodosAuxiliares.truncaCadena(entidad.Atributos[indice].Nombre);
             textBoxTipo.Text = entidad.Atributos[indice].Tipo.ToString();
             textBoxIndice.Text = MetodosAuxiliares.traduceIndice(entidad.Atributos[indice].Indice);
+            this.textBoxLong.Text = entidad.Atributos[indice].Longitud.ToString();
+            if (entidad.Atributos[indice].Indice == 3)
+            {
+                List<string> llaves;
+                comboDato = new ComboBox();
+                llaves = this.obtenLllaves(entidad.Atributos[indice].DirIndice);
+                if (llaves.Count > 0)
+                {
+                    this.textBoxDato.Visible = false;
+                    comboDato.Location = textBoxDato.Location;
+                    comboDato.Size = textBoxDato.Size;
+                    //Aqui se manda llamar el metodo para llenar los datos del combo box
+                    this.Controls.Add(this.comboDato);
+                    this.comboDato.SelectedIndexChanged += new EventHandler(this.ComboBox1_SelectedIndexChanged);
+                    foreach (string llave in llaves)
+                    {
+                        this.comboDato.Items.Add(llave);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("No se encuentran valores para hacer referencia","Error");
+                    this.DialogResult = DialogResult.Cancel;
+                    this.Close();
+                }
+            }
+            else if (entidad.Atributos[indice].Indice != 3 && !this.textBoxDato.Visible)
+            {
+                this.Controls.Remove(comboDato);
+                comboDato.Dispose();
+                this.textBoxDato.Visible = true;
+            }
+        }
+        private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.textBoxDato.Text = comboDato.Text;
         }
         #endregion
 
