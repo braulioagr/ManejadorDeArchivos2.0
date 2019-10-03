@@ -342,7 +342,10 @@ namespace Manejador_De_Archivos_2._0
         public void modificaRegistro(string llavePrimaria, List<string> datos, string directorio)
         {
             string archivoDat;
-            this.registros[llavePrimaria].Datos = datos;
+            Registro registro1;
+            registro1 = new Registro(this.registros[llavePrimaria].DirAct, datos);
+            this.registros.Remove(llavePrimaria);
+            this.registros.Add(datos[this.buscaIncideClavePrimaria()], registro1);
             archivoDat = directorio + "\\" + MetodosAuxiliares.truncaCadena(this.nombre) + ".dat";
             this.ajustaDireccionesRegistros();
             foreach(Registro registro in this.registros.Values)

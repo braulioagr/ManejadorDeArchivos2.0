@@ -19,7 +19,7 @@ namespace Manejador_De_Archivos_2._0
         private Entidad entidad;
         private int indice;
         private ComboBox comboDato;
-        private List<string> llavesForaneas;
+
         public delegate List<string> ObtenLlaves(long direccion);
         public event ObtenLlaves obtenLllaves;
         #endregion

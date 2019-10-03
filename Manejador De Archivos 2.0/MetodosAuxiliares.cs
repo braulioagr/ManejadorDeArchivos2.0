@@ -61,6 +61,18 @@ namespace Manejador_De_Archivos_2._0
             }
             return indice;
         }
+        public static int calculaTamIdxPrim(int tamllave)
+        {
+            int tamaño;
+            tamaño = -1;
+            tamllave += 8;
+            tamaño = (int)Math.Floor((decimal)(tamllave / Constantes.tamIdx));
+            while (tamaño * tamllave > Constantes.tamIdx)
+            {
+                tamaño--;
+            }
+            return tamaño;
+        }
         #endregion
 
     }

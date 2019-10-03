@@ -77,12 +77,15 @@
     <Compile Include="ConsultaEntidad.Designer.cs">
       <DependentUpon>ConsultaEntidad.cs</DependentUpon>
     </Compile>
+    <Compile Include="Indice.cs" />
     <Compile Include="ModificaRegistro.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ModificaRegistro.Designer.cs">
       <DependentUpon>ModificaRegistro.cs</DependentUpon>
     </Compile>
+    <Compile Include="NodoIndicePrimario.cs" />
+    <Compile Include="Primario.cs" />
     <Compile Include="SeleccionRegistro.cs">
       <SubType>Form</SubType>
     </Compile>

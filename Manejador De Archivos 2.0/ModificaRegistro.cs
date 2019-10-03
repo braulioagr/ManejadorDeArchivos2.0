@@ -18,17 +18,18 @@ namespace Manejador_De_Archivos_2._0
         private int indice;
         private Stack<string> atributos;
         private ComboBox comboDato;
-        private List<string> llavesForaneas;
         public delegate List<string> ObtenLlaves(long direccion);
         public event ObtenLlaves obtenLllaves;
+        private string llaveOriginal;
         #endregion
 
         #region Constructores
-        public ModificaRegistro(Entidad entidad, string claveDeBusqueda)
+        public ModificaRegistro(Entidad entidad, string llavePrimaria)
         {
             this.entidad = entidad;
-            this.registro = entidad.buscaRegistro(claveDeBusqueda);
+            this.registro = entidad.buscaRegistro(llavePrimaria);
             this.atributos = new Stack<string>();
+            this.llaveOriginal = llavePrimaria;
             this.indice = 0;
             InitializeComponent();
         }
@@ -69,11 +70,6 @@ namespace Manejador_De_Archivos_2._0
             textBoxTipo.Text = entidad.Atributos[indice].Tipo.ToString();
             textBoxIndice.Text = MetodosAuxiliares.traduceIndice(entidad.Atributos[indice].Indice);
             this.textBoxDato.Text = MetodosAuxiliares.truncaCadena(this.registro.Datos[indice]);
-            if (entidad.Atributos[indice].Indice == 2)
-            {
-                this.textBoxDato.Enabled = false;
-            }
-
             if (entidad.Atributos[indice].Indice == 3)
             {
                 List<string> llaves;
@@ -91,6 +87,7 @@ namespace Manejador_De_Archivos_2._0
                     {
                         this.comboDato.Items.Add(llave);
                     }
+                    this.comboDato.Text = this.registro.Datos[indice];
                 }
                 else
                 {
@@ -118,6 +115,10 @@ namespace Manejador_De_Archivos_2._0
                 datos.Reverse();
                 return datos;
             }
+        }
+        public string LlaveOriginal
+        {
+            get { return this.llaveOriginal; }
         }
         #endregion
 

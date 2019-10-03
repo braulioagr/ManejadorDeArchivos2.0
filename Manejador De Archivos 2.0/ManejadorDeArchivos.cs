@@ -383,11 +383,30 @@ namespace Manejador_De_Archivos_2._0
         private void ManejadorDeArchivos_Resize(object sender, EventArgs e)
         {
             Size size;
-            size = new Size(this.Size.Width - 16, this.Size.Height - 85);
-            tabRegistros.Size = size;
-            size = new Size(this.tabRegistros.Width - 11, this.tabRegistros.Height - 98);
+            Point point;
+            size = new Size(this.Size.Width - 40, this.Size.Height - 96);
+            tabControl.Size = size;
+            size = new Size(this.tabControl.Width - 20, this.tabControl.Height - 90);
             this.dataGridEntidad.Size = size;
             this.dataGridAtrib.Size = size;
+            size = new Size(this.tabControl.Width / 2 -14, this.Size.Height -178);
+            this.groupBoxRegistros.Size = size;
+            this.groupBoxIndices.Size = size;
+            /*ajustamos todo lo que pertenezca al group box de Registros */
+            size = new Size(this.groupBoxRegistros.Size.Width - 12, this.groupBoxRegistros.Size.Height - 58);
+            this.dataGridRegistros.Size = size;
+            point = new Point(this.groupBoxRegistros.Size.Width + 6 - 133, this.comboBoxEntidad.Location.Y);
+            this.comboBoxEntidad.Location = point;
+            point = new Point(this.comboBoxEntidad.Location.X - 48, this.label2.Location.Y);
+            this.label2.Location = point;
+            /*ajustamos todo lo que pertenezca al group box de Indices */
+            point = new Point(this.groupBoxRegistros.Size.Width + this.groupBoxRegistros.Location.X + 5, this.groupBoxIndices.Location.Y);
+            this.groupBoxIndices.Location = point;
+            size = new Size(this.groupBoxIndices.Width - 11, this.groupBoxIndices.Height - 25);
+            this.tabControlIndices.Size = size;
+            size = new Size(this.groupBoxIndices.Width - 30, this.groupBoxIndices.Height - 63);
+            this.dataGridIdxPrimmario.Size = size;
+
         }
 
         #endregion
@@ -396,7 +415,7 @@ namespace Manejador_De_Archivos_2._0
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             Entidad entidad;
-            entidad = archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(comboBox1.Text, Constantes.tam));
+            entidad = archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(comboBoxEntidad.Text, Constantes.tam));
             dataGridRegistros.Columns.Clear();
             dataGridRegistros.ColumnCount = 0;
             dataGridRegistros.Rows.Clear();
@@ -480,8 +499,8 @@ namespace Manejador_De_Archivos_2._0
             this.label1.Text = "Cabecera = ?";
             this.dataGridRegistros.Rows.Clear();
             this.dataGridRegistros.ColumnCount = 0;
-            this.comboBox1.Items.Clear();
-            this.comboBox1.Text = "";
+            this.comboBoxEntidad.Items.Clear();
+            this.comboBoxEntidad.Text = "";
         }
 
         private void actualizaTodo()
@@ -498,12 +517,12 @@ namespace Manejador_De_Archivos_2._0
         #region ComboBox
         private void actualizaComboEntidadRegistros()
         {
-            this.comboBox1.Items.Clear();
+            this.comboBoxEntidad.Items.Clear();
             foreach (Entidad entidad in archivo.Entidades)
             {
                 if (entidad.DirRegistros != -1)
                 {
-                    this.comboBox1.Items.Add(MetodosAuxiliares.truncaCadena(entidad.Nombre));
+                    this.comboBoxEntidad.Items.Add(MetodosAuxiliares.truncaCadena(entidad.Nombre));
                 }
             }
         }
@@ -516,10 +535,14 @@ namespace Manejador_De_Archivos_2._0
             referencia = this.archivo.buscaEntidad(direccion);
             return referencia.LlavePrimaria;
         }
-        #endregion
 
         #endregion
 
+        #endregion
 
+        private void GroupBoxIndices_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 }
