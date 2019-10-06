@@ -65,19 +65,21 @@
             this.consultaAtributo = new System.Windows.Forms.ToolStripMenuItem();
             this.eliminarAtributo = new System.Windows.Forms.ToolStripMenuItem();
             this.tabRegistros = new System.Windows.Forms.TabPage();
+            this.groupBoxRegistros = new System.Windows.Forms.GroupBox();
+            this.dataGridRegistros = new System.Windows.Forms.DataGridView();
+            this.comboBoxEntidad = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.groupBoxIndices = new System.Windows.Forms.GroupBox();
             this.tabControlIndices = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.dataGridIdxPrimmario = new System.Windows.Forms.DataGridView();
-            this.label2 = new System.Windows.Forms.Label();
-            this.comboBoxEntidad = new System.Windows.Forms.ComboBox();
-            this.dataGridRegistros = new System.Windows.Forms.DataGridView();
             this.menuRegistros = new System.Windows.Forms.MenuStrip();
             this.altaRegistros = new System.Windows.Forms.ToolStripMenuItem();
             this.modificarRegistros = new System.Windows.Forms.ToolStripMenuItem();
             this.eliminarRegistros = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.groupBoxRegistros = new System.Windows.Forms.GroupBox();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.toolBar.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabEntidades.SuspendLayout();
@@ -87,13 +89,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridAtrib)).BeginInit();
             this.menuAtributos.SuspendLayout();
             this.tabRegistros.SuspendLayout();
+            this.groupBoxRegistros.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridRegistros)).BeginInit();
             this.groupBoxIndices.SuspendLayout();
             this.tabControlIndices.SuspendLayout();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridIdxPrimmario)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridRegistros)).BeginInit();
             this.menuRegistros.SuspendLayout();
-            this.groupBoxRegistros.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolBar
@@ -148,6 +150,7 @@
             // 
             this.cerrar.AccessibleName = "Cerrar";
             this.cerrar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.cerrar.Enabled = false;
             this.cerrar.Image = ((System.Drawing.Image)(resources.GetObject("cerrar.Image")));
             this.cerrar.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.cerrar.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -432,6 +435,47 @@
             this.tabRegistros.Text = "Registros";
             this.tabRegistros.UseVisualStyleBackColor = true;
             // 
+            // groupBoxRegistros
+            // 
+            this.groupBoxRegistros.Controls.Add(this.dataGridRegistros);
+            this.groupBoxRegistros.Controls.Add(this.comboBoxEntidad);
+            this.groupBoxRegistros.Controls.Add(this.label2);
+            this.groupBoxRegistros.Location = new System.Drawing.Point(6, 51);
+            this.groupBoxRegistros.Name = "groupBoxRegistros";
+            this.groupBoxRegistros.Size = new System.Drawing.Size(420, 303);
+            this.groupBoxRegistros.TabIndex = 5;
+            this.groupBoxRegistros.TabStop = false;
+            this.groupBoxRegistros.Text = "Registros";
+            // 
+            // dataGridRegistros
+            // 
+            this.dataGridRegistros.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.dataGridRegistros.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridRegistros.GridColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.dataGridRegistros.Location = new System.Drawing.Point(6, 52);
+            this.dataGridRegistros.Name = "dataGridRegistros";
+            this.dataGridRegistros.RowHeadersVisible = false;
+            this.dataGridRegistros.Size = new System.Drawing.Size(408, 245);
+            this.dataGridRegistros.TabIndex = 1;
+            // 
+            // comboBoxEntidad
+            // 
+            this.comboBoxEntidad.FormattingEnabled = true;
+            this.comboBoxEntidad.Location = new System.Drawing.Point(293, 25);
+            this.comboBoxEntidad.Name = "comboBoxEntidad";
+            this.comboBoxEntidad.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxEntidad.TabIndex = 2;
+            this.comboBoxEntidad.SelectedIndexChanged += new System.EventHandler(this.ComboBox1_SelectedIndexChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(245, 28);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(43, 13);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Entidad";
+            // 
             // groupBoxIndices
             // 
             this.groupBoxIndices.Controls.Add(this.tabControlIndices);
@@ -441,7 +485,6 @@
             this.groupBoxIndices.TabIndex = 4;
             this.groupBoxIndices.TabStop = false;
             this.groupBoxIndices.Text = "Indices";
-            this.groupBoxIndices.Enter += new System.EventHandler(this.GroupBoxIndices_Enter);
             // 
             // tabControlIndices
             // 
@@ -466,39 +509,15 @@
             // dataGridIdxPrimmario
             // 
             this.dataGridIdxPrimmario.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridIdxPrimmario.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2});
             this.dataGridIdxPrimmario.GridColor = System.Drawing.SystemColors.Control;
             this.dataGridIdxPrimmario.Location = new System.Drawing.Point(6, 6);
             this.dataGridIdxPrimmario.Name = "dataGridIdxPrimmario";
+            this.dataGridIdxPrimmario.RowHeadersVisible = false;
             this.dataGridIdxPrimmario.Size = new System.Drawing.Size(388, 240);
             this.dataGridIdxPrimmario.TabIndex = 0;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(245, 28);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(43, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Entidad";
-            // 
-            // comboBoxEntidad
-            // 
-            this.comboBoxEntidad.FormattingEnabled = true;
-            this.comboBoxEntidad.Location = new System.Drawing.Point(293, 25);
-            this.comboBoxEntidad.Name = "comboBoxEntidad";
-            this.comboBoxEntidad.Size = new System.Drawing.Size(121, 21);
-            this.comboBoxEntidad.TabIndex = 2;
-            this.comboBoxEntidad.SelectedIndexChanged += new System.EventHandler(this.ComboBox1_SelectedIndexChanged);
-            // 
-            // dataGridRegistros
-            // 
-            this.dataGridRegistros.BackgroundColor = System.Drawing.SystemColors.Control;
-            this.dataGridRegistros.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridRegistros.Location = new System.Drawing.Point(6, 52);
-            this.dataGridRegistros.Name = "dataGridRegistros";
-            this.dataGridRegistros.RowHeadersVisible = false;
-            this.dataGridRegistros.Size = new System.Drawing.Size(408, 245);
-            this.dataGridRegistros.TabIndex = 1;
             // 
             // menuRegistros
             // 
@@ -538,17 +557,19 @@
             // 
             this.openFileDialog.FileName = "openFileDialog1";
             // 
-            // groupBoxRegistros
+            // Column1
             // 
-            this.groupBoxRegistros.Controls.Add(this.dataGridRegistros);
-            this.groupBoxRegistros.Controls.Add(this.comboBoxEntidad);
-            this.groupBoxRegistros.Controls.Add(this.label2);
-            this.groupBoxRegistros.Location = new System.Drawing.Point(6, 51);
-            this.groupBoxRegistros.Name = "groupBoxRegistros";
-            this.groupBoxRegistros.Size = new System.Drawing.Size(420, 303);
-            this.groupBoxRegistros.TabIndex = 5;
-            this.groupBoxRegistros.TabStop = false;
-            this.groupBoxRegistros.Text = "Registros";
+            this.Column1.HeaderText = "Llave";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            this.Column1.Width = 190;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "Direccíon";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            this.Column2.Width = 190;
             // 
             // ManejadorDeArchivos
             // 
@@ -577,15 +598,15 @@
             this.menuAtributos.PerformLayout();
             this.tabRegistros.ResumeLayout(false);
             this.tabRegistros.PerformLayout();
+            this.groupBoxRegistros.ResumeLayout(false);
+            this.groupBoxRegistros.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridRegistros)).EndInit();
             this.groupBoxIndices.ResumeLayout(false);
             this.tabControlIndices.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridIdxPrimmario)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridRegistros)).EndInit();
             this.menuRegistros.ResumeLayout(false);
             this.menuRegistros.PerformLayout();
-            this.groupBoxRegistros.ResumeLayout(false);
-            this.groupBoxRegistros.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -642,6 +663,8 @@
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.DataGridView dataGridIdxPrimmario;
         private System.Windows.Forms.GroupBox groupBoxRegistros;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
     }
 }
 

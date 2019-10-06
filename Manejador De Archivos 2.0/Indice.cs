@@ -42,8 +42,11 @@ namespace Manejador_De_Archivos_2._0
         }
 
         #endregion
+
         #region Metodos
-        public abstract void alta(string llave, long dir);
+        public abstract int indiceLlave(string llave);
+
+        public abstract bool existeLlave(string llave);
         #endregion
     }
 }

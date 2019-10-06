@@ -416,34 +416,8 @@ namespace Manejador_De_Archivos_2._0
         {
             Entidad entidad;
             entidad = archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(comboBoxEntidad.Text, Constantes.tam));
-            dataGridRegistros.Columns.Clear();
-            dataGridRegistros.ColumnCount = 0;
-            dataGridRegistros.Rows.Clear();
-            dataGridRegistros.ColumnCount = entidad.Atributos.Count + 2;
-            dataGridRegistros.Columns[0].Name = "Dirección Actual";
-            dataGridRegistros.Columns[dataGridRegistros.ColumnCount - 1].Name = "Dirección Siguiente";
-            int i;
-            i = 1;
-            foreach (Atributo atributo in entidad.Atributos)
-            {
-                dataGridRegistros.Columns[i].Name = MetodosAuxiliares.truncaCadena(atributo.Nombre);
-                i++;
-            }
-            i = 0;
-            foreach (Registro registro in entidad.Registros)
-            {
-                int j = 1;
-                int k = 0;
-                dataGridRegistros.Rows.Add();
-                dataGridRegistros.Rows[i].Cells[0].Value = registro.DirAct;
-                dataGridRegistros.Rows[i].Cells[dataGridRegistros.ColumnCount - 1].Value = registro.DirSig;
-                foreach (Atributo atributo in entidad.Atributos)
-                {
-                    dataGridRegistros.Rows[i].Cells[j].Value = MetodosAuxiliares.truncaCadena(registro.Datos[k++]);
-                    j++;
-                }
-                i++;
-            }
+            this.actualizaDataGridRegistros(entidad);
+            this.actualizaDataGridIndicePrimario(entidad);
         }
         #endregion
 
@@ -492,6 +466,56 @@ namespace Manejador_De_Archivos_2._0
             }
         }
 
+
+        private void actualizaDataGridRegistros(Entidad entidad)
+        {
+            dataGridRegistros.Columns.Clear();
+            dataGridRegistros.ColumnCount = 0;
+            dataGridRegistros.Rows.Clear();
+            dataGridRegistros.ColumnCount = entidad.Atributos.Count + 2;
+            dataGridRegistros.Columns[0].Name = "Dirección Actual";
+            dataGridRegistros.Columns[dataGridRegistros.ColumnCount - 1].Name = "Dirección Siguiente";
+            int i;
+            i = 1;
+            foreach (Atributo atributo in entidad.Atributos)
+            {
+                dataGridRegistros.Columns[i].Name = MetodosAuxiliares.truncaCadena(atributo.Nombre);
+                i++;
+            }
+            i = 0;
+            foreach (Registro registro in entidad.Registros)
+            {
+                int j = 1;
+                int k = 0;
+                dataGridRegistros.Rows.Add();
+                dataGridRegistros.Rows[i].Cells[0].Value = registro.DirAct;
+                dataGridRegistros.Rows[i].Cells[dataGridRegistros.ColumnCount - 1].Value = registro.DirSig;
+                foreach (Atributo atributo in entidad.Atributos)
+                {
+                    dataGridRegistros.Rows[i].Cells[j].Value = MetodosAuxiliares.truncaCadena(registro.Datos[k++]);
+                    j++;
+                }
+                i++;
+            }
+        }
+
+        private void actualizaDataGridIndicePrimario(Entidad entidad)
+        {
+            int i;
+            i = entidad.buscaIndiceClavePrimaria();
+            this.dataGridIdxPrimmario.Rows.Clear();
+            foreach(Indice indice in entidad.Atributos[i].Indices)
+            {
+                foreach(NodoIndicePrimario nodo in ((Primario)indice).Idx)
+                {
+                    if(nodo.Direccion != -1)
+                    {
+                        this.dataGridIdxPrimmario.Rows.Add(nodo.ToString().Split(','));
+                    }
+                }
+            }
+        }
+
         private void borraTodo()
         {
             this.dataGridAtrib.Rows.Clear();
@@ -501,6 +525,7 @@ namespace Manejador_De_Archivos_2._0
             this.dataGridRegistros.ColumnCount = 0;
             this.comboBoxEntidad.Items.Clear();
             this.comboBoxEntidad.Text = "";
+            this.dataGridIdxPrimmario.Rows.Clear();
         }
 
         private void actualizaTodo()
@@ -540,9 +565,5 @@ namespace Manejador_De_Archivos_2._0
 
         #endregion
 
-        private void GroupBoxIndices_Enter(object sender, EventArgs e)
-        {
-
-        }
     }
 }

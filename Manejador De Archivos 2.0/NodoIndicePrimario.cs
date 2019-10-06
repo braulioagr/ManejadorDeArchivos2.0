@@ -25,14 +25,23 @@ namespace Manejador_De_Archivos_2._0
 
         public string Llave
         {
+            set { this.llave = value; }
             get { return this.llave; }
         }
 
         public long Direccion
         {
+            set { this.direccion = value; }
             get { return this.direccion; }
         }
-        
+
+        #endregion
+
+        #region Metodos
+        public override string ToString()
+        {
+            return MetodosAuxiliares.truncaCadena(this.llave) + "," + this.direccion.ToString();
+        }
         #endregion
 
     }

@@ -271,6 +271,13 @@ namespace Manejador_De_Archivos_2._0
             entidad = buscaEntidad(nombre);
             entidad.altaRegistro(directorio,informacion);
             this.grabaEntidad(entidad);
+            foreach(Atributo atributo in entidad.Atributos)
+            {
+                if(atributo.DirIndice != -1)
+                {
+                    this.grabaAtributo(atributo);
+                }
+            }
         }
 
 
@@ -378,11 +385,17 @@ namespace Manejador_De_Archivos_2._0
         {
             try
             {
+                string archivoIdx;
                 this.leeEntidades();
                 this.leeAtributos();
                 foreach (Entidad entidad in this.entidades)
                 {
                     entidad.leeRegistros(directorio);
+                    archivoIdx = directorio + "\\" + MetodosAuxiliares.truncaCadena(entidad.Nombre) + ".idx";
+                    foreach (Atributo atributo in entidad.Atributos)
+                    {
+                        atributo.leeIndices(archivoIdx);
+                    }
                 }
             }
             catch (Exception e)
