@@ -56,7 +56,7 @@ namespace Manejador_De_Archivos_2._0
                 }
                 else if (entidad.Atributos[indice].Tipo.Equals('C'))
                 {
-                    atributos.Push(MetodosAuxiliares.ajustaCadena(textBoxDato.Text, entidad.Atributos[indice].Longitud-1));
+                    atributos.Push(MetodosAuxiliares.ajustaCadena(textBoxDato.Text, entidad.Atributos[indice].Longitud - 1));
                 }
                 this.Close();
             }
@@ -80,7 +80,7 @@ namespace Manejador_De_Archivos_2._0
                     }
                     else if (entidad.Atributos[indice].Tipo.Equals('C'))
                     {
-                        atributos.Push(MetodosAuxiliares.ajustaCadena(textBoxDato.Text, entidad.Atributos[indice].Longitud-1));
+                        atributos.Push(MetodosAuxiliares.ajustaCadena(textBoxDato.Text, entidad.Atributos[indice].Longitud - 1));
                     }
                     indice++;
                     actualizaLabel();
@@ -98,7 +98,7 @@ namespace Manejador_De_Archivos_2._0
             }
         }
 
-        
+
         private void Anterior_Click(object sender, EventArgs e)
         {
             indice--;
@@ -158,7 +158,7 @@ namespace Manejador_De_Archivos_2._0
                 }
                 else
                 {
-                    MessageBox.Show("No se encuentran valores para hacer referencia","Error");
+                    MessageBox.Show("No se encuentran valores para hacer referencia", "Error");
                     this.DialogResult = DialogResult.Cancel;
                     this.Close();
                 }

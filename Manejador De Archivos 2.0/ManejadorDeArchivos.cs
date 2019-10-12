@@ -41,6 +41,30 @@ namespace Manejador_De_Archivos_2._0
                 /*Aliniamiento del texto de las celdas del data grid de los atributos*/
                 this.dataGridAtrib.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             }
+            this.dataGridRegistros.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            for (int i = 0; i < dataGridRegistros.ColumnCount; i++)
+            {
+                /*Aliniamiento del texto de las celdas del data grid de los atributos*/
+                this.dataGridRegistros.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            }
+            this.dataGridIdxPrimmario.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            for (int i = 0; i < dataGridIdxPrimmario.ColumnCount; i++)
+            {
+                /*Aliniamiento del texto de las celdas del data grid de los atributos*/
+                this.dataGridIdxPrimmario.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            }
+            this.dataGridSecundario.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            for (int i = 0; i < dataGridSecundario.ColumnCount; i++)
+            {
+                /*Aliniamiento del texto de las celdas del data grid de los atributos*/
+                this.dataGridSecundario.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            }
+            this.dataGridSecundarioAuxiliar.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            for (int i = 0; i < dataGridSecundarioAuxiliar.ColumnCount; i++)
+            {
+                /*Aliniamiento del texto de las celdas del data grid de los atributos*/
+                this.dataGridSecundarioAuxiliar.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            }
         }
 
         #endregion 
@@ -240,7 +264,7 @@ namespace Manejador_De_Archivos_2._0
                                 abierto.Close();//Cierra el file Stream
                                 archivo.altaAtributo(MetodosAuxiliares.ajustaCadena(altaAtributo.Entidad, Constantes.tam),
                                                      MetodosAuxiliares.ajustaCadena(altaAtributo.Nombre, Constantes.tam),
-                                                     altaAtributo.Tipo, altaAtributo.Longitud, altaAtributo.Indice, altaAtributo.DirIndice,  dir);
+                                                     altaAtributo.Tipo, altaAtributo.Longitud, altaAtributo.Indice,  dir);
                                 this.actualizaTodo();
                             }
                             altaAtributo.Dispose();
@@ -389,6 +413,7 @@ namespace Manejador_De_Archivos_2._0
             size = new Size(this.tabControl.Width - 20, this.tabControl.Height - 90);
             this.dataGridEntidad.Size = size;
             this.dataGridAtrib.Size = size;
+            /*Reajusta el tabcontrol*/
             size = new Size(this.tabControl.Width / 2 -14, this.Size.Height -178);
             this.groupBoxRegistros.Size = size;
             this.groupBoxIndices.Size = size;
@@ -406,7 +431,15 @@ namespace Manejador_De_Archivos_2._0
             this.tabControlIndices.Size = size;
             size = new Size(this.groupBoxIndices.Width - 30, this.groupBoxIndices.Height - 63);
             this.dataGridIdxPrimmario.Size = size;
-
+            /*Reajusta todo lo que pertenezca a al indice Secundario*/
+            size = new Size((this.tabControlIndices.Size.Width / 2) - 10, this.groupBoxIndices.Height - 108);
+            this.dataGridSecundario.Size = size;
+            size = new Size((this.tabControlIndices.Size.Width / 2) - 18, this.tabControlIndices.Size.Height - 57);
+            this.dataGridSecundarioAuxiliar.Size = size;
+            point = new Point(this.dataGridSecundario.Location.X + this.dataGridSecundario.Size.Width + 10,this.dataGridSecundarioAuxiliar.Location.Y);
+            this.dataGridSecundarioAuxiliar.Location = point;
+            point = new Point(this.dataGridSecundarioAuxiliar.Location.X - 3, this.label5.Location.Y);
+            this.label5.Location = point;
         }
 
         #endregion
@@ -418,6 +451,7 @@ namespace Manejador_De_Archivos_2._0
             entidad = archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(comboBoxEntidad.Text, Constantes.tam));
             this.actualizaDataGridRegistros(entidad);
             this.actualizaDataGridIndicePrimario(entidad);
+            this.actualizaComboIndiceSecundario(entidad);
         }
         #endregion
 
@@ -548,6 +582,17 @@ namespace Manejador_De_Archivos_2._0
                 if (entidad.DirRegistros != -1)
                 {
                     this.comboBoxEntidad.Items.Add(MetodosAuxiliares.truncaCadena(entidad.Nombre));
+                }
+            }
+        }
+
+        private void actualizaComboIndiceSecundario(Entidad entidad)
+        {
+            foreach (Atributo atributo in entidad.Atributos)
+            {
+                if (atributo.Indice == 3)
+                {
+                    this.comboBoxAtributos.Items.Add(MetodosAuxiliares.truncaCadena(atributo.Nombre));
                 }
             }
         }

@@ -115,7 +115,7 @@ namespace Manejador_De_Archivos_2._0
         {
             if (!this.vacios())
             {
-                
+
                 try
                 {
                     int i = Int32.Parse(textBoxLong.Text);
@@ -133,7 +133,7 @@ namespace Manejador_De_Archivos_2._0
             }
         }
         #endregion
-        
+
         #endregion
 
         #region Metodos
@@ -164,7 +164,7 @@ namespace Manejador_De_Archivos_2._0
             else
             {
                 this.ComboIndice.Text = "0: Sin indice";
-                MessageBox.Show("No existe Indice Primario","Error");
+                MessageBox.Show("No existe Indice Primario", "Error");
             }
         }
 

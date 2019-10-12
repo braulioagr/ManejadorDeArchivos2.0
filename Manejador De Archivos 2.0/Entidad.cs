@@ -389,9 +389,13 @@ namespace Manejador_De_Archivos_2._0
                 string archivoIdx;
                 archivoDat = directorio + "\\" + MetodosAuxiliares.truncaCadena(this.nombre) + ".dat";
                 archivoIdx = directorio + "\\" + MetodosAuxiliares.truncaCadena(this.nombre) + ".idx";
-                if (this.atributos[this.buscaIndiceClaveDeBusqueda()].Tipo.Equals('C'))
+                if (this.atributos[this.buscaIndiceClavePrimaria()].Tipo.Equals('C'))
                 {
                     llavePrimaria = MetodosAuxiliares.ajustaCadena(llavePrimaria, this.atributos[this.buscaIndiceClavePrimaria()].Longitud-1);
+                }
+                else if(this.atributos[this.buscaIndiceClavePrimaria()].Tipo.Equals('E'))
+                {
+                    llavePrimaria = MetodosAuxiliares.truncaCadena(llavePrimaria);
                 }
                 this.registros.Remove(llavePrimaria);
                 foreach(Atributo atributo in this.atributos)
