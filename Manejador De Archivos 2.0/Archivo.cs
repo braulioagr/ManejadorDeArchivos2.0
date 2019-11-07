@@ -204,7 +204,7 @@ namespace Manejador_De_Archivos_2._0
 
         #region Atributos
 
-        public void altaAtributo(string entidad, string nombre, char tipo, int longitud, int indice, long dir)
+        public void altaAtributo(string entidad, string nombre, char tipo, int longitud, int indice, long dir,long dirIndice)
         {            
             Entidad ent;
             ent = null;
@@ -212,7 +212,7 @@ namespace Manejador_De_Archivos_2._0
             {
                 if (ent.DirRegistros == -1)
                 {
-                    ent.altaAtributo(nombre, tipo, longitud, indice, -1, dir);
+                    ent.altaAtributo(nombre, tipo, longitud, indice, dirIndice, dir);
                     this.grabaEntidad(ent);
                     foreach (Atributo atributo in ent.Atributos)
                     {

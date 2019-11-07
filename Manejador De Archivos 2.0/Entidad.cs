@@ -306,7 +306,6 @@ namespace Manejador_De_Archivos_2._0
 
         #region Registros
 
-
         public void altaRegistro(string directorio, List<string> informacion)
         {
             try
@@ -327,13 +326,19 @@ namespace Manejador_De_Archivos_2._0
                     abierto.Close();//Cierra el file Strea
                     registro = new Registro(dir, informacion);
                     this.registros.Add(informacion[indiceLlavePrimaria], registro);
+                    int i;
+                    i = -1;
                     foreach (Atributo atributo in this.atributos)
                     {
+                        i++;
                         switch (atributo.Indice)
                         {
-                            case 2:
+                            case 2://Indice Primario
                                 atributo.altaIndicePrimario(informacion[indiceLlavePrimaria], dir, archivoIdx);
-                                break;
+                            break;
+                            case 4://Indice Secundario
+                                atributo.altaIndiceSecundario(informacion[i], dir, archivoIdx);
+                            break;
                         }
                     }
                     this.ajustaDireccionesRegistros();

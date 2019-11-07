@@ -131,10 +131,10 @@
             this.comboInidice.Items.AddRange(new object[] {
             "0: Sin indice",
             "1: Clave de Busqueda",
-            "2: Indice Primario",
-            "3: Indice Secundario",
-            "4: Multi-Lista",
-            "5: Arbol B+"});
+            "2: Llave Primaria",
+            "3: Llave Foranea",
+            "4: Indice Secundario",
+            "5: Hash Estatica"});
             this.comboInidice.Location = new System.Drawing.Point(56, 106);
             this.comboInidice.Name = "comboInidice";
             this.comboInidice.Size = new System.Drawing.Size(206, 21);

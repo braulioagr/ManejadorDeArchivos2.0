@@ -20,7 +20,7 @@ namespace Manejador_De_Archivos_2._0
             this.idx = new NodoIndicePrimario[tamañoArreglo];
             for (int i = 0; i < tamañoArreglo; i++)
             {
-                idx[i] = new NodoIndicePrimario("null", -1);
+                idx[i] = new NodoIndicePrimario("-1", -1);
             }
         }
 

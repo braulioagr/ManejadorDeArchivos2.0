@@ -9,8 +9,8 @@ namespace Manejador_De_Archivos_2._0
     public class NodoIndicePrimario
     {
         #region Variables de Instanica
-        private string llave;
-        private long direccion;
+        protected string llave;
+        protected long direccion;
         #endregion
 
         #region Constructor

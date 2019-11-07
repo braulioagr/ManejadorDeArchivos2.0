@@ -84,8 +84,11 @@
     <Compile Include="ModificaRegistro.Designer.cs">
       <DependentUpon>ModificaRegistro.cs</DependentUpon>
     </Compile>
+    <Compile Include="NodoAuxiliar.cs" />
     <Compile Include="NodoIndicePrimario.cs" />
+    <Compile Include="NodoIndiceSecundario.cs" />
     <Compile Include="Primario.cs" />
+    <Compile Include="Secundario.cs" />
     <Compile Include="SeleccionRegistro.cs">
       <SubType>Form</SubType>
     </Compile>

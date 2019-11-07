@@ -35,7 +35,7 @@ namespace Manejador_De_Archivos_2._0
             foreach (string entidad in this.entidades)
             {
                 this.comboEntidad.Items.Add(entidad);
-                this.comboBox1.Items.Add(entidad);
+                this.comboBoxEntRef.Items.Add(entidad);
             }
             this.comboEntidad.Text = this.entidades.First();
         }
@@ -48,10 +48,10 @@ namespace Manejador_De_Archivos_2._0
             {
                 long direccion;
                 direccion = -1;
-                if (ComboIndice.Text.Equals("3: Indice Secundario"))
+                if (ComboIndice.Text.Equals("3: Llave Foranea"))
                 {
                     Entidad entidad;
-                    entidad = this.archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(comboBox1.Text, Constantes.tam));
+                    entidad = this.archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(comboBoxEntRef.Text, Constantes.tam));
                     direccion = entidad.DirActual;
                 }
                 return direccion;
@@ -90,7 +90,7 @@ namespace Manejador_De_Archivos_2._0
                 textBoxLong.Text = "4";
                 textBoxLong.Enabled = false;
             }
-            else if (comboTipo.Text.Equals("C"))
+            else if (comboTipo.Text.Equals("C") && comboBoxEntRef.Text.Equals(""))
             {
                 textBoxLong.Enabled = true;
             }
@@ -145,16 +145,12 @@ namespace Manejador_De_Archivos_2._0
         }
         #endregion
 
-        private void GroupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
 
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             Entidad entidad;
             Atributo atributo;
-            entidad = this.archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(comboBox1.Text, Constantes.tam));
+            entidad = this.archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(comboBoxEntRef.Text, Constantes.tam));
             if (entidad.existeIndicePrimario())
             {
                 atributo = entidad.buscaAtributoForaneo();
@@ -168,20 +164,20 @@ namespace Manejador_De_Archivos_2._0
             }
         }
 
-        private void ComboIndice_SelectedIndexChanged(object sender, EventArgs e)
+        private void ComboIndice_SelectedIndexChanged_1(object sender, EventArgs e)
         {
-            if (ComboIndice.Text.Equals("3: Indice Secundario"))
+            if (ComboIndice.Text.Equals("3: Llave Foranea"))
             {
-                comboBox1.Enabled = true;
+                this.comboBoxEntRef.Enabled = true;
                 this.comboTipo.Enabled = false;
                 this.textBoxLong.Enabled = false;
             }
             else
             {
-                comboBox1.Enabled = true;
                 this.comboTipo.Enabled = true;
                 this.textBoxLong.Enabled = true;
             }
         }
+
     }
 }

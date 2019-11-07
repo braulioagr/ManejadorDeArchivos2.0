@@ -97,18 +97,18 @@ namespace Manejador_De_Archivos_2._0
         #endregion
 
         #region Metodos
+
         #region Indices
+
+        #region Primario
         public void altaIndicePrimario(string llave, long dir, string directorio)
         {
             int longitud;
             long dirIdx;
             Indice indice;
-            FileStream abierto;
             dirIdx = -1;
             longitud = MetodosAuxiliares.calculaTamIdxPrim(this.longitud);
-            abierto = new FileStream(directorio, FileMode.Append);//abre el archivo en un file stream
-            dirIdx = (long)abierto.Seek(0, SeekOrigin.End);//Calcula la direccion final del archivo y lo mete en un long
-            abierto.Close();
+            dirIdx = MetodosAuxiliares.ultimaDireccionDeArchivo(directorio);
             if (this.indices.Count == 0)
             {
                 indice = new Primario(this.nombre, dirIdx, longitud, -1);
@@ -161,8 +161,6 @@ namespace Manejador_De_Archivos_2._0
             }
         }
 
-
-
         public void eliminaIndicePrimario(string llave, string directorio)
         {
             foreach (Indice indice in this.indices)
@@ -188,7 +186,97 @@ namespace Manejador_De_Archivos_2._0
         }
 
         #endregion
+
+        #region Secundario
+
+        public void altaIndiceSecundario(string llave, long direccion, string directorio)
+        {
+            int longitud;
+            long dirIdx;
+            Secundario indice;
+            dirIdx = -1;
+            indice = null;
+            longitud = MetodosAuxiliares.calculaTamIdxPrim(this.longitud);
+            dirIdx = MetodosAuxiliares.ultimaDireccionDeArchivo(directorio);
+            if (this.indices.Count == 0)
+            {
+                indice = new Secundario(this.nombre, dirIdx, longitud, -1);
+                this.grabaIndiceSecundario(indice, directorio);
+                indice.alta(llave, direccion,directorio);
+                this.indices.Add(indice);
+            }
+            else
+            {
+                bool band;
+                band = this.buscaLlaveIndiceSecundario(llave, ref indice);
+                if(band)
+                {
+                    indice.alta(llave, direccion,directorio);
+                }
+                else
+                {
+                    band = this.buscaEspacioLibre(ref indice);
+                    if (band)
+                    {
+                        indice.alta(llave, direccion, directorio);
+                    }
+                    else
+                    {
+                        indice = new Secundario(this.nombre, dirIdx, longitud, -1);
+                        this.grabaIndiceSecundario(indice, directorio);
+                        indice.alta(llave, direccion, directorio);
+                        this.indices.Last().DirSig = indice.DirAct;
+                        this.indices.Add(indice);
+                    }
+                }
+            }
+            this.dirIndice = this.indices.First().DirAct;
+            foreach(Indice idx in this.indices)
+            {
+                this.grabaIndiceSecundario(indice, directorio);
+            }
+        }
+
+        private bool buscaEspacioLibre(ref Secundario indice)
+        {
+            bool band;
+            band = false;
+            foreach(Indice idx in this.indices)
+            {
+                if(((Secundario)idx).existeEspacioLibre())
+                {
+                    indice = (Secundario)idx;
+                    band = true;
+                    break;
+                }
+            }
+            return band;
+        }
+
+        private bool buscaLlaveIndiceSecundario(string llave, ref Secundario idx)
+        {
+            bool band;
+            band = false;
+            foreach (Indice idx1 in this.indices)
+            {
+                if (((Secundario)idx1).existeLlave(llave))
+                {
+                    idx = ((Secundario)idx1);
+                    band = true;
+                    break;
+                }
+            }
+            return band;
+        }
+
+        #endregion
+
+        #endregion
+
         #region Lectura y Grabado de Datos
+
+        #region Indices
+
         public void leeIndices(string directorio)
         {
             switch(this.indice)
@@ -201,6 +289,8 @@ namespace Manejador_De_Archivos_2._0
                 break;
             }
         }
+
+        #region Primario
         private void grabaIndicePrimario(Primario indice, string directorio)
         {
             try
@@ -210,7 +300,18 @@ namespace Manejador_De_Archivos_2._0
                     this.writer.Seek((int)indice.DirAct, SeekOrigin.Current);//Posiciona el grabado del archivo en la dirección actual
                     for (int i = 0; i < indice.Idx.Length; i++)
                     {
-                        this.writer.Write(indice.Idx[i].Llave);
+                        if (this.tipo == 'C')
+                        {
+                            if (indice.Idx[i].Llave.Length != this.longitud)
+                            {
+                                MetodosAuxiliares.ajustaCadena(indice.Idx[i].Llave,this.longitud -1);
+                            }
+                            this.writer.Write(indice.Idx[i].Llave);
+                        }
+                        else if (this.tipo == 'E')
+                        {
+                            this.writer.Write(Int32.Parse(indice.Idx[i].Llave));
+                        }
                         this.writer.Write(indice.Idx[i].Direccion);
                     }
                     this.writer.Write(indice.DirSig);
@@ -224,16 +325,14 @@ namespace Manejador_De_Archivos_2._0
 
         private void leeIndicePrimario(string directorio)
         {
-
             try
             {
                 Indice indice;
-                List<string> informacion = new List<string>();
                 long dirSig;
                 int largo;
                 string llave;
                 long direccion;
-                llave = "null";
+                llave = "-1";
                 direccion = -1;
                 dirSig = this.dirIndice;
                 largo = MetodosAuxiliares.calculaTamIdxPrim(this.longitud);
@@ -246,7 +345,14 @@ namespace Manejador_De_Archivos_2._0
                     {
                         for( int i = 0; i < largo; i++ )
                         {
-                            llave = this.reader.ReadString();
+                            if (this.tipo == 'C')
+                            {
+                                llave = this.reader.ReadString();
+                            }
+                            else
+                            {
+                                llave = this.reader.ReadInt32().ToString();
+                            }
                             direccion = this.reader.ReadInt64();
                             nodo = new NodoIndicePrimario(llave, direccion);
                             nodos[i] = nodo;
@@ -269,6 +375,100 @@ namespace Manejador_De_Archivos_2._0
 
         #endregion
 
+        #region Secundario
+        public void grabaIndiceSecundario(Secundario indice, string directorio)
+        {
+            try
+            {
+                using (writer = new BinaryWriter(new FileStream(directorio, FileMode.Open)))//Abre el archivo con el BinaryWriter
+                {
+                    this.writer.Seek((int)indice.DirAct, SeekOrigin.Current);//Posiciona el grabado del archivo en la dirección actual
+                    for (int i = 0; i < indice.Nodos.Length; i++)
+                    {
+                        if (this.tipo == 'C')
+                        {
+                            if (indice.Nodos[i].Llave.Length != this.longitud)
+                            {
+                                MetodosAuxiliares.ajustaCadena(indice.Nodos[i].Llave, this.longitud - 1);
+                            }
+                            this.writer.Write(indice.Nodos[i].Llave);
+                        }
+                        else if (this.tipo == 'E')
+                        {
+                            this.writer.Write(Int32.Parse(indice.Nodos[i].Llave));
+                        }
+                        this.writer.Write(indice.Nodos[i].Direccion);
+                    }
+                    this.writer.Write(indice.DirSig);
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+        
+        public void leeIndiceSecundario(String directorio)
+        {
+            try
+            {
+                Indice indice;
+                long dirSig;
+                int largo;
+                string llave;
+                long direccion;
+                llave = "-1";
+                direccion = -1;
+                dirSig = this.dirIndice;
+                largo = MetodosAuxiliares.calculaTamIdxPrim(this.longitud);
+                NodoIndiceSecundario[] nodos;
+                nodos = new NodoIndiceSecundario[largo];
+                NodoIndiceSecundario nodo;
+                while (dirSig != -1)
+                {
+                    using (reader = new BinaryReader(new FileStream(directorio, FileMode.Open)))//Abre el archivo con el BinaryWriter
+                    {
+                        for (int i = 0; i < largo; i++)
+                        {
+                            if (this.tipo == 'C')
+                            {
+                                llave = this.reader.ReadString();
+                            }
+                            else
+                            {
+                                llave = this.reader.ReadInt32().ToString();
+                            }
+                            direccion = this.reader.ReadInt64();
+                            nodo = new NodoIndiceSecundario(llave, direccion);
+                            nodos[i] = nodo;
+                        }
+                        indice = new Secundario(this.nombre, dirSig, nodos, -1);
+                        this.indices.Add(indice);
+                        dirSig = reader.ReadInt64();
+                    }
+                }
+                for (int i = 0; i < this.Indices.Count - 1; i++)
+                {
+                    this.indices[i].DirSig = this.indices[i + 1].DirAct;
+                }
+                foreach (Indice idx in this.Indices)
+                {
+                    idx.leeIndicesAuxiliares(directorio);
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
         #endregion
+
+        #endregion
+
+        #endregion
+
+        #endregion
+
     }
 }

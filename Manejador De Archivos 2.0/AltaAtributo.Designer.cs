@@ -31,6 +31,8 @@
             this.Cancelar = new System.Windows.Forms.Button();
             this.Aceptar = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.comboBoxEntRef = new System.Windows.Forms.ComboBox();
             this.textBoxLong = new System.Windows.Forms.TextBox();
             this.comboEntidad = new System.Windows.Forms.ComboBox();
             this.comboTipo = new System.Windows.Forms.ComboBox();
@@ -41,8 +43,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.ComboIndice = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -69,7 +69,7 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.comboBox1);
+            this.groupBox1.Controls.Add(this.comboBoxEntRef);
             this.groupBox1.Controls.Add(this.textBoxLong);
             this.groupBox1.Controls.Add(this.comboEntidad);
             this.groupBox1.Controls.Add(this.comboTipo);
@@ -86,7 +86,26 @@
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Datos";
-            this.groupBox1.Enter += new System.EventHandler(this.GroupBox1_Enter);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(11, 155);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(65, 13);
+            this.label2.TabIndex = 14;
+            this.label2.Text = "Ent Foranea";
+            // 
+            // comboBoxEntRef
+            // 
+            this.comboBoxEntRef.Enabled = false;
+            this.comboBoxEntRef.FormattingEnabled = true;
+            this.comboBoxEntRef.Location = new System.Drawing.Point(82, 152);
+            this.comboBoxEntRef.Name = "comboBoxEntRef";
+            this.comboBoxEntRef.Size = new System.Drawing.Size(168, 21);
+            this.comboBoxEntRef.TabIndex = 13;
+            this.comboBoxEntRef.TabStop = false;
+            this.comboBoxEntRef.SelectedIndexChanged += new System.EventHandler(this.ComboBox1_SelectedIndexChanged);
             // 
             // textBoxLong
             // 
@@ -178,32 +197,15 @@
             this.ComboIndice.Items.AddRange(new object[] {
             "0: Sin indice",
             "1: Clave de Busqueda",
-            "2: Indice Primario",
-            "3: Indice Secundario",
-            "4: Multi-Lista",
-            "5: Arbol B+"});
+            "2: Llave Primaria",
+            "3: Llave Foranea",
+            "4: Indice Secundario",
+            "5: Hash Estatica"});
             this.ComboIndice.Location = new System.Drawing.Point(82, 125);
             this.ComboIndice.Name = "ComboIndice";
             this.ComboIndice.Size = new System.Drawing.Size(168, 21);
             this.ComboIndice.TabIndex = 7;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(11, 155);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(65, 13);
-            this.label2.TabIndex = 14;
-            this.label2.Text = "Ent Foranea";
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.Enabled = false;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(82, 152);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(168, 21);
-            this.comboBox1.TabIndex = 13;
+            this.ComboIndice.SelectedIndexChanged += new System.EventHandler(this.ComboIndice_SelectedIndexChanged_1);
             // 
             // AltaAtributo
             // 
@@ -241,6 +243,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox ComboIndice;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox comboBoxEntRef;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,21 @@ namespace Manejador_De_Archivos_2._0
 {
     class MetodosAuxiliares
     {
+
+        #region Archivos
+
+        public static long ultimaDireccionDeArchivo(string directorio)
+        {
+            long direccion;
+            FileStream abierto;
+            abierto = new FileStream(directorio, FileMode.Append);//abre el archivo en un file stream
+            direccion = (long)abierto.Seek(0, SeekOrigin.End);//Calcula la direccion final del archivo y lo mete en un long
+            abierto.Close();
+            return direccion;
+        }
+
+        #endregion
+
         #region Manipulacion de Cadenas
         public static string ajustaCadena(string cadena, int tam)
         {
@@ -47,16 +63,16 @@ namespace Manejador_De_Archivos_2._0
                     indice = "1: Clave de Busqueda";
                     break;
                 case 2:
-                    indice = "2: Indice Primario";
+                    indice = "2: Llave Primaria";
                     break;
                 case 3:
-                    indice = "3: Indice Secundario";
+                    indice = "3: Llave Foranea";
                     break;
                 case 4:
-                    indice = "4: Multi-Lista";
+                    indice = "4: Indice Secundario";
                     break;
                 case 5:
-                    indice = "5: Arbol B+";
+                    indice = "5: Hash Estatica";
                     break;
             }
             return indice;
