@@ -48,10 +48,6 @@ namespace Manejador_De_Archivos_2._0
 
         public abstract bool existeLlave(string llave);
 
-        internal void leeIndicesAuxiliares(string directorio)
-        {
-            throw new NotImplementedException();
-        }
         #endregion
     }
 }

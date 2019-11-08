@@ -24,6 +24,12 @@ namespace Manejador_De_Archivos_2._0
             }
         }
 
+        public NodoAuxiliar(long dirAct, long[] apuntadores)
+        {
+            this.dirAct = dirAct;
+            this.apuntadores = apuntadores;
+        }
+
         #region Gets & Region
 
         public long[] Apuntadores
@@ -84,6 +90,5 @@ namespace Manejador_De_Archivos_2._0
         }
 
         #endregion
-
     }
 }

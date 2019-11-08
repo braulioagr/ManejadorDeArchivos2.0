@@ -225,7 +225,7 @@ namespace Manejador_De_Archivos_2._0
                         indice = new Secundario(this.nombre, dirIdx, longitud, -1);
                         this.grabaIndiceSecundario(indice, directorio);
                         indice.alta(llave, direccion, directorio);
-                        this.indices.Last().DirSig = indice.DirAct;
+                        //this.indices.Last().DirSig = indice.DirAct;
                         this.indices.Add(indice);
                     }
                 }
@@ -285,6 +285,12 @@ namespace Manejador_De_Archivos_2._0
                     if(this.dirIndice != -1)
                     {
                         this.leeIndicePrimario(directorio);
+                    }
+                break;
+                case 4:
+                    if (this.dirIndice != -1)
+                    {
+                        this.leeIndiceSecundario(directorio);
                     }
                 break;
             }
@@ -428,6 +434,7 @@ namespace Manejador_De_Archivos_2._0
                 {
                     using (reader = new BinaryReader(new FileStream(directorio, FileMode.Open)))//Abre el archivo con el BinaryWriter
                     {
+                        reader.ReadBytes((int)dirSig);//Se posciona en la posición del iterador
                         for (int i = 0; i < largo; i++)
                         {
                             if (this.tipo == 'C')
@@ -453,7 +460,7 @@ namespace Manejador_De_Archivos_2._0
                 }
                 foreach (Indice idx in this.Indices)
                 {
-                    idx.leeIndicesAuxiliares(directorio);
+                    ((Secundario)idx).leeNodosAuxiliares(directorio);
                 }
             }
             catch (Exception e)

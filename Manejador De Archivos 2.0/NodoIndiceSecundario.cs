@@ -22,6 +22,7 @@ namespace Manejador_De_Archivos_2._0
             this.llave = llave;
             this.direccion = direccion;
             this.nodos = new List<NodoAuxiliar>();
+            this.nodos.Add(new NodoAuxiliar(direccion));
         }
         #endregion
 
@@ -69,7 +70,6 @@ namespace Manejador_De_Archivos_2._0
                 }
                 this.nodos.Add(nodo);
             }
-            this.direccion = this.nodos.First().DirAct;
         }
 
         public override string ToString()

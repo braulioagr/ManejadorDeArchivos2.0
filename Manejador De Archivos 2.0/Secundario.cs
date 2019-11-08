@@ -121,17 +121,16 @@ namespace Manejador_De_Archivos_2._0
             }
             else
             {
-                //////if (this.existeEspacioLibre())
+                if (this.existeEspacioLibre())
                 {
                     i = this.espacioLibre();
                     long dir;
                     dir = MetodosAuxiliares.ultimaDireccionDeArchivo(directorio);
                     this.nodos[i] = new NodoIndiceSecundario(llave, dir);
-                    this.grabaNodosAuxiliares(this.nodos[i], directorio);
+                    //this.grabaNodosAuxiliares(this.nodos[i], directorio);
                     this.nodos[i].alta(direccion,directorio);
                 }
             }
-            this.nodos = this.nodos.OrderBy(nodo => nodo.Llave).ToArray();
             this.grabaNodosAuxiliares(this.nodos[i],directorio);
         }
 
@@ -167,9 +166,38 @@ namespace Manejador_De_Archivos_2._0
             }
         }
 
-        public void leeNodosAuxiliare(string directorio)
+        public void leeNodosAuxiliares(string directorio)
         {
-
+            try
+            {
+                long dirSiguiente;
+                NodoAuxiliar nodoAux;
+                foreach(NodoIndiceSecundario nodo in this.nodos)
+                {
+                    if (nodo.Direccion != -1)
+                    {
+                        dirSiguiente = nodo.Direccion;
+                        while (dirSiguiente != -1)
+                        {
+                            using (reader = new BinaryReader(new FileStream(directorio, FileMode.Open)))//Abre el archivo con el BinaryWriter
+                            {
+                                reader.ReadBytes((int)dirSiguiente);//Se posciona en la posición del iterador
+                                nodoAux = new NodoAuxiliar(dirSiguiente);
+                                for (int i = 0; i < nodoAux.Apuntadores.Length; i++)
+                                {
+                                    nodoAux.Apuntadores[i] = (long)reader.ReadInt64();
+                                }
+                                nodo.Nodos.Add(nodoAux);
+                                dirSiguiente = nodoAux.Apuntadores.Last();
+                            }
+                        }
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.Message,"error");
+            }
         }
 
         #endregion
