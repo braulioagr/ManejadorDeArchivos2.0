@@ -178,7 +178,14 @@ namespace Manejador_De_Archivos_2._0
                     break;
                 }
             }
-            this.dirIndice = this.indices.First().DirAct;
+            if (this.indices.Count > 0)
+            {
+                this.dirIndice = this.indices.First().DirAct;
+            }
+            else
+            {
+                this.dirIndice = -1;
+            }
             foreach (Indice idx in this.indices)
             {
                 this.grabaIndicePrimario((Primario)idx, directorio);
@@ -271,11 +278,46 @@ namespace Manejador_De_Archivos_2._0
 
         #endregion
 
+        #region Las cantantes
+        public void altaHash(string llave, long direccion, string directorio)
+        {
+            bool band;
+            band = false;
+            if(this.dirIndice == -1)
+            {
+                HashEstatica hash;
+                hash = new HashEstatica(this.nombre, this.dirIndice, -1);
+                this.indices.Add(hash);
+                for(int i = 0 ;  i < hash.Direcciones.Length; i++)
+                {
+                    hash.Direcciones[i] = MetodosAuxiliares.ultimaDireccionDeArchivo(directorio);
+                    this.grabaApuntadoresHash(directorio, hash, hash.Direcciones[i], i);
+                }
+                this.dirIndice = MetodosAuxiliares.ultimaDireccionDeArchivo(directorio);
+                this.grabaDireccionesHash(directorio, hash);
+            }
+            band = this.tipo.Equals('C');
+            int idx;
+            idx = ((HashEstatica)this.indices.First()).alta(band, MetodosAuxiliares.truncaCadena(llave).ToCharArray(), direccion);
+            this.grabaApuntadoresHash(directorio, ((HashEstatica)this.indices.First()), ((HashEstatica)this.indices.First()).Direcciones[idx], idx);
+        }
+        public void elimminaHash(string llave, long direccion, string directorio)
+        {
+            if (this.dirIndice != -1)
+            {
+                bool band;
+                int idx;
+                band = this.tipo.Equals('C');
+                idx = ((HashEstatica)this.indices.First()).baja(band, llave.ToCharArray(), direccion);
+                this.grabaApuntadoresHash(directorio, ((HashEstatica)this.indices.First()), ((HashEstatica)this.indices.First()).Direcciones[idx], idx);
+            }
+        }
+
+        #endregion
+
         #endregion
 
         #region Lectura y Grabado de Datos
-
-        #region Indices
 
         public void leeIndices(string directorio)
         {
@@ -293,10 +335,17 @@ namespace Manejador_De_Archivos_2._0
                         this.leeIndiceSecundario(directorio);
                     }
                 break;
+                case 5:
+                    if(this.dirIndice != -1)
+                    {
+                        this.leeHashEstatica(directorio);
+                    }
+                break;
             }
         }
 
         #region Primario
+
         private void grabaIndicePrimario(Primario indice, string directorio)
         {
             try
@@ -349,6 +398,7 @@ namespace Manejador_De_Archivos_2._0
                 {
                     using (reader = new BinaryReader(new FileStream(directorio, FileMode.Open)))//Abre el archivo con el BinaryWriter
                     {
+                        reader.BaseStream.Seek(this.dirIndice, SeekOrigin.Current);
                         for( int i = 0; i < largo; i++ )
                         {
                             if (this.tipo == 'C')
@@ -413,12 +463,13 @@ namespace Manejador_De_Archivos_2._0
                 MessageBox.Show(e.Message);
             }
         }
-        
+
+
         public void leeIndiceSecundario(String directorio)
         {
             try
             {
-                Indice indice;
+                Secundario indice;
                 long dirSig;
                 int largo;
                 string llave;
@@ -433,8 +484,8 @@ namespace Manejador_De_Archivos_2._0
                 while (dirSig != -1)
                 {
                     using (reader = new BinaryReader(new FileStream(directorio, FileMode.Open)))//Abre el archivo con el BinaryWriter
-                    {
-                        reader.ReadBytes((int)dirSig);//Se posciona en la posición del iterador
+                    {                        
+                        reader.BaseStream.Seek(dirSig, SeekOrigin.Current);
                         for (int i = 0; i < largo; i++)
                         {
                             if (this.tipo == 'C')
@@ -453,14 +504,11 @@ namespace Manejador_De_Archivos_2._0
                         this.indices.Add(indice);
                         dirSig = reader.ReadInt64();
                     }
+                    indice.leeNodosAuxiliares(directorio);
                 }
                 for (int i = 0; i < this.Indices.Count - 1; i++)
                 {
                     this.indices[i].DirSig = this.indices[i + 1].DirAct;
-                }
-                foreach (Indice idx in this.Indices)
-                {
-                    ((Secundario)idx).leeNodosAuxiliares(directorio);
                 }
             }
             catch (Exception e)
@@ -471,6 +519,92 @@ namespace Manejador_De_Archivos_2._0
 
         #endregion
 
+        #region Hash Estatica
+
+
+        private void grabaApuntadoresHash(string directorio, HashEstatica hash, long dir, int i)
+        {
+            try
+            {
+                using (writer = new BinaryWriter(new FileStream(directorio, FileMode.Open)))//Abre el archivo con el BinaryWriter
+                {
+                    this.writer.Seek((int)dir, SeekOrigin.Current);//Posiciona el grabado del archivo en la dirección actual
+                    for (int j = 0; j < Constantes.tamNodoAux ; j++)
+                    {
+                        writer.Write(hash.Apuntadores[i, j]);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        private void grabaDireccionesHash(string directorio, HashEstatica hash)
+        {
+            using (writer = new BinaryWriter(new FileStream(directorio, FileMode.Open)))//Abre el archivo con el BinaryWriter
+            {
+                this.writer.Seek((int)this.dirIndice, SeekOrigin.Current);//Posiciona el grabado del archivo en la dirección actual
+                for (int i = 0; i < hash.Direcciones.Length ; i++)
+                {
+                    writer.Write(hash.Direcciones[i]);
+                }
+            }
+            try
+            {
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        private void leeHashEstatica(string directorio)
+        {
+            try
+            {
+                long todo = MetodosAuxiliares.ultimaDireccionDeArchivo(directorio);
+                HashEstatica hash;
+                hash = new HashEstatica(this.nombre, this.dirIndice, -1);
+                using (reader = new BinaryReader(new FileStream(directorio, FileMode.Open)))//Abre el archivo con el BinaryWriter
+                {
+                    reader.BaseStream.Seek(this.dirIndice, SeekOrigin.Current);
+                    for(int i = 0 ; i < hash.Direcciones.Length ; i++)
+                    {
+                        hash.Direcciones[i] = reader.ReadInt64();
+                    }
+                }
+                for (int i = 0; i < hash.Direcciones.Length; i++)
+                {
+                    this.LeeApuntadoresHash(directorio,i,hash);
+                }
+                this.indices.Add(hash);
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        private void LeeApuntadoresHash(string directorio, int i, HashEstatica hash)
+        {
+            try
+            {
+                using (reader = new BinaryReader(new FileStream(directorio, FileMode.Open)))
+                {
+                    reader.BaseStream.Position=hash.Direcciones[i];
+                    for (int j = 0; j < Constantes.tamNodoAux; j++)
+                    {
+                        hash.Apuntadores[i, j] = reader.ReadInt64();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
         #endregion
 
         #endregion

@@ -339,6 +339,9 @@ namespace Manejador_De_Archivos_2._0
                             case 4://Indice Secundario
                                 atributo.altaIndiceSecundario(informacion[i], dir, archivoIdx);
                             break;
+                            case 5:
+                                atributo.altaHash(informacion[i], dir, archivoIdx);
+                            break;
                         }
                     }
                     this.ajustaDireccionesRegistros();
@@ -392,6 +395,7 @@ namespace Manejador_De_Archivos_2._0
             {
                 string archivoDat;
                 string archivoIdx;
+                Registro reg;
                 archivoDat = directorio + "\\" + MetodosAuxiliares.truncaCadena(this.nombre) + ".dat";
                 archivoIdx = directorio + "\\" + MetodosAuxiliares.truncaCadena(this.nombre) + ".idx";
                 if (this.atributos[this.buscaIndiceClavePrimaria()].Tipo.Equals('C'))
@@ -402,13 +406,20 @@ namespace Manejador_De_Archivos_2._0
                 {
                     llavePrimaria = MetodosAuxiliares.truncaCadena(llavePrimaria);
                 }
+                reg = this.registros[llavePrimaria];
                 this.registros.Remove(llavePrimaria);
+                int i;
+                i = -1;
                 foreach(Atributo atributo in this.atributos)
                 {
+                    i++;
                     switch (atributo.Indice)
                     {
                         case 2:
                             atributo.eliminaIndicePrimario(llavePrimaria, archivoIdx);
+                        break;
+                        case 5:
+                            atributo.elimminaHash(reg.Datos[i], reg.DirAct,archivoIdx);
                         break;
                     }
                 }

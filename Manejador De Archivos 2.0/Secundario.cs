@@ -146,18 +146,18 @@ namespace Manejador_De_Archivos_2._0
                 {
                     long dirSiguiente;
                     this.writer.Seek((int)nodo.Direccion, SeekOrigin.Current);//Posiciona el grabado del archivo en la dirección actual
-                    foreach(NodoAuxiliar nodoAuxiliar in nodo.Nodos)
+                    for(int i = 0 ;  i < nodo.Apuntadores.Length ; i++)
                     {
-                        for(int i = 0 ;  i < nodoAuxiliar.Apuntadores.Length ; i++)
-                        {
-                            this.writer.Write(nodoAuxiliar.Apuntadores[i]);
-                        }
+                        this.writer.Write(nodo.Apuntadores[i]);
+                    }
+                    /**foreach(NodoAuxiliar nodoAuxiliar in nodo.Nodos)
+                    {
                         dirSiguiente = nodoAuxiliar.Apuntadores.Last();
                         if(dirSiguiente!= -1)
                         {
                             this.writer.Seek((int)dirSiguiente, SeekOrigin.Current);//Posiciona el grabado del archivo en la dirección actual
                         }
-                    }
+                    }*/
                 }
             }
             catch (Exception e)
@@ -170,26 +170,23 @@ namespace Manejador_De_Archivos_2._0
         {
             try
             {
-                long dirSiguiente;
-                NodoAuxiliar nodoAux;
+                //long dirSiguiente;
                 foreach(NodoIndiceSecundario nodo in this.nodos)
                 {
                     if (nodo.Direccion != -1)
                     {
-                        dirSiguiente = nodo.Direccion;
-                        while (dirSiguiente != -1)
+                        //dirSiguiente = nodo.Direccion;
+                        using (reader = new BinaryReader(new FileStream(directorio, FileMode.Open)))//Abre el archivo con el BinaryWriter
                         {
-                            using (reader = new BinaryReader(new FileStream(directorio, FileMode.Open)))//Abre el archivo con el BinaryWriter
-                            {
-                                reader.ReadBytes((int)dirSiguiente);//Se posciona en la posición del iterador
-                                nodoAux = new NodoAuxiliar(dirSiguiente);
-                                for (int i = 0; i < nodoAux.Apuntadores.Length; i++)
+                                reader.BaseStream.Seek(nodo.Direccion, SeekOrigin.Current);
+                                for (int i = 0; i < nodo.Apuntadores.Length; i++)
                                 {
-                                    nodoAux.Apuntadores[i] = (long)reader.ReadInt64();
+                                    nodo.Apuntadores[i] = reader.ReadInt64();
                                 }
-                                nodo.Nodos.Add(nodoAux);
-                                dirSiguiente = nodoAux.Apuntadores.Last();
-                            }
+                            /**while (dirSiguiente != -1)
+                            {
+                                //dirSiguiente = nodo.Apuntadores.Last();
+                            }*/
                         }
                     }
                 }

@@ -85,6 +85,16 @@
             this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label3 = new System.Windows.Forms.Label();
             this.comboBoxAtributosSecundarios = new System.Windows.Forms.ComboBox();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.dataGridHash = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridHashAuxiliar = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label8 = new System.Windows.Forms.Label();
+            this.ComboBoxAtributosHash = new System.Windows.Forms.ComboBox();
             this.menuRegistros = new System.Windows.Forms.MenuStrip();
             this.altaRegistros = new System.Windows.Forms.ToolStripMenuItem();
             this.modificarRegistros = new System.Windows.Forms.ToolStripMenuItem();
@@ -108,6 +118,9 @@
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridSecundario)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridSecundarioAuxiliar)).BeginInit();
+            this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridHash)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridHashAuxiliar)).BeginInit();
             this.menuRegistros.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -503,6 +516,7 @@
             // 
             this.tabControlIndices.Controls.Add(this.tabPage3);
             this.tabControlIndices.Controls.Add(this.tabPage1);
+            this.tabControlIndices.Controls.Add(this.tabPage2);
             this.tabControlIndices.Location = new System.Drawing.Point(6, 19);
             this.tabControlIndices.Name = "tabControlIndices";
             this.tabControlIndices.SelectedIndex = 0;
@@ -599,12 +613,14 @@
             // 
             this.Column3.HeaderText = "Llave";
             this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
             this.Column3.Width = 93;
             // 
             // Column4
             // 
             this.Column4.HeaderText = "Direccion";
             this.Column4.Name = "Column4";
+            this.Column4.ReadOnly = true;
             this.Column4.Width = 93;
             // 
             // dataGridSecundarioAuxiliar
@@ -636,14 +652,114 @@
             this.label3.TabIndex = 1;
             this.label3.Text = "Atributos";
             // 
-            // comboBoxAtributosForaneos
+            // comboBoxAtributosSecundarios
             // 
             this.comboBoxAtributosSecundarios.FormattingEnabled = true;
             this.comboBoxAtributosSecundarios.Location = new System.Drawing.Point(57, 6);
-            this.comboBoxAtributosSecundarios.Name = "comboBoxAtributosForaneos";
+            this.comboBoxAtributosSecundarios.Name = "comboBoxAtributosSecundarios";
             this.comboBoxAtributosSecundarios.Size = new System.Drawing.Size(118, 21);
             this.comboBoxAtributosSecundarios.TabIndex = 0;
             this.comboBoxAtributosSecundarios.SelectedIndexChanged += new System.EventHandler(this.ComboBoxAtributosForaneos_SelectedIndexChanged);
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.label6);
+            this.tabPage2.Controls.Add(this.label7);
+            this.tabPage2.Controls.Add(this.dataGridHash);
+            this.tabPage2.Controls.Add(this.dataGridHashAuxiliar);
+            this.tabPage2.Controls.Add(this.label8);
+            this.tabPage2.Controls.Add(this.ComboBoxAtributosHash);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(400, 252);
+            this.tabPage2.TabIndex = 3;
+            this.tabPage2.Text = "Hash Estatica";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(203, 10);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(52, 13);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "Direccion";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(5, 35);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(43, 13);
+            this.label7.TabIndex = 11;
+            this.label7.Text = "Entidad";
+            // 
+            // dataGridHash
+            // 
+            this.dataGridHash.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridHash.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1,
+            this.dataGridViewTextBoxColumn2});
+            this.dataGridHash.Location = new System.Drawing.Point(8, 51);
+            this.dataGridHash.Name = "dataGridHash";
+            this.dataGridHash.ReadOnly = true;
+            this.dataGridHash.RowHeadersVisible = false;
+            this.dataGridHash.Size = new System.Drawing.Size(190, 195);
+            this.dataGridHash.TabIndex = 10;
+            this.dataGridHash.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridHash_CellContentClick);
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "Indice";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.Width = 93;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.HeaderText = "Direccion";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            this.dataGridViewTextBoxColumn2.Width = 93;
+            // 
+            // dataGridHashAuxiliar
+            // 
+            this.dataGridHashAuxiliar.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridHashAuxiliar.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn3});
+            this.dataGridHashAuxiliar.Location = new System.Drawing.Point(206, 27);
+            this.dataGridHashAuxiliar.Name = "dataGridHashAuxiliar";
+            this.dataGridHashAuxiliar.ReadOnly = true;
+            this.dataGridHashAuxiliar.RowHeadersVisible = false;
+            this.dataGridHashAuxiliar.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.dataGridHashAuxiliar.Size = new System.Drawing.Size(190, 219);
+            this.dataGridHashAuxiliar.TabIndex = 9;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.HeaderText = "Direccion";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            this.dataGridViewTextBoxColumn3.Width = 186;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(5, 10);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(48, 13);
+            this.label8.TabIndex = 8;
+            this.label8.Text = "Atributos";
+            // 
+            // ComboBoxAtributosHash
+            // 
+            this.ComboBoxAtributosHash.FormattingEnabled = true;
+            this.ComboBoxAtributosHash.Location = new System.Drawing.Point(59, 6);
+            this.ComboBoxAtributosHash.Name = "ComboBoxAtributosHash";
+            this.ComboBoxAtributosHash.Size = new System.Drawing.Size(118, 21);
+            this.ComboBoxAtributosHash.TabIndex = 7;
+            this.ComboBoxAtributosHash.SelectedIndexChanged += new System.EventHandler(this.ComboBoxAtributosHash_SelectedIndexChanged_1);
             // 
             // menuRegistros
             // 
@@ -721,6 +837,10 @@
             this.tabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridSecundario)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridSecundarioAuxiliar)).EndInit();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridHash)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridHashAuxiliar)).EndInit();
             this.menuRegistros.ResumeLayout(false);
             this.menuRegistros.PerformLayout();
             this.ResumeLayout(false);
@@ -791,6 +911,16 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.DataGridView dataGridHash;
+        private System.Windows.Forms.DataGridView dataGridHashAuxiliar;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.ComboBox ComboBoxAtributosHash;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
     }
 }
 

@@ -127,7 +127,7 @@ namespace Manejador_De_Archivos_2._0
         {
             int i;
             i = indiceLlave(llave);
-            this.idx[i].Llave = "null";
+            this.idx[i].Llave = "-1";
             this.idx[i].Direccion = -1;
             this.idx = idx.OrderBy(nodo => nodo.Llave).ToArray();
             return vacio();

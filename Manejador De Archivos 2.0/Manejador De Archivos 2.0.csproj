@@ -77,6 +77,7 @@
     <Compile Include="ConsultaEntidad.Designer.cs">
       <DependentUpon>ConsultaEntidad.cs</DependentUpon>
     </Compile>
+    <Compile Include="HashEstatica.cs" />
     <Compile Include="Indice.cs" />
     <Compile Include="ModificaRegistro.cs">
       <SubType>Form</SubType>
@@ -84,7 +85,6 @@
     <Compile Include="ModificaRegistro.Designer.cs">
       <DependentUpon>ModificaRegistro.cs</DependentUpon>
     </Compile>
-    <Compile Include="NodoAuxiliar.cs" />
     <Compile Include="NodoIndicePrimario.cs" />
     <Compile Include="NodoIndiceSecundario.cs" />
     <Compile Include="Primario.cs" />

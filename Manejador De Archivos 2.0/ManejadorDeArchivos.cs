@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Manejador_De_Archivos_2._0
@@ -449,8 +450,29 @@ namespace Manejador_De_Archivos_2._0
             this.actualizaDataGridRegistros(entidad);
             this.actualizaDataGridIndicePrimario(entidad);
             this.actualizaComboIndiceSecundario(entidad);
+            this.actualizaComboIndiceHash(entidad);
         }
-
+        
+        private void ComboBoxAtributosHash_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            Entidad entidad;
+            entidad = archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(this.comboBoxEntidad.Text, Constantes.tam));
+            this.dataGridHash.Rows.Clear();
+            foreach (Atributo atributo in entidad.Atributos)
+            {
+                if (MetodosAuxiliares.truncaCadena(atributo.Nombre).Equals(this.ComboBoxAtributosHash.Text))
+                {
+                    foreach(Indice indice in atributo.Indices)
+                    {
+                        for(int i = 0 ; i < ((HashEstatica)indice).Direcciones.Length ; i++)
+                        {
+                            this.dataGridHash.Rows.Add(i.ToString(), ((HashEstatica)indice).Direcciones[i].ToString());
+                        }
+                    }
+                    break;
+                }
+            }
+        }
 
         private void ComboBoxAtributosForaneos_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -494,20 +516,38 @@ namespace Manejador_De_Archivos_2._0
                 {
                     if (cell.AccessibilityObject.Value.Equals(MetodosAuxiliares.truncaCadena(nodoSecundario.Llave)))
                     {
-                        foreach (NodoAuxiliar nodo in nodoSecundario.Nodos)
+                        for (int i = 0; i < nodoSecundario.Apuntadores.Length; i++)
                         {
-                            for (int i = 0; i < nodo.Apuntadores.Length; i++)
+                            if (nodoSecundario.Apuntadores[i] != -1)
                             {
-                                if (nodo.Apuntadores[i] != -1)
-                                {
-                                    this.dataGridSecundarioAuxiliar.Rows.Add(nodo.Apuntadores[i].ToString());
-                                }
+                                this.dataGridSecundarioAuxiliar.Rows.Add(nodoSecundario.Apuntadores[i].ToString());
                             }
                         }
-                        break;
                     }
                 }
             }
+        }
+        private void DataGridHash_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int i;
+            Entidad entidad;
+            Atributo atributo;
+            Indice indice;
+            DataGridViewCell cell;
+            cell = dataGridHash.Rows[e.RowIndex].Cells[0];
+            entidad = this.archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(this.comboBoxEntidad.Text, Constantes.tam));
+            atributo = entidad.buscaAtributo(MetodosAuxiliares.ajustaCadena(this.ComboBoxAtributosHash.Text, Constantes.tam));
+            this.dataGridHashAuxiliar.Rows.Clear();
+            i = Int32.Parse(cell.Value.ToString());
+            indice = atributo.Indices.First();
+            for(int j = 0 ; j < Constantes.tamNodoAux ; j++)
+            {
+                if(((HashEstatica)indice).Apuntadores[i,j] != -1)
+                {
+                    this.dataGridHashAuxiliar.Rows.Add(((HashEstatica)indice).Apuntadores[i, j]);
+                }
+            }
+
         }
 
         #endregion
@@ -556,7 +596,6 @@ namespace Manejador_De_Archivos_2._0
                 }
             }
         }
-
 
         private void actualizaDataGridRegistros(Entidad entidad)
         {
@@ -621,6 +660,9 @@ namespace Manejador_De_Archivos_2._0
             this.dataGridIdxPrimmario.Rows.Clear();
             this.dataGridSecundario.Rows.Clear();
             this.dataGridSecundarioAuxiliar.Rows.Clear();
+            this.ComboBoxAtributosHash.Items.Clear();
+            this.dataGridHash.Rows.Clear();
+            this.dataGridHashAuxiliar.Rows.Clear();
         }
 
         private void actualizaTodo()
@@ -646,6 +688,21 @@ namespace Manejador_De_Archivos_2._0
             }
         }
 
+        private void actualizaComboIndiceHash(Entidad entidad)
+        {
+            this.ComboBoxAtributosHash.Items.Clear();
+            foreach (Atributo atributo in entidad.Atributos)
+            {
+                if (atributo.Indice == 5)
+                {
+                    this.ComboBoxAtributosHash.Items.Add(MetodosAuxiliares.truncaCadena(atributo.Nombre));
+                }
+            }
+            if (this.ComboBoxAtributosHash.Items.Count > 0)
+            {
+                this.ComboBoxAtributosHash.Text = this.ComboBoxAtributosHash.Items[0].ToString();
+            }
+        }
         private void actualizaComboIndiceSecundario(Entidad entidad)
         {
             this.comboBoxAtributosSecundarios.Items.Clear();

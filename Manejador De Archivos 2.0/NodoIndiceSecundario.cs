@@ -11,7 +11,7 @@ namespace Manejador_De_Archivos_2._0
     {
 
         #region Variables de Instancia
-        private List<NodoAuxiliar> nodos;
+        private long[] apuntadores;
         private long direccion;
         private string llave;
         #endregion
@@ -21,8 +21,11 @@ namespace Manejador_De_Archivos_2._0
         {
             this.llave = llave;
             this.direccion = direccion;
-            this.nodos = new List<NodoAuxiliar>();
-            this.nodos.Add(new NodoAuxiliar(direccion));
+            apuntadores = new long[Constantes.tamNodoAux];
+            for (int i = 0; i < apuntadores.Length; i++)
+            {
+                this.apuntadores[i] = -1;
+            }
         }
         #endregion
 
@@ -33,9 +36,9 @@ namespace Manejador_De_Archivos_2._0
             get { return this.llave; }
         }
 
-        public List<NodoAuxiliar> Nodos
+        public long[] Apuntadores
         {
-            get { return this.nodos; }
+            get { return this.apuntadores; }
         }
 
         public long Direccion
@@ -48,17 +51,13 @@ namespace Manejador_De_Archivos_2._0
         #region Metodos
         public void alta(long direccion, string directorio)
         {
-            NodoAuxiliar nodo;
-            nodo = null;
-            if (this.especioLibreAuxiliares(ref nodo))
+            int i;
+            i = 0;
+            if (this.especioLibreAuxiliares(ref i))
             {
-                if (this.direccion == -1)
-                {
-                    this.direccion = MetodosAuxiliares.ultimaDireccionDeArchivo(directorio);
-                }
-                nodo.altaDireccion(direccion);
+                this.apuntadores[i] = direccion;
             }
-            else
+            /**else
             {
                 long dirAct;
                 dirAct = MetodosAuxiliares.ultimaDireccionDeArchivo(directorio);
@@ -69,7 +68,7 @@ namespace Manejador_De_Archivos_2._0
                     nodos.Last().DirSiguiente = nodo.DirAct;
                 }
                 this.nodos.Add(nodo);
-            }
+            }*/
         }
 
         public override string ToString()
@@ -77,16 +76,16 @@ namespace Manejador_De_Archivos_2._0
             return MetodosAuxiliares.truncaCadena(this.llave) + "," + this.direccion.ToString();
         }
 
-        private bool especioLibreAuxiliares(ref NodoAuxiliar nodo)
+        private bool especioLibreAuxiliares(ref int j)
         {
             bool band;
             band = false;
-            foreach(NodoAuxiliar nodo1 in this.nodos)
+            for(int i = 0 ;  i < this.apuntadores.Length; i++)
             {
-                if (nodo1.existeEspacioLibre())
+                if (this.apuntadores[i] == -1)
                 {
+                    j = i;
                     band = true;
-                    nodo = nodo1;
                     break;
                 }
             }

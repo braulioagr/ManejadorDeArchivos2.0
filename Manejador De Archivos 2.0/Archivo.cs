@@ -429,7 +429,7 @@ namespace Manejador_De_Archivos_2._0
                         this.cabecera = dirSigEntidad = reader.ReadInt64();//La cabecera y el iterador  son iguales al resultado de leer un long
                         continue;
                     }
-                    reader.ReadBytes((int)dirSigEntidad);//Se posciona en la posición del iterador
+                    reader.BaseStream.Seek(dirSigEntidad, SeekOrigin.Current);//Se posciona en la posición del iterador
                     actual = reader.ReadInt64();//Lee un long que de la dirección actual
                     nombre = reader.ReadString();//Lee el string del nombre
                     dirAtributo = reader.ReadInt64();//Lee un long que de la dirección de los atributos
@@ -466,7 +466,7 @@ namespace Manejador_De_Archivos_2._0
                 {
                     using (reader = new BinaryReader(new FileStream(this.Nombre, FileMode.Open)))//Abre el archivo con un BinaryReader
                     {
-                        reader.ReadBytes((int)dirSiguienteAtributo);//Se posciona en la posición del iterador
+                        reader.BaseStream.Seek(dirSiguienteAtributo, SeekOrigin.Current);//Se posciona en la posición del iterador
                         nombre = reader.ReadString();//Se lee el string del nombre
                         tipo = reader.ReadChar();//Se lee el string del tipo de dato
                         longitud = reader.ReadInt32();//Se lee el int de la longitud del tipo de dato
