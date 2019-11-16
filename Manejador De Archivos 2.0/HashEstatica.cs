@@ -75,14 +75,14 @@ namespace Manejador_De_Archivos_2._0
                     break;
                 }
             }
-            return i;
+            return j;
         }
 
         private int buscaEspacioLibre(int i)
         {
             int j;
             j = -1;
-            for(int k = 0;  k < Constantes.tamNodoAux; i++)
+            for(int k = 0;  k < Constantes.tamNodoAux; k++)
             {
                 if(this.apuntadores[i,k] == -1)
                 {

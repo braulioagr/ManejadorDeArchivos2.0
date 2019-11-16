@@ -485,11 +485,11 @@ namespace Manejador_De_Archivos_2._0
                 {
                     foreach(Indice indice in atributo.Indices)
                     {
-                        foreach (NodoIndiceSecundario nodo in ((Secundario)indice).Nodos)
+                        for (int i = 0; i < ((Secundario)indice).Llaves.Length; i++)
                         {
-                            if (nodo.Direccion != -1)
+                            if(!MetodosAuxiliares.truncaCadena(((Secundario)indice).Llaves[i]).Equals("-1"))
                             {
-                                this.dataGridSecundario.Rows.Add(nodo.ToString().Split(','));
+                                this.dataGridSecundario.Rows.Add(((Secundario)indice).Llaves[i], ((Secundario)indice).Apuntadores[i]);
                             }
                         }
                     }
@@ -503,27 +503,22 @@ namespace Manejador_De_Archivos_2._0
 
         private void DataGridSecundario_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            int i;
             Entidad entidad;
             Atributo atributo;
+            Indice indice;
             DataGridViewCell cell;
             cell = dataGridSecundario.Rows[e.RowIndex].Cells[0];
             entidad = this.archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(this.comboBoxEntidad.Text, Constantes.tam));
             atributo = entidad.buscaAtributo(MetodosAuxiliares.ajustaCadena(this.comboBoxAtributosSecundarios.Text, Constantes.tam));
             this.dataGridSecundarioAuxiliar.Rows.Clear();
-            foreach (Indice indice in atributo.Indices)
+            indice = atributo.Indices.First();
+            i = ((Secundario)indice).indiceLlave(MetodosAuxiliares.ajustaCadena(cell.Value.ToString(),atributo.Longitud));
+            for (int j = 0; j < Constantes.tamNodoAux; j++)
             {
-                foreach (NodoIndiceSecundario nodoSecundario in ((Secundario)indice).Nodos)
+                if (((Secundario)indice).Direcciones[i, j] != -1)
                 {
-                    if (cell.AccessibilityObject.Value.Equals(MetodosAuxiliares.truncaCadena(nodoSecundario.Llave)))
-                    {
-                        for (int i = 0; i < nodoSecundario.Apuntadores.Length; i++)
-                        {
-                            if (nodoSecundario.Apuntadores[i] != -1)
-                            {
-                                this.dataGridSecundarioAuxiliar.Rows.Add(nodoSecundario.Apuntadores[i].ToString());
-                            }
-                        }
-                    }
+                    this.dataGridSecundarioAuxiliar.Rows.Add(((Secundario)indice).Direcciones[i, j]);
                 }
             }
         }

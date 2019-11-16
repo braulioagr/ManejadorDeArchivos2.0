@@ -86,7 +86,6 @@
       <DependentUpon>ModificaRegistro.cs</DependentUpon>
     </Compile>
     <Compile Include="NodoIndicePrimario.cs" />
-    <Compile Include="NodoIndiceSecundario.cs" />
     <Compile Include="Primario.cs" />
     <Compile Include="Secundario.cs" />
     <Compile Include="SeleccionRegistro.cs">

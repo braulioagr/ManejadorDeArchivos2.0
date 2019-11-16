@@ -12,34 +12,44 @@ namespace Manejador_De_Archivos_2._0
     {
 
         #region Variables de Instancia
-        private NodoIndiceSecundario[] nodos;
+        private string[] llaves;
+        private long[] apuntadores;
+        private long[,] direcciones;
         private BinaryReader reader;
         private BinaryWriter writer;
         #endregion
 
         #region Constructores
 
-        public Secundario(string nombre, long dirAct, int tamañoArreglo, long dirSig) : base(nombre, dirAct, dirSig)
+        public Secundario(string nombre, long dirAct, int tamañoArreglo, int longitud,long dirSig) : base(nombre, dirAct, dirSig)
         {
-            this.nodos = new NodoIndiceSecundario[tamañoArreglo];
-            NodoIndiceSecundario nodo;
-            for (int i = 0; i < nodos.Length; i++)
+            llaves = new string[tamañoArreglo];
+            this.apuntadores = new long[tamañoArreglo];
+            this.direcciones = new long[tamañoArreglo, Constantes.tamNodoAux];
+            for (int i = 0; i < llaves.Length; i++)
             {
-                nodo = new NodoIndiceSecundario("-1", -1);
-                this.nodos[i] = nodo;
+                this.llaves[i] = MetodosAuxiliares.ajustaCadena("-1",longitud);
+                this.apuntadores[i] = -1;
+                for (int j = 0; j < Constantes.tamNodoAux; j++)
+                {
+                    this.direcciones[i, j] = -1;
+                }
             }
-        }
-
-        public Secundario(string nombre, long dirAct, NodoIndiceSecundario[] idx, long dirSig) : base(nombre, dirAct, dirSig)
-        {
-            this.nodos = idx;
         }
         #endregion
 
         #region Gets & Sets
-        public NodoIndiceSecundario[] Nodos
+        public string[] Llaves
         {
-            get { return this.nodos; }
+            get { return this.llaves; }
+        }
+        public long[,] Direcciones
+        {
+            get { return this.direcciones; }
+        }
+        public long[] Apuntadores
+        {
+            get { return this.apuntadores; }
         }
         #endregion
 
@@ -47,28 +57,27 @@ namespace Manejador_De_Archivos_2._0
 
         #region Busqueda
 
-        public int espacioLibre()
+        public override int indiceLlave(string llave)
         {
-            int idx;
-            idx = -1;
-            for (int i = 0; i < this.nodos.Length; i++)
+            int band;
+            band = -1;
+            for(int i = 0;  i < this.llaves.Length; i++)
             {
-                if (this.nodos[i].Direccion == -1)
+                if (this.llaves[i].Equals(llave))
                 {
-                    idx = i;
+                    band = i;
                     break;
                 }
             }
-            return idx;
+            return band;
         }
-
         public override bool existeLlave(string llave)
         {
             bool band;
             band = false;
-            foreach (NodoIndiceSecundario nodo1 in this.nodos)
+            foreach(string key  in this.llaves)
             {
-                if (nodo1.Llave.Equals(llave))
+                if(key.Equals(llave))
                 {
                     band = true;
                     break;
@@ -77,127 +86,124 @@ namespace Manejador_De_Archivos_2._0
             return band;
         }
 
-        public override int indiceLlave(string llave)
+        private int espacioLibre(int i)
         {
-            int idx;
-            idx = -1;
-            for (int i = 0; i < this.nodos.Length; i++)
+            int j;
+            j = -1;
+            for (int k = 0; k < Constantes.tamNodoAux; k++)
             {
-                if (llave.Equals(this.nodos[i].Llave))
+                if (this.direcciones[i, k] == -1)
                 {
-                    idx = i;
+                    j = k;
                     break;
                 }
             }
-            return idx;
+            return j;
+        }
+        private int espacioLibre()
+        {
+            int j;
+            j = -1;
+            for(int i = 0; i < this.llaves.Length; i++)
+            {
+                if(MetodosAuxiliares.truncaCadena(this.llaves[i]).Equals("-1"))
+                {
+                    j = i;
+                    break;
+                }
+            }
+            return j;
         }
 
-        public bool existeEspacioLibre()
+        private bool estaVacio(int i)
         {
             bool band;
-            band = false;
-            for (int i = 0; i < this.nodos.Length; i++)
+            band = true;
+            for (int j = 0; j < Constantes.tamNodoAux; j++)
             {
-                if (nodos[i].Direccion == -1)
+                if (this.direcciones[i, j] != -1)
                 {
-                    band = true;
+                    band = false;
                     break;
                 }
             }
             return band;
         }
+
+        private int espacioDireccion(int i, long direccion)
+        {
+            int band;
+            band = -1;
+            for (int j = 0; j < Constantes.tamNodoAux; j++)
+            {
+                if (this.direcciones[i, j] == direccion)
+                {
+                    band = j;
+                    break;
+                }
+            }
+            return band;
+        }
+
 
         #endregion
 
-        #region Operaciones
-        public void alta(string llave, long direccion, string directorio)
+        public int alta(string llave, long direccion)
         {
             int i;
+            int j;
             i = -1;
+            j = -1;
             if (this.existeLlave(llave))
             {
                 i = this.indiceLlave(llave);
-                this.nodos[i].alta(direccion,directorio);
+                j = this.espacioLibre(i);
+                if (j != -1)
+                {
+                    this.direcciones[i, j] = direccion;
+                }
             }
             else
             {
-                if (this.existeEspacioLibre())
+                i = this.espacioLibre();
+                if (i != -1)
                 {
-                    i = this.espacioLibre();
-                    long dir;
-                    dir = MetodosAuxiliares.ultimaDireccionDeArchivo(directorio);
-                    this.nodos[i] = new NodoIndiceSecundario(llave, dir);
-                    //this.grabaNodosAuxiliares(this.nodos[i], directorio);
-                    this.nodos[i].alta(direccion,directorio);
+                    llaves[i] = llave;
+                    j = this.espacioLibre(i);
+                    this.direcciones[i, j] = direccion;
                 }
             }
-            this.grabaNodosAuxiliares(this.nodos[i],directorio);
+            return i;
         }
 
-        #endregion
 
-        #region Lectura y Grabado de Datos
-
-        public void grabaNodosAuxiliares(NodoIndiceSecundario nodo,string directorio)
+        public int baja(string llave, long direccion)
         {
-            try
+            int i;
+            int j;
+            i = -1;
+            j = -1;
+            if (this.existeLlave(llave))
             {
-                using (writer = new BinaryWriter(new FileStream(directorio, FileMode.Open)))//Abre el archivo con el BinaryWriter
+                i = this.indiceLlave(llave);
+                j = this.espacioDireccion(i,direccion);
+                if (j != -1)
                 {
-                    long dirSiguiente;
-                    this.writer.Seek((int)nodo.Direccion, SeekOrigin.Current);//Posiciona el grabado del archivo en la dirección actual
-                    for(int i = 0 ;  i < nodo.Apuntadores.Length ; i++)
+                    this.direcciones[i, j] = -1;
+                    if (this.estaVacio(i))
                     {
-                        this.writer.Write(nodo.Apuntadores[i]);
-                    }
-                    /**foreach(NodoAuxiliar nodoAuxiliar in nodo.Nodos)
-                    {
-                        dirSiguiente = nodoAuxiliar.Apuntadores.Last();
-                        if(dirSiguiente!= -1)
-                        {
-                            this.writer.Seek((int)dirSiguiente, SeekOrigin.Current);//Posiciona el grabado del archivo en la dirección actual
-                        }
-                    }*/
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
-        }
-
-        public void leeNodosAuxiliares(string directorio)
-        {
-            try
-            {
-                //long dirSiguiente;
-                foreach(NodoIndiceSecundario nodo in this.nodos)
-                {
-                    if (nodo.Direccion != -1)
-                    {
-                        //dirSiguiente = nodo.Direccion;
-                        using (reader = new BinaryReader(new FileStream(directorio, FileMode.Open)))//Abre el archivo con el BinaryWriter
-                        {
-                                reader.BaseStream.Seek(nodo.Direccion, SeekOrigin.Current);
-                                for (int i = 0; i < nodo.Apuntadores.Length; i++)
-                                {
-                                    nodo.Apuntadores[i] = reader.ReadInt64();
-                                }
-                            /**while (dirSiguiente != -1)
-                            {
-                                //dirSiguiente = nodo.Apuntadores.Last();
-                            }*/
-                        }
+                        this.llaves[i] = "-1";
                     }
                 }
             }
-            catch(Exception e)
-            {
-                MessageBox.Show(e.Message,"error");
-            }
+            return i;
         }
 
-        #endregion
+        public void baja(string llave, string nuevallave, long direccion)
+        {
+            this.baja(llave, direccion);
+            this.alta(nuevallave, direccion);
+        }
 
         #endregion
 
