@@ -238,14 +238,17 @@ namespace Manejador_De_Archivos_2._0
         {
             bool band;
             int idx;
+            Secundario secundario;
             band = this.tipo.Equals('C');
-            idx = ((Secundario)this.indices.First()).baja(llave, direccion,this.tipo.Equals('C'),this.longitud-1);
-            if (((Secundario)this.indices.First()).estaVacio())
+            secundario = ((Secundario)this.indices.First());
+            idx = secundario.baja(llave, direccion,this.tipo.Equals('C'),this.longitud-1);
+            this.grabaApuntadoresSecundario(directorio, secundario, secundario.Direcciones[idx], idx);
+            this.grabaDireccionesSecundario(directorio, secundario);
+            if (secundario.estaVacio())
             {
                 this.dirIndice = -1;
+                this.indices.Remove(secundario);
             }
-            this.grabaApuntadoresSecundario(directorio, ((Secundario)this.indices.First()), ((Secundario)this.indices.First()).Direcciones[idx], idx);
-            this.grabaDireccionesSecundario(directorio, ((Secundario)this.indices.First()));
 
         }
         #endregion
@@ -445,7 +448,8 @@ namespace Manejador_De_Archivos_2._0
             {
                 using (writer = new BinaryWriter(new FileStream(directorio, FileMode.Open)))//Abre el archivo con el BinaryWriter
                 {
-                    this.writer.Seek((int)this.dirIndice, SeekOrigin.Current);//Posiciona el grabado del archivo en la dirección actual
+                    //this.writer.Seek((int)this.dirIndice, SeekOrigin.Current);//Posiciona el grabado del archivo en la dirección actual
+                    this.writer.BaseStream.Position = this.dirIndice;
                     for (int i = 0; i < secundario.Direcciones.Length; i++)
                     {
                         if(this.tipo.Equals('C'))
