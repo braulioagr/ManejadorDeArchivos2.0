@@ -198,24 +198,56 @@ namespace Manejador_De_Archivos_2._0
 
         public void altaIndiceSecundario(string llave, long direccion, string directorio)
         {
+            bool band;
+            band = this.tipo.Equals('C');
             if (this.dirIndice == -1)
             {
                 Secundario secunadrio;
-                secunadrio = new Secundario(this.nombre, this.dirIndice, MetodosAuxiliares.calculaTamIdxPrim(this.longitud),this.longitud, -1);
+                secunadrio = new Secundario(this.nombre, this.dirIndice, MetodosAuxiliares.calculaTamIdxPrim(this.longitud),this.longitud, -1, band);
                 this.indices.Add(secunadrio);
-                for (int i = 0; i < secunadrio.Apuntadores.Length; i++)
+                for (int i = 0; i < secunadrio.Direcciones.Length; i++)
                 {
-                    secunadrio.Apuntadores[i] = MetodosAuxiliares.ultimaDireccionDeArchivo(directorio);
-                    this.grabaApuntadoresSecundario(directorio, secunadrio, secunadrio.Apuntadores[i], i);
+                    secunadrio.Direcciones[i] = MetodosAuxiliares.ultimaDireccionDeArchivo(directorio);
+                    this.grabaApuntadoresSecundario(directorio, secunadrio, secunadrio.Direcciones[i], i);
                 }
                 this.dirIndice = MetodosAuxiliares.ultimaDireccionDeArchivo(directorio);
                 this.grabaDireccionesSecundario(directorio, secunadrio);
             }
             int idx;
             idx = ((Secundario)this.indices.First()).alta(llave, direccion);
-            this.grabaApuntadoresSecundario(directorio, ((Secundario)this.indices.First()), ((Secundario)this.indices.First()).Apuntadores[idx], idx);
+            this.grabaApuntadoresSecundario(directorio, ((Secundario)this.indices.First()), ((Secundario)this.indices.First()).Direcciones[idx], idx);
+            this.grabaDireccionesSecundario(directorio, ((Secundario)this.indices.First()));
         }
 
+        public void modificaIndiceSecundario(string llaveOriginal, string nuevallave, long dirAct, string archivoIdx)
+        {
+            int[] direcciones;
+            bool esCadena;
+            Secundario secundario;
+            esCadena = this.tipo.Equals('C');
+            secundario = ((Secundario)this.indices.First());
+            direcciones = secundario.modificacion(llaveOriginal, nuevallave, dirAct,esCadena, this.longitud-1);
+            for (int i = 0; i < direcciones.Length; i++)
+            {
+                this.grabaApuntadoresSecundario(archivoIdx, secundario, secundario.Direcciones[direcciones[i]], direcciones[i]);
+            }
+            this.grabaDireccionesSecundario(archivoIdx, secundario);
+        }
+
+        public void elimminaSecundario(string llave, long direccion,string directorio)
+        {
+            bool band;
+            int idx;
+            band = this.tipo.Equals('C');
+            idx = ((Secundario)this.indices.First()).baja(llave, direccion,this.tipo.Equals('C'),this.longitud-1);
+            if (((Secundario)this.indices.First()).estaVacio())
+            {
+                this.dirIndice = -1;
+            }
+            this.grabaApuntadoresSecundario(directorio, ((Secundario)this.indices.First()), ((Secundario)this.indices.First()).Direcciones[idx], idx);
+            this.grabaDireccionesSecundario(directorio, ((Secundario)this.indices.First()));
+
+        }
         #endregion
 
         #region Las cantantes
@@ -241,6 +273,22 @@ namespace Manejador_De_Archivos_2._0
             idx = ((HashEstatica)this.indices.First()).alta(band, MetodosAuxiliares.truncaCadena(llave).ToCharArray(), direccion);
             this.grabaApuntadoresHash(directorio, ((HashEstatica)this.indices.First()), ((HashEstatica)this.indices.First()).Direcciones[idx], idx);
         }
+
+        public void modificaHashEstatica(string llaveOriginal, string nuevallave, long dirAct, string archivoIdx)
+        {
+            int[] direcciones;
+            bool esCadena;
+            HashEstatica hash;
+            esCadena = this.tipo.Equals('C');
+            hash = ((HashEstatica)this.indices.First());
+            direcciones = hash.modifica(esCadena, llaveOriginal.ToCharArray(), nuevallave.ToCharArray(), dirAct);
+            for (int i = 0; i < direcciones.Length; i++)
+            {
+                this.grabaApuntadoresHash(archivoIdx, hash, hash.Direcciones[direcciones[i]], direcciones[i]);
+            }
+            //this.grabaDireccionesHash(archivoIdx, hash);
+        }
+
         public void elimminaHash(string llave, long direccion, string directorio)
         {
             if (this.dirIndice != -1)
@@ -272,7 +320,7 @@ namespace Manejador_De_Archivos_2._0
                 case 4:
                     if (this.dirIndice != -1)
                     {
-                        //this.leeIndiceSecundario(directorio);
+                        this.leeSecundario(directorio);
                     }
                 break;
                 case 5:
@@ -368,7 +416,6 @@ namespace Manejador_De_Archivos_2._0
                 MessageBox.Show(e.Message);
             }
         }
-
         #endregion
 
         #region Secundario
@@ -382,7 +429,7 @@ namespace Manejador_De_Archivos_2._0
                     this.writer.Seek((int)dir, SeekOrigin.Current);//Posiciona el grabado del archivo en la dirección actual
                     for (int j = 0; j < Constantes.tamNodoAux; j++)
                     {
-                        writer.Write(secunadrio.Direcciones[i, j]);
+                        writer.Write(secunadrio.Apuntadores[i, j]);
                     }
                 }
             }
@@ -392,17 +439,24 @@ namespace Manejador_De_Archivos_2._0
             }
         }
 
-        private void grabaDireccionesSecundario(string directorio, Secundario hash)
+        private void grabaDireccionesSecundario(string directorio, Secundario secundario)
         {
             try
             {
                 using (writer = new BinaryWriter(new FileStream(directorio, FileMode.Open)))//Abre el archivo con el BinaryWriter
                 {
                     this.writer.Seek((int)this.dirIndice, SeekOrigin.Current);//Posiciona el grabado del archivo en la dirección actual
-                    for (int i = 0; i < hash.Apuntadores.Length; i++)
+                    for (int i = 0; i < secundario.Direcciones.Length; i++)
                     {
-                        writer.Write(hash.Llaves[i]);
-                        writer.Write(hash.Apuntadores[i]);
+                        if(this.tipo.Equals('C'))
+                        {
+                            writer.Write(secundario.Llaves[i]);
+                        }
+                        else if(this.tipo.Equals('E'))
+                        {
+                            writer.Write(Int32.Parse(secundario.Llaves[i]));
+                        }
+                        writer.Write(secundario.Direcciones[i]);
                     }
                 }
             }
@@ -411,6 +465,64 @@ namespace Manejador_De_Archivos_2._0
                 MessageBox.Show(e.Message);
             }
         }
+        
+        private void leeSecundario(string directorio)
+        {
+            try
+            {
+                Secundario secundario;
+                bool band;
+                band = this.tipo.Equals('C');
+                int tamaño;
+                tamaño = MetodosAuxiliares.calculaTamIdxPrim(this.longitud);
+                secundario = new Secundario(this.nombre, this.dirIndice, tamaño, this.longitud,-1,band);
+                using (reader = new BinaryReader(new FileStream(directorio, FileMode.Open)))//Abre el archivo con el BinaryWriter
+                {
+                    reader.BaseStream.Position = this.dirIndice;
+                    for (int i = 0; i < secundario.Direcciones.Length; i++)
+                    {
+                        if(band)
+                        {
+                            secundario.Llaves[i] = reader.ReadString();
+                        }
+                        else
+                        {
+                            secundario.Llaves[i] = reader.ReadInt32().ToString();
+                        }
+                        secundario.Direcciones[i] = reader.ReadInt64();
+                    }
+                }
+                for (int i = 0; i < secundario.Direcciones.Length; i++)
+                {
+                    this.LeeApuntadoresSecundario(directorio, i, secundario);
+                }
+                this.indices.Add(secundario);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        private void LeeApuntadoresSecundario(string directorio, int i, Secundario secundario)
+        {
+            try
+            {
+                using (reader = new BinaryReader(new FileStream(directorio, FileMode.Open)))
+                {
+                    reader.BaseStream.Position = secundario.Direcciones[i];
+                    for (int j = 0; j < Constantes.tamNodoAux; j++)
+                    {
+                        secundario.Apuntadores[i, j] = reader.ReadInt64();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
 
         #endregion
 
@@ -459,12 +571,11 @@ namespace Manejador_De_Archivos_2._0
         {
             try
             {
-                long todo = MetodosAuxiliares.ultimaDireccionDeArchivo(directorio);
                 HashEstatica hash;
                 hash = new HashEstatica(this.nombre, this.dirIndice, -1);
                 using (reader = new BinaryReader(new FileStream(directorio, FileMode.Open)))//Abre el archivo con el BinaryWriter
                 {
-                    reader.BaseStream.Seek(this.dirIndice, SeekOrigin.Current);
+                    reader.BaseStream.Position = this.dirIndice;
                     for(int i = 0 ; i < hash.Direcciones.Length ; i++)
                     {
                         hash.Direcciones[i] = reader.ReadInt64();
@@ -500,6 +611,7 @@ namespace Manejador_De_Archivos_2._0
                 MessageBox.Show(e.Message);
             }
         }
+
         #endregion
 
         #endregion

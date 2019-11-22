@@ -361,7 +361,7 @@ namespace Manejador_De_Archivos_2._0
             }
         }
 
-        public void modificaRegistro(string llavePrimaria, List<string> datos, string directorio)
+        public void modificaRegistro(string llavePrimaria, List<string> datos, string directorio, string[] infoOriginal)
         {
             int indiceLlavePrimaria;
             string archivoDat;
@@ -373,14 +373,32 @@ namespace Manejador_De_Archivos_2._0
             registro1 = new Registro(this.registros[llavePrimaria].DirAct, datos);
             this.registros.Remove(llavePrimaria);
             this.registros.Add(datos[indiceLlavePrimaria], registro1);
+            int i;
+            i = 0;
+            string llaveOriginal;
+            string nuevallave;
             foreach(Atributo atributo in this.atributos)
             {
+                llaveOriginal = infoOriginal[i];
+                nuevallave = datos[i];
                 switch(atributo.Indice)
                 {
                     case 2:
                         atributo.modificaIndicePrimario(llavePrimaria, datos[indiceLlavePrimaria], archivoIdx);
                     break;
+                    case 4:
+                        atributo.modificaIndiceSecundario(infoOriginal[i],datos[i], registro1.DirAct,archivoIdx);
+                    break;
+                    case 5:
+                        if (atributo.Tipo.Equals('C'))
+                        {
+                            llaveOriginal = MetodosAuxiliares.truncaCadena(llaveOriginal);
+                            nuevallave = MetodosAuxiliares.truncaCadena(nuevallave);
+                        }
+                        atributo.modificaHashEstatica(llaveOriginal, nuevallave, registro1.DirAct, archivoIdx);
+                    break;
                 }
+                i++;
             }
             this.ajustaDireccionesRegistros();
             foreach(Registro registro in this.registros.Values)
@@ -417,6 +435,9 @@ namespace Manejador_De_Archivos_2._0
                     {
                         case 2:
                             atributo.eliminaIndicePrimario(llavePrimaria, archivoIdx);
+                        break;
+                        case 4:
+                            atributo.elimminaSecundario(reg.Datos[i], reg.DirAct, archivoIdx);
                         break;
                         case 5:
                             atributo.elimminaHash(reg.Datos[i], reg.DirAct,archivoIdx);

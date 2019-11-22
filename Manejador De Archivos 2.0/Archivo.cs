@@ -281,11 +281,11 @@ namespace Manejador_De_Archivos_2._0
         }
 
 
-        public void modificaRegistro(string entidad, string llavePrimaria, List<string> datos, string directorio)
+        public void modificaRegistro(string entidad, string llavePrimaria, string[] infoOriginal, List<string> datos, string directorio)
         {
             Entidad entidad1;
             entidad1 = this.buscaEntidad(MetodosAuxiliares.ajustaCadena(entidad,Constantes.tam));
-            entidad1.modificaRegistro(llavePrimaria,datos,directorio);
+            entidad1.modificaRegistro(llavePrimaria,datos,directorio,infoOriginal);
             this.grabaEntidad(entidad1);
         }
 

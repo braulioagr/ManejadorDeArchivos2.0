@@ -44,10 +44,13 @@ namespace Manejador_De_Archivos_2._0
             return i;
         }
 
-        public void modifica(bool esCadena, char[] llave, char[] nuevallave, long direccion)
+        public int[] modifica(bool esCadena, char[] llave, char[] nuevallave, long direccion)
         {
-            this.baja(esCadena, llave, direccion);
-            this.alta(esCadena,nuevallave,direccion);
+            int[] refrencias;
+            refrencias = new int[2];
+            refrencias[0] = this.baja(esCadena, llave, direccion);
+            refrencias[1] = this.alta(esCadena,nuevallave,direccion);
+            return refrencias;
         }
 
         public int baja(bool esCadena, char[] llave, long direccion)

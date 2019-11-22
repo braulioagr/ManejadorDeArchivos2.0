@@ -21,6 +21,7 @@ namespace Manejador_De_Archivos_2._0
         public delegate List<string> ObtenLlaves(long direccion);
         public event ObtenLlaves obtenLllaves;
         private string llaveOriginal;
+        private string[] infoOriginal;
         #endregion
 
         #region Constructores
@@ -31,6 +32,8 @@ namespace Manejador_De_Archivos_2._0
             this.atributos = new Stack<string>();
             this.llaveOriginal = llavePrimaria;
             this.indice = 0;
+            infoOriginal = new string[this.registro.Datos.Count];
+            this.registro.Datos.CopyTo(infoOriginal);
             InitializeComponent();
         }
         
@@ -119,6 +122,10 @@ namespace Manejador_De_Archivos_2._0
         public string LlaveOriginal
         {
             get { return this.llaveOriginal; }
+        }
+        public string[] InfoOriginal
+        {
+            get { return this.infoOriginal; }
         }
         #endregion
 

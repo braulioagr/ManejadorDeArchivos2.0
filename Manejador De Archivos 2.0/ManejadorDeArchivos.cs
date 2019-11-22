@@ -365,7 +365,7 @@ namespace Manejador_De_Archivos_2._0
                                 modificaRegistro.obtenLllaves += new ModificaRegistro.ObtenLlaves(this.obtenLllavesEntidad);
                                 if (modificaRegistro.ShowDialog().Equals(DialogResult.OK))
                                 {
-                                    this.archivo.modificaRegistro(seleccionEntidad.Entidad, seleccionRegistro.ClaveDeBusqueda, modificaRegistro.Datos,this.directorio);
+                                    this.archivo.modificaRegistro(seleccionEntidad.Entidad, seleccionRegistro.ClaveDeBusqueda, modificaRegistro.InfoOriginal, modificaRegistro.Datos,this.directorio);
                                     this.actualizaTodo();
                                 }
                             }
@@ -489,7 +489,7 @@ namespace Manejador_De_Archivos_2._0
                         {
                             if(!MetodosAuxiliares.truncaCadena(((Secundario)indice).Llaves[i]).Equals("-1"))
                             {
-                                this.dataGridSecundario.Rows.Add(((Secundario)indice).Llaves[i], ((Secundario)indice).Apuntadores[i]);
+                                this.dataGridSecundario.Rows.Add(MetodosAuxiliares.truncaCadena(((Secundario)indice).Llaves[i]), ((Secundario)indice).Direcciones[i]);
                             }
                         }
                     }
@@ -504,6 +504,8 @@ namespace Manejador_De_Archivos_2._0
         private void DataGridSecundario_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             int i;
+            string valor;
+            valor = "";
             Entidad entidad;
             Atributo atributo;
             Indice indice;
@@ -512,13 +514,21 @@ namespace Manejador_De_Archivos_2._0
             entidad = this.archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(this.comboBoxEntidad.Text, Constantes.tam));
             atributo = entidad.buscaAtributo(MetodosAuxiliares.ajustaCadena(this.comboBoxAtributosSecundarios.Text, Constantes.tam));
             this.dataGridSecundarioAuxiliar.Rows.Clear();
+            if (atributo.Tipo.Equals('C'))
+            {
+                valor = MetodosAuxiliares.ajustaCadena(cell.Value.ToString(), atributo.Longitud-1);
+            }
+            else
+            {
+                valor = cell.Value.ToString();
+            }
             indice = atributo.Indices.First();
-            i = ((Secundario)indice).indiceLlave(MetodosAuxiliares.ajustaCadena(cell.Value.ToString(),atributo.Longitud));
+            i = ((Secundario)indice).indiceLlave(valor);
             for (int j = 0; j < Constantes.tamNodoAux; j++)
             {
-                if (((Secundario)indice).Direcciones[i, j] != -1)
+                if (((Secundario)indice).Apuntadores[i, j] != -1)
                 {
-                    this.dataGridSecundarioAuxiliar.Rows.Add(((Secundario)indice).Direcciones[i, j]);
+                    this.dataGridSecundarioAuxiliar.Rows.Add(((Secundario)indice).Apuntadores[i, j]);
                 }
             }
         }

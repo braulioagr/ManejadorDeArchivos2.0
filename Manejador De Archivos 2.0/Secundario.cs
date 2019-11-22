@@ -13,26 +13,31 @@ namespace Manejador_De_Archivos_2._0
 
         #region Variables de Instancia
         private string[] llaves;
-        private long[] apuntadores;
-        private long[,] direcciones;
-        private BinaryReader reader;
-        private BinaryWriter writer;
+        private long[] direcciones;
+        private long[,] apuntadores;
         #endregion
 
         #region Constructores
 
-        public Secundario(string nombre, long dirAct, int tamañoArreglo, int longitud,long dirSig) : base(nombre, dirAct, dirSig)
+        public Secundario(string nombre, long dirAct, int tamañoArreglo, int longitud,long dirSig,bool esCadena) : base(nombre, dirAct, dirSig)
         {
             llaves = new string[tamañoArreglo];
-            this.apuntadores = new long[tamañoArreglo];
-            this.direcciones = new long[tamañoArreglo, Constantes.tamNodoAux];
+            this.direcciones = new long[tamañoArreglo];
+            this.apuntadores = new long[tamañoArreglo, Constantes.tamNodoAux];
             for (int i = 0; i < llaves.Length; i++)
             {
-                this.llaves[i] = MetodosAuxiliares.ajustaCadena("-1",longitud);
-                this.apuntadores[i] = -1;
+                if (esCadena)
+                {
+                    this.llaves[i] = MetodosAuxiliares.ajustaCadena("-1", longitud);
+                }
+                else
+                {
+                    this.llaves[i] = "-1";
+                }
+                this.direcciones[i] = -1;
                 for (int j = 0; j < Constantes.tamNodoAux; j++)
                 {
-                    this.direcciones[i, j] = -1;
+                    this.apuntadores[i, j] = -1;
                 }
             }
         }
@@ -43,13 +48,30 @@ namespace Manejador_De_Archivos_2._0
         {
             get { return this.llaves; }
         }
-        public long[,] Direcciones
+        public long[,] Apuntadores
+        {
+            get { return this.apuntadores; }
+        }
+        public long[] Direcciones
         {
             get { return this.direcciones; }
         }
-        public long[] Apuntadores
+        public bool estaVacio()
         {
-            get { return this.apuntadores; }
+                bool band;
+                band = true;
+                int i;
+                i = -1;
+                foreach(string llave in this.llaves)
+                {
+                    i++;
+                    if(!llave.Equals(MetodosAuxiliares.truncaCadena(this.llaves[i])))
+                    {
+                        band = false;
+                        break;
+                    }
+                }
+                return band;
         }
         #endregion
 
@@ -71,6 +93,7 @@ namespace Manejador_De_Archivos_2._0
             }
             return band;
         }
+
         public override bool existeLlave(string llave)
         {
             bool band;
@@ -92,7 +115,7 @@ namespace Manejador_De_Archivos_2._0
             j = -1;
             for (int k = 0; k < Constantes.tamNodoAux; k++)
             {
-                if (this.direcciones[i, k] == -1)
+                if (this.apuntadores[i, k] == -1)
                 {
                     j = k;
                     break;
@@ -100,6 +123,7 @@ namespace Manejador_De_Archivos_2._0
             }
             return j;
         }
+
         private int espacioLibre()
         {
             int j;
@@ -121,7 +145,7 @@ namespace Manejador_De_Archivos_2._0
             band = true;
             for (int j = 0; j < Constantes.tamNodoAux; j++)
             {
-                if (this.direcciones[i, j] != -1)
+                if (this.apuntadores[i, j] != -1)
                 {
                     band = false;
                     break;
@@ -136,7 +160,7 @@ namespace Manejador_De_Archivos_2._0
             band = -1;
             for (int j = 0; j < Constantes.tamNodoAux; j++)
             {
-                if (this.direcciones[i, j] == direccion)
+                if (this.apuntadores[i, j] == direccion)
                 {
                     band = j;
                     break;
@@ -160,7 +184,7 @@ namespace Manejador_De_Archivos_2._0
                 j = this.espacioLibre(i);
                 if (j != -1)
                 {
-                    this.direcciones[i, j] = direccion;
+                    this.apuntadores[i, j] = direccion;
                 }
             }
             else
@@ -168,16 +192,19 @@ namespace Manejador_De_Archivos_2._0
                 i = this.espacioLibre();
                 if (i != -1)
                 {
-                    llaves[i] = llave;
                     j = this.espacioLibre(i);
-                    this.direcciones[i, j] = direccion;
+                    if (j != -1)
+                    {
+                        llaves[i] = llave;
+                        this.apuntadores[i, j] = direccion;
+                    }
                 }
             }
             return i;
         }
 
 
-        public int baja(string llave, long direccion)
+        public int baja(string llave, long direccion,bool esCadena,int longitud)
         {
             int i;
             int j;
@@ -189,20 +216,31 @@ namespace Manejador_De_Archivos_2._0
                 j = this.espacioDireccion(i,direccion);
                 if (j != -1)
                 {
-                    this.direcciones[i, j] = -1;
+                    this.apuntadores[i, j] = -1;
                     if (this.estaVacio(i))
                     {
-                        this.llaves[i] = "-1";
+                        if (esCadena)
+                        {
+                            this.llaves[i] = MetodosAuxiliares.ajustaCadena("-1", longitud);
+                        }
+                        else
+                        {
+                            this.llaves[i] = "-1";
+                        }
+                        
                     }
                 }
             }
             return i;
         }
 
-        public void baja(string llave, string nuevallave, long direccion)
+        public int[] modificacion(string llave, string nuevallave, long direccion,bool esCadena,int longitud)
         {
-            this.baja(llave, direccion);
-            this.alta(nuevallave, direccion);
+            int[] direcciones;
+            direcciones = new int[2];
+            direcciones[0] = this.baja(llave, direccion, esCadena,longitud);
+            direcciones[1] = this.alta(nuevallave, direccion);
+            return direcciones;
         }
 
         #endregion
