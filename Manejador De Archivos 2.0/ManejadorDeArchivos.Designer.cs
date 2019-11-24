@@ -98,8 +98,10 @@
             this.menuRegistros = new System.Windows.Forms.MenuStrip();
             this.altaRegistros = new System.Windows.Forms.ToolStripMenuItem();
             this.modificarRegistros = new System.Windows.Forms.ToolStripMenuItem();
+            this.consultaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eliminarRegistros = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.label9 = new System.Windows.Forms.Label();
             this.toolBar.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabEntidades.SuspendLayout();
@@ -663,6 +665,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.label9);
             this.tabPage2.Controls.Add(this.label6);
             this.tabPage2.Controls.Add(this.label7);
             this.tabPage2.Controls.Add(this.dataGridHash);
@@ -689,7 +692,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(5, 35);
+            this.label7.Location = new System.Drawing.Point(6, 35);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(43, 13);
             this.label7.TabIndex = 11;
@@ -766,6 +769,7 @@
             this.menuRegistros.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.altaRegistros,
             this.modificarRegistros,
+            this.consultaToolStripMenuItem,
             this.eliminarRegistros});
             this.menuRegistros.Location = new System.Drawing.Point(3, 3);
             this.menuRegistros.Name = "menuRegistros";
@@ -788,6 +792,13 @@
             this.modificarRegistros.Size = new System.Drawing.Size(70, 20);
             this.modificarRegistros.Text = "Modificar";
             // 
+            // consultaToolStripMenuItem
+            // 
+            this.consultaToolStripMenuItem.AccessibleName = "Consulta";
+            this.consultaToolStripMenuItem.Name = "consultaToolStripMenuItem";
+            this.consultaToolStripMenuItem.Size = new System.Drawing.Size(66, 20);
+            this.consultaToolStripMenuItem.Text = "Consulta";
+            // 
             // eliminarRegistros
             // 
             this.eliminarRegistros.AccessibleName = "Eliminar";
@@ -798,6 +809,15 @@
             // openFileDialog
             // 
             this.openFileDialog.FileName = "openFileDialog1";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(110, 35);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(44, 13);
+            this.label9.TabIndex = 13;
+            this.label9.Text = "Formula";
             // 
             // ManejadorDeArchivos
             // 
@@ -921,6 +941,8 @@
         private System.Windows.Forms.ComboBox ComboBoxAtributosHash;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.ToolStripMenuItem consultaToolStripMenuItem;
+        private System.Windows.Forms.Label label9;
     }
 }
 

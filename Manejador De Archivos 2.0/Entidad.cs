@@ -69,9 +69,14 @@ namespace Manejador_De_Archivos_2._0
             get { return this.atributos; }
         }
 
-        public List<Registro> Registros
+        public List<Registro> Valores
         {
             get { return this.registros.Values.ToList(); }
+        }
+
+        public Dictionary<string, Registro> Registros
+        {
+            get { return this.registros; }
         }
 
         public List<string> LlavePrimaria
@@ -288,7 +293,7 @@ namespace Manejador_De_Archivos_2._0
         {
             if (this.atributos.Count > 0)
             {
-                this.atributos = this.atributos.OrderBy(atrib => atrib.Nombre).ToList();
+                this.atributos = this.atributos.OrderBy(atrib => atrib.Indice).ToList();
                 for (int i = 0; i < this.atributos.Count - 1; i++)
                 {
                     this.atributos[i].DirSig = this.atributos[i + 1].DirActual;//Iguala la direccion siguiente a la direccion actual de la siguiente entidad en la lista
@@ -363,47 +368,62 @@ namespace Manejador_De_Archivos_2._0
 
         public void modificaRegistro(string llavePrimaria, List<string> datos, string directorio, string[] infoOriginal)
         {
-            int indiceLlavePrimaria;
-            string archivoDat;
-            string archivoIdx;
-            Registro registro1;
-            indiceLlavePrimaria = this.buscaIndiceClavePrimaria();
-            archivoDat = directorio + "\\" + MetodosAuxiliares.truncaCadena(this.nombre) + ".dat";
-            archivoIdx = directorio + "\\" + MetodosAuxiliares.truncaCadena(this.nombre) + ".idx";
-            registro1 = new Registro(this.registros[llavePrimaria].DirAct, datos);
-            this.registros.Remove(llavePrimaria);
-            this.registros.Add(datos[indiceLlavePrimaria], registro1);
-            int i;
-            i = 0;
-            string llaveOriginal;
-            string nuevallave;
-            foreach(Atributo atributo in this.atributos)
+            try
             {
-                llaveOriginal = infoOriginal[i];
-                nuevallave = datos[i];
-                switch(atributo.Indice)
+                if (!this.registros.ContainsKey(datos[this.buscaIndiceClavePrimaria()]))
                 {
-                    case 2:
-                        atributo.modificaIndicePrimario(llavePrimaria, datos[indiceLlavePrimaria], archivoIdx);
-                    break;
-                    case 4:
-                        atributo.modificaIndiceSecundario(infoOriginal[i],datos[i], registro1.DirAct,archivoIdx);
-                    break;
-                    case 5:
-                        if (atributo.Tipo.Equals('C'))
+
+                    int indiceLlavePrimaria;
+                    string archivoDat;
+                    string archivoIdx;
+                    Registro registro1;
+                    indiceLlavePrimaria = this.buscaIndiceClavePrimaria();
+                    archivoDat = directorio + "\\" + MetodosAuxiliares.truncaCadena(this.nombre) + ".dat";
+                    archivoIdx = directorio + "\\" + MetodosAuxiliares.truncaCadena(this.nombre) + ".idx";
+                    registro1 = new Registro(this.registros[llavePrimaria].DirAct, datos);
+                    this.registros.Remove(llavePrimaria);
+                    this.registros.Add(datos[indiceLlavePrimaria], registro1);
+                    int i;
+                    i = 0;
+                    string llaveOriginal;
+                    string nuevallave;
+                    foreach (Atributo atributo in this.atributos)
+                    {
+                        llaveOriginal = infoOriginal[i];
+                        nuevallave = datos[i];
+                        switch (atributo.Indice)
                         {
-                            llaveOriginal = MetodosAuxiliares.truncaCadena(llaveOriginal);
-                            nuevallave = MetodosAuxiliares.truncaCadena(nuevallave);
+                            case 2:
+                                atributo.modificaIndicePrimario(llavePrimaria, datos[indiceLlavePrimaria], archivoIdx);
+                                break;
+                            case 4:
+                                atributo.modificaIndiceSecundario(infoOriginal[i], datos[i], registro1.DirAct, archivoIdx);
+                                break;
+                            case 5:
+                                if (atributo.Tipo.Equals('C'))
+                                {
+                                    llaveOriginal = MetodosAuxiliares.truncaCadena(llaveOriginal);
+                                    nuevallave = MetodosAuxiliares.truncaCadena(nuevallave);
+                                }
+                                atributo.modificaHashEstatica(llaveOriginal, nuevallave, registro1.DirAct, archivoIdx);
+                                break;
                         }
-                        atributo.modificaHashEstatica(llaveOriginal, nuevallave, registro1.DirAct, archivoIdx);
-                    break;
+                        i++;
+                    }
+                    this.ajustaDireccionesRegistros();
+                    foreach (Registro registro in this.registros.Values)
+                    {
+                        this.grabaRegistro(registro, archivoDat);
+                    }
                 }
-                i++;
+                else
+                {
+                    MessageBox.Show("Se intento agregar un dato ya existente","Error");
+                }
             }
-            this.ajustaDireccionesRegistros();
-            foreach(Registro registro in this.registros.Values)
+            catch (ArgumentException e)
             {
-                this.grabaRegistro(registro, archivoDat);
+                MessageBox.Show(e.Message);
             }
         }
 

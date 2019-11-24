@@ -66,6 +66,8 @@ namespace Manejador_De_Archivos_2._0
                 /*Aliniamiento del texto de las celdas del data grid de los atributos*/
                 this.dataGridSecundarioAuxiliar.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             }
+            this.label7.Text = "N = " + Constantes.valorHash.ToString();
+            this.label9.Text = "h(k) = (k mod " + Constantes.valorHash.ToString() + ")";
         }
 
         #endregion 
@@ -91,6 +93,9 @@ namespace Manejador_De_Archivos_2._0
                             this.directorio += @"..\" + nuevaBase.Nombre;//Crea la dirección del archivo
                             if (!Directory.Exists(this.directorio))//Verifica si la carpeta existe
                             {
+                                nuevo.Enabled = false;//Deshabilita la opcion de crear un nuevo archivo
+                                abrir.Enabled = false;//Des habilita la opcion de abrir un nuevo archivo
+                                cerrar.Enabled = true;//Habilita la opcion de cerrar el archivo
                                 Directory.CreateDirectory(this.directorio);//Si no existe La crea
                                 nombre = this.directorio + "\\" + nuevaBase.Nombre + ".dd";//Crea el nombre del archivo
                                 this.archivo = new Archivo(nombre);//Construye el objeto archivo
@@ -186,7 +191,9 @@ namespace Manejador_De_Archivos_2._0
                         #endregion
                         break;
                     case "Modificar":
-                        #region Modificar
+                        if (this.archivo.Entidades.Count > 0)
+                        {
+                            #region Modificar
                         ModificaEntidad modificaEntidad;
                         modificaEntidad = new ModificaEntidad(this.archivo);
                         if (modificaEntidad.ShowDialog().Equals(DialogResult.OK))
@@ -205,34 +212,39 @@ namespace Manejador_De_Archivos_2._0
                         }
                         modificaEntidad.Dispose();
                         #endregion
-                        break;
-                    case "Consulta":
-                        #region Consulta
-                        ConsultaEntidad consultaEntidad;
-                        consultaEntidad = new ConsultaEntidad(this.archivo);
-                        consultaEntidad.ShowDialog();
-                        consultaEntidad.Dispose();
-                        #endregion
-                        break;
-                    case "Eliminar":
-                        #region Eliminar
-                        SeleccionEntidad eliminaEntidad;
-                        eliminaEntidad = new SeleccionEntidad(this.archivo);
-                        if (eliminaEntidad.ShowDialog().Equals(DialogResult.OK))
-                        {
-                            string nombreAuxiliar;
-                            archivo.eliminaEntidad(MetodosAuxiliares.ajustaCadena(eliminaEntidad.Entidad, Constantes.tam));
-                            nombreAuxiliar = this.directorio + "\\" + eliminaEntidad.Entidad;
-                            File.Delete(nombreAuxiliar + ".dat");
-                            File.Delete(nombreAuxiliar + ".idx");
-                            actualizaTodo();
                         }
-                        eliminaEntidad.Dispose();
-                        #endregion
-                        break;
+                    break;
+                    case "Consulta":
+                        if (this.archivo.Entidades.Count > 0)
+                        {
+                            #region Consulta
+                            ConsultaEntidad consultaEntidad;
+                            consultaEntidad = new ConsultaEntidad(this.archivo);
+                            consultaEntidad.ShowDialog();
+                            consultaEntidad.Dispose();
+                            #endregion
+                        }
+                    break;
+                    case "Eliminar":
+                        if (this.archivo.Entidades.Count > 0)
+                        {
+                            #region Eliminar
+                            SeleccionEntidad eliminaEntidad;
+                            eliminaEntidad = new SeleccionEntidad(this.archivo);
+                            if (eliminaEntidad.ShowDialog().Equals(DialogResult.OK))
+                            {
+                                string nombreAuxiliar;
+                                nombreAuxiliar = this.directorio + "\\" + eliminaEntidad.Entidad;
+                                archivo.eliminaEntidad(MetodosAuxiliares.ajustaCadena(eliminaEntidad.Entidad, Constantes.tam), nombreAuxiliar);
+                                actualizaTodo();
+                            }
+                            eliminaEntidad.Dispose();
+                            #endregion
+                        }
+                    break;
                     default:
                         MessageBox.Show("Opción incorrecta o no implementada", "Atención");
-                        break;
+                    break;
                 }
             }
             else
@@ -372,6 +384,24 @@ namespace Manejador_De_Archivos_2._0
                             seleccionRegistro.Dispose();
                         }
                         seleccionEntidad.Dispose();
+                    break;
+                    case "Consulta":
+                        seleccionEntidad = new SeleccionEntidad(this.archivo);
+                        if(seleccionEntidad.ShowDialog().Equals(DialogResult.OK))
+                        {
+                            ConsultaRegistro consulta;
+                            Entidad entidad;
+                            entidad = this.archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(seleccionEntidad.Entidad,Constantes.tam));
+                            if (entidad.Valores.Count > 0)
+                            {
+                                consulta = new ConsultaRegistro(entidad);
+                                consulta.Show();
+                            }
+                            else
+                            {
+                                MessageBox.Show("La entidad seleccionada no contiene registros", "Error");
+                            }
+                        }
                     break;
                     case "Eliminar":
                         seleccionEntidad = new SeleccionEntidad(this.archivo);
@@ -618,7 +648,7 @@ namespace Manejador_De_Archivos_2._0
                 i++;
             }
             i = 0;
-            foreach (Registro registro in entidad.Registros)
+            foreach (Registro registro in entidad.Valores)
             {
                 int j = 1;
                 int k = 0;

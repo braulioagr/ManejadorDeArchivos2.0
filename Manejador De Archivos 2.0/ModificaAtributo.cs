@@ -38,11 +38,12 @@ namespace Manejador_De_Archivos_2._0
         #region Gets & Sets
         public long DirIndice
         {
+
             get
             {
                 long direccion;
                 direccion = -1;
-                if (this.comboInidice.Text.Equals("3: Indice Secundario"))
+                if (this.comboInidice.Text.Equals("3: Llave Foranea"))
                 {
                     Entidad entidad;
                     entidad = this.archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(comboBox1.Text, Constantes.tam));

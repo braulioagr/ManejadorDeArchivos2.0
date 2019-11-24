@@ -22,11 +22,26 @@ namespace Manejador_De_Archivos_2._0
         private void SeleccionRegistro_Load(object sender, EventArgs e)
         {
             this.comboEntidades.Items.Clear();
+            bool band;
+            string primeraLlave;
+            band = entidad.Atributos[entidad.buscaIndiceClavePrimaria()].Tipo.Equals('C');
             foreach(string key in this.entidad.LlavePrimaria)
             {
-                this.comboEntidades.Items.Add(key);
+                if (band)
+                {
+                    this.comboEntidades.Items.Add(MetodosAuxiliares.truncaCadena(key));
+                }
+                else
+                {
+                    this.comboEntidades.Items.Add(key);
+                }
             }
-            this.comboEntidades.Text = this.entidad.LlavePrimaria.First();
+            primeraLlave = this.entidad.LlavePrimaria.First();
+            if (band)
+            {
+                primeraLlave = MetodosAuxiliares.truncaCadena(primeraLlave);
+            }
+            this.comboEntidades.Text = primeraLlave;
         }
         public string ClaveDeBusqueda
         {

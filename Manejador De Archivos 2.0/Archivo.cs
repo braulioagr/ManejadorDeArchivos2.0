@@ -156,14 +156,23 @@ namespace Manejador_De_Archivos_2._0
             }
         }
         
-        public void eliminaEntidad(string nombre)
+        public void eliminaEntidad(string nombre, string directorio)
         {
             if (this.existeEntidad(nombre))
             {
                 Entidad entidad;
                 entidad = this.buscaEntidad(nombre);
-                this.entidades.Remove(entidad);
-                this.ajustaDirecciones();
+                if (entidad.DirRegistros == -1)
+                {
+                    this.entidades.Remove(entidad);
+                    this.ajustaDirecciones();
+                    File.Delete(directorio + ".dat");
+                    File.Delete(directorio + ".idx");
+                }
+                else
+                {
+                    MessageBox.Show("La entidad seleccionada contiene datos dados de alta por favor eliminelos", "Error");
+                }
             }
             else
             {
