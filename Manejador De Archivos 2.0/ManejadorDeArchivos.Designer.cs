@@ -86,13 +86,13 @@
             this.label3 = new System.Windows.Forms.Label();
             this.comboBoxAtributosSecundarios = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.label9 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.dataGridHash = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridHashAuxiliar = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label8 = new System.Windows.Forms.Label();
             this.ComboBoxAtributosHash = new System.Windows.Forms.ComboBox();
             this.menuRegistros = new System.Windows.Forms.MenuStrip();
@@ -101,7 +101,8 @@
             this.consultaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eliminarRegistros = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.label9 = new System.Windows.Forms.Label();
+            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.toolBar.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabEntidades.SuspendLayout();
@@ -680,6 +681,15 @@
             this.tabPage2.Text = "Hash Estatica";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(110, 35);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(44, 13);
+            this.label9.TabIndex = 13;
+            this.label9.Text = "Formula";
+            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -730,6 +740,7 @@
             // 
             this.dataGridHashAuxiliar.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridHashAuxiliar.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column6,
             this.dataGridViewTextBoxColumn3});
             this.dataGridHashAuxiliar.Location = new System.Drawing.Point(206, 27);
             this.dataGridHashAuxiliar.Name = "dataGridHashAuxiliar";
@@ -738,13 +749,6 @@
             this.dataGridHashAuxiliar.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.dataGridHashAuxiliar.Size = new System.Drawing.Size(190, 219);
             this.dataGridHashAuxiliar.TabIndex = 9;
-            // 
-            // dataGridViewTextBoxColumn3
-            // 
-            this.dataGridViewTextBoxColumn3.HeaderText = "Direccion";
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            this.dataGridViewTextBoxColumn3.ReadOnly = true;
-            this.dataGridViewTextBoxColumn3.Width = 186;
             // 
             // label8
             // 
@@ -810,14 +814,18 @@
             // 
             this.openFileDialog.FileName = "openFileDialog1";
             // 
-            // label9
+            // Column6
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(110, 35);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(44, 13);
-            this.label9.TabIndex = 13;
-            this.label9.Text = "Formula";
+            this.Column6.HeaderText = "Llave";
+            this.Column6.Name = "Column6";
+            this.Column6.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.HeaderText = "Direccion";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            this.dataGridViewTextBoxColumn3.Width = 186;
             // 
             // ManejadorDeArchivos
             // 
@@ -936,13 +944,14 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.DataGridView dataGridHash;
         private System.Windows.Forms.DataGridView dataGridHashAuxiliar;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ComboBox ComboBoxAtributosHash;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.ToolStripMenuItem consultaToolStripMenuItem;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
     }
 }
 

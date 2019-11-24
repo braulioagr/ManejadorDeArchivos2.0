@@ -567,19 +567,19 @@ namespace Manejador_De_Archivos_2._0
             int i;
             Entidad entidad;
             Atributo atributo;
-            Indice indice;
+            HashEstatica hash;
             DataGridViewCell cell;
             cell = dataGridHash.Rows[e.RowIndex].Cells[0];
             entidad = this.archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(this.comboBoxEntidad.Text, Constantes.tam));
             atributo = entidad.buscaAtributo(MetodosAuxiliares.ajustaCadena(this.ComboBoxAtributosHash.Text, Constantes.tam));
             this.dataGridHashAuxiliar.Rows.Clear();
             i = Int32.Parse(cell.Value.ToString());
-            indice = atributo.Indices.First();
-            for(int j = 0 ; j < Constantes.tamNodoAux ; j++)
+            hash = ((HashEstatica)atributo.Indices.First());
+            for (int j = 0; j < hash.Longitud; j++)
             {
-                if(((HashEstatica)indice).Apuntadores[i,j] != -1)
+                if(hash.Apuntadores[i,j] != -1)
                 {
-                    this.dataGridHashAuxiliar.Rows.Add(((HashEstatica)indice).Apuntadores[i, j]);
+                    this.dataGridHashAuxiliar.Rows.Add(MetodosAuxiliares.truncaCadena(hash.Llaves[i, j]), hash.Apuntadores[i, j]);
                 }
             }
 

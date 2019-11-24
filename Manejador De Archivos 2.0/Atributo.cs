@@ -258,10 +258,11 @@ namespace Manejador_De_Archivos_2._0
         {
             bool band;
             band = false;
-            if(this.dirIndice == -1)
+            band = this.tipo.Equals('C');
+            if (this.dirIndice == -1)
             {
                 HashEstatica hash;
-                hash = new HashEstatica(this.nombre, this.dirIndice, -1);
+                hash = new HashEstatica(this.nombre, this.dirIndice, this.longitud-1, -1,band);
                 this.indices.Add(hash);
                 for(int i = 0 ;  i < hash.Direcciones.Length; i++)
                 {
@@ -271,9 +272,8 @@ namespace Manejador_De_Archivos_2._0
                 this.dirIndice = MetodosAuxiliares.ultimaDireccionDeArchivo(directorio);
                 this.grabaDireccionesHash(directorio, hash);
             }
-            band = this.tipo.Equals('C');
             int idx;
-            idx = ((HashEstatica)this.indices.First()).alta(band, MetodosAuxiliares.truncaCadena(llave).ToCharArray(), direccion);
+            idx = ((HashEstatica)this.indices.First()).alta(band, MetodosAuxiliares.truncaCadena(llave).ToCharArray(), this.longitud-1, direccion);
             this.grabaApuntadoresHash(directorio, ((HashEstatica)this.indices.First()), ((HashEstatica)this.indices.First()).Direcciones[idx], idx);
         }
 
@@ -284,7 +284,7 @@ namespace Manejador_De_Archivos_2._0
             HashEstatica hash;
             esCadena = this.tipo.Equals('C');
             hash = ((HashEstatica)this.indices.First());
-            direcciones = hash.modifica(esCadena, llaveOriginal.ToCharArray(), nuevallave.ToCharArray(), dirAct);
+            direcciones = hash.modifica(esCadena, llaveOriginal.ToCharArray(), nuevallave.ToCharArray(), dirAct,this.longitud-1);
             for (int i = 0; i < direcciones.Length; i++)
             {
                 this.grabaApuntadoresHash(archivoIdx, hash, hash.Direcciones[direcciones[i]], direcciones[i]);
@@ -299,7 +299,7 @@ namespace Manejador_De_Archivos_2._0
                 bool band;
                 int idx;
                 band = this.tipo.Equals('C');
-                idx = ((HashEstatica)this.indices.First()).baja(band, MetodosAuxiliares.truncaCadena(llave).ToCharArray(), direccion);
+                idx = ((HashEstatica)this.indices.First()).baja(band, MetodosAuxiliares.truncaCadena(llave).ToCharArray(), this.longitud-1,direccion);
                 this.grabaApuntadoresHash(directorio, ((HashEstatica)this.indices.First()), ((HashEstatica)this.indices.First()).Direcciones[idx], idx);
             }
         }
@@ -540,8 +540,16 @@ namespace Manejador_De_Archivos_2._0
                 using (writer = new BinaryWriter(new FileStream(directorio, FileMode.Open)))//Abre el archivo con el BinaryWriter
                 {
                     this.writer.Seek((int)dir, SeekOrigin.Current);//Posiciona el grabado del archivo en la dirección actual
-                    for (int j = 0; j < Constantes.tamNodoAux ; j++)
+                    for (int j = 0; j < hash.Longitud ; j++)
                     {
+                        if (this.tipo.Equals('C'))
+                        {
+                            writer.Write(hash.Llaves[i, j]);
+                        }
+                        else if (this.tipo.Equals('E'))
+                        {
+                            writer.Write(Int32.Parse(hash.Llaves[i, j]));
+                        }
                         writer.Write(hash.Apuntadores[i, j]);
                     }
                 }
@@ -576,7 +584,7 @@ namespace Manejador_De_Archivos_2._0
             try
             {
                 HashEstatica hash;
-                hash = new HashEstatica(this.nombre, this.dirIndice, -1);
+                hash = new HashEstatica(this.nombre, this.dirIndice, this.longitud-1,-1, this.tipo.Equals('C'));
                 using (reader = new BinaryReader(new FileStream(directorio, FileMode.Open)))//Abre el archivo con el BinaryWriter
                 {
                     reader.BaseStream.Position = this.dirIndice;
@@ -604,8 +612,9 @@ namespace Manejador_De_Archivos_2._0
                 using (reader = new BinaryReader(new FileStream(directorio, FileMode.Open)))
                 {
                     reader.BaseStream.Position=hash.Direcciones[i];
-                    for (int j = 0; j < Constantes.tamNodoAux; j++)
+                    for (int j = 0; j < hash.Longitud; j++)
                     {
+                        hash.Llaves[i, j] = reader.ReadString();
                         hash.Apuntadores[i, j] = reader.ReadInt64();
                     }
                 }
