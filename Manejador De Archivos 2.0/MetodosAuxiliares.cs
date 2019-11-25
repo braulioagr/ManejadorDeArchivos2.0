@@ -83,7 +83,7 @@ namespace Manejador_De_Archivos_2._0
             tamaño = -1;
             tamllave += 8;
             tamaño = (int)Math.Floor((decimal)(Constantes.tamIdx / tamllave));
-            while (tamaño * tamllave >= Constantes.tamIdx)
+            while (tamaño * tamllave + 8 >= Constantes.tamIdx)
             {
                 tamaño--;
             }

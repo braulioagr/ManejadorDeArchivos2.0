@@ -60,12 +60,9 @@ namespace Manejador_De_Archivos_2._0
         {
                 bool band;
                 band = true;
-                int i;
-                i = -1;
                 foreach(string llave in this.llaves)
                 {
-                    i++;
-                    if(!llave.Equals(MetodosAuxiliares.truncaCadena(this.llaves[i])))
+                    if(("-1").Equals(MetodosAuxiliares.truncaCadena(llave)))
                     {
                         band = false;
                         break;

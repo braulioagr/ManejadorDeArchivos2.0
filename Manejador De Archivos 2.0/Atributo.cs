@@ -200,23 +200,26 @@ namespace Manejador_De_Archivos_2._0
         {
             bool band;
             band = this.tipo.Equals('C');
+            Secundario secunadrio;
             if (this.dirIndice == -1)
             {
-                Secundario secunadrio;
-                secunadrio = new Secundario(this.nombre, this.dirIndice, MetodosAuxiliares.calculaTamIdxPrim(this.longitud),this.longitud, -1, band);
+                int tam;
+                tam = MetodosAuxiliares.calculaTamIdxPrim(this.longitud);
+                secunadrio = new Secundario(this.nombre, this.dirIndice, tam,this.longitud, -1, band);
                 this.indices.Add(secunadrio);
+                this.dirIndice = MetodosAuxiliares.ultimaDireccionDeArchivo(directorio);
+                this.grabaDireccionesSecundario(directorio, secunadrio);
                 for (int i = 0; i < secunadrio.Direcciones.Length; i++)
                 {
                     secunadrio.Direcciones[i] = MetodosAuxiliares.ultimaDireccionDeArchivo(directorio);
                     this.grabaApuntadoresSecundario(directorio, secunadrio, secunadrio.Direcciones[i], i);
                 }
-                this.dirIndice = MetodosAuxiliares.ultimaDireccionDeArchivo(directorio);
-                this.grabaDireccionesSecundario(directorio, secunadrio);
             }
             int idx;
-            idx = ((Secundario)this.indices.First()).alta(llave, direccion);
-            this.grabaApuntadoresSecundario(directorio, ((Secundario)this.indices.First()), ((Secundario)this.indices.First()).Direcciones[idx], idx);
-            this.grabaDireccionesSecundario(directorio, ((Secundario)this.indices.First()));
+            secunadrio = ((Secundario)this.indices.First());
+            idx = secunadrio.alta(llave, direccion);
+            this.grabaApuntadoresSecundario(directorio, secunadrio, secunadrio.Direcciones[idx], idx);
+            this.grabaDireccionesSecundario(directorio, secunadrio);
         }
 
         public void modificaIndiceSecundario(string llaveOriginal, string nuevallave, long dirAct, string archivoIdx)
@@ -462,6 +465,7 @@ namespace Manejador_De_Archivos_2._0
                         }
                         writer.Write(secundario.Direcciones[i]);
                     }
+                    writer.Write(secundario.DirSig);
                 }
             }
             catch (Exception e)
@@ -495,6 +499,7 @@ namespace Manejador_De_Archivos_2._0
                         }
                         secundario.Direcciones[i] = reader.ReadInt64();
                     }
+                    secundario.DirSig = reader.ReadInt64();
                 }
                 for (int i = 0; i < secundario.Direcciones.Length; i++)
                 {

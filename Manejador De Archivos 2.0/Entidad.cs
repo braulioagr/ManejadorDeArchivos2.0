@@ -370,7 +370,7 @@ namespace Manejador_De_Archivos_2._0
         {
             try
             {
-                if (!this.registros.ContainsKey(datos[this.buscaIndiceClavePrimaria()]))
+                if (this.registros.ContainsKey(datos[this.buscaIndiceClavePrimaria()]))
                 {
 
                     int indiceLlavePrimaria;
@@ -431,43 +431,47 @@ namespace Manejador_De_Archivos_2._0
         {
             try
             {
-                string archivoDat;
-                string archivoIdx;
-                Registro reg;
-                archivoDat = directorio + "\\" + MetodosAuxiliares.truncaCadena(this.nombre) + ".dat";
-                archivoIdx = directorio + "\\" + MetodosAuxiliares.truncaCadena(this.nombre) + ".idx";
-                if (this.atributos[this.buscaIndiceClavePrimaria()].Tipo.Equals('C'))
+                if (this.registros.ContainsKey(llavePrimaria))
                 {
-                    llavePrimaria = MetodosAuxiliares.ajustaCadena(llavePrimaria, this.atributos[this.buscaIndiceClavePrimaria()].Longitud-1);
-                }
-                else if(this.atributos[this.buscaIndiceClavePrimaria()].Tipo.Equals('E'))
-                {
-                    llavePrimaria = MetodosAuxiliares.truncaCadena(llavePrimaria);
-                }
-                reg = this.registros[llavePrimaria];
-                this.registros.Remove(llavePrimaria);
-                int i;
-                i = -1;
-                foreach(Atributo atributo in this.atributos)
-                {
-                    i++;
-                    switch (atributo.Indice)
+
+                    string archivoDat;
+                    string archivoIdx;
+                    Registro reg;
+                    archivoDat = directorio + "\\" + MetodosAuxiliares.truncaCadena(this.nombre) + ".dat";
+                    archivoIdx = directorio + "\\" + MetodosAuxiliares.truncaCadena(this.nombre) + ".idx";
+                    if (this.atributos[this.buscaIndiceClavePrimaria()].Tipo.Equals('C'))
                     {
-                        case 2:
-                            atributo.eliminaIndicePrimario(llavePrimaria, archivoIdx);
-                        break;
-                        case 4:
-                            atributo.elimminaSecundario(reg.Datos[i], reg.DirAct, archivoIdx);
-                        break;
-                        case 5:
-                            atributo.elimminaHash(reg.Datos[i], reg.DirAct,archivoIdx);
-                        break;
+                        llavePrimaria = MetodosAuxiliares.ajustaCadena(llavePrimaria, this.atributos[this.buscaIndiceClavePrimaria()].Longitud - 1);
                     }
-                }
-                this.ajustaDireccionesRegistros();
-                foreach (Registro registroAux in this.registros.Values)
-                {
-                    this.grabaRegistro(registroAux, archivoDat);
+                    else if (this.atributos[this.buscaIndiceClavePrimaria()].Tipo.Equals('E'))
+                    {
+                        llavePrimaria = MetodosAuxiliares.truncaCadena(llavePrimaria);
+                    }
+                    reg = this.registros[llavePrimaria];
+                    this.registros.Remove(llavePrimaria);
+                    int i;
+                    i = -1;
+                    foreach (Atributo atributo in this.atributos)
+                    {
+                        i++;
+                        switch (atributo.Indice)
+                        {
+                            case 2:
+                                atributo.eliminaIndicePrimario(llavePrimaria, archivoIdx);
+                                break;
+                            case 4:
+                                atributo.elimminaSecundario(reg.Datos[i], reg.DirAct, archivoIdx);
+                                break;
+                            case 5:
+                                atributo.elimminaHash(reg.Datos[i], reg.DirAct, archivoIdx);
+                                break;
+                        }
+                    }
+                    this.ajustaDireccionesRegistros();
+                    foreach (Registro registroAux in this.registros.Values)
+                    {
+                        this.grabaRegistro(registroAux, archivoDat);
+                    }
                 }
             }
             catch (Exception e)
@@ -480,7 +484,7 @@ namespace Manejador_De_Archivos_2._0
         {
             if (this.registros.Count > 0)
             {
-                this.registros = this.registros.OrderBy(registro => registro.Value.Datos[this.buscaIndiceClaveDeBusqueda()]).ToDictionary(registro => registro.Key,registro => registro.Value);
+                this.registros = this.registros.OrderBy(registro => registro.Value.Datos[this.buscaIndiceClavePrimaria()]).ToDictionary(registro => registro.Key,registro => registro.Value);
                 for (int i = 0; i < this.registros.Count - 1; i++)
                 {
                     this.registros.Values.ElementAt(i).DirSig = this.registros.Values.ElementAt(i + 1).DirAct;//Iguala la direccion siguiente a la direccion actual de la siguiente entidad en la lista
