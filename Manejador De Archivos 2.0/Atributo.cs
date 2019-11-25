@@ -265,14 +265,15 @@ namespace Manejador_De_Archivos_2._0
             if (this.dirIndice == -1)
             {
                 HashEstatica hash;
-                hash = new HashEstatica(this.nombre, this.dirIndice, this.longitud-1, -1,band);
+                hash = new HashEstatica(this.nombre, this.dirIndice, this.longitud, -1,band);
                 this.indices.Add(hash);
+                this.dirIndice = MetodosAuxiliares.ultimaDireccionDeArchivo(directorio);
+                this.grabaDireccionesHash(directorio, hash);
                 for(int i = 0 ;  i < hash.Direcciones.Length; i++)
                 {
                     hash.Direcciones[i] = MetodosAuxiliares.ultimaDireccionDeArchivo(directorio);
                     this.grabaApuntadoresHash(directorio, hash, hash.Direcciones[i], i);
                 }
-                this.dirIndice = MetodosAuxiliares.ultimaDireccionDeArchivo(directorio);
                 this.grabaDireccionesHash(directorio, hash);
             }
             int idx;
@@ -292,7 +293,6 @@ namespace Manejador_De_Archivos_2._0
             {
                 this.grabaApuntadoresHash(archivoIdx, hash, hash.Direcciones[direcciones[i]], direcciones[i]);
             }
-            //this.grabaDireccionesHash(archivoIdx, hash);
         }
 
         public void elimminaHash(string llave, long direccion, string directorio)
@@ -589,7 +589,7 @@ namespace Manejador_De_Archivos_2._0
             try
             {
                 HashEstatica hash;
-                hash = new HashEstatica(this.nombre, this.dirIndice, this.longitud-1,-1, this.tipo.Equals('C'));
+                hash = new HashEstatica(this.nombre, this.dirIndice, this.longitud,-1, this.tipo.Equals('C'));
                 using (reader = new BinaryReader(new FileStream(directorio, FileMode.Open)))//Abre el archivo con el BinaryWriter
                 {
                     reader.BaseStream.Position = this.dirIndice;
@@ -614,12 +614,21 @@ namespace Manejador_De_Archivos_2._0
         {
             try
             {
+                bool band;
+                band = this.tipo.Equals('C');
                 using (reader = new BinaryReader(new FileStream(directorio, FileMode.Open)))
                 {
                     reader.BaseStream.Position=hash.Direcciones[i];
                     for (int j = 0; j < hash.Longitud; j++)
                     {
-                        hash.Llaves[i, j] = reader.ReadString();
+                        if (band)
+                        {
+                            hash.Llaves[i, j] = reader.ReadString();
+                        }
+                        else
+                        {
+                            hash.Llaves[i, j] = reader.ReadInt32().ToString();
+                        }
                         hash.Apuntadores[i, j] = reader.ReadInt64();
                     }
                 }
