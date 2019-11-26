@@ -67,7 +67,7 @@ namespace Manejador_De_Archivos_2._0
                 this.dataGridSecundarioAuxiliar.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             }
             this.label7.Text = "N = " + Constantes.valorHash.ToString();
-            this.label9.Text = "h(k) = (k mod " + Constantes.valorHash.ToString() + ")";
+            this.label9.Text = "h(iS) = (iS mod " + Constantes.valorHash.ToString() + ")";
         }
 
         #endregion 

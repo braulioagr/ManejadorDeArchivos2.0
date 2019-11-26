@@ -370,7 +370,7 @@ namespace Manejador_De_Archivos_2._0
         {
             try
             {
-                if (this.registros.ContainsKey(datos[this.buscaIndiceClavePrimaria()]))
+                if (!this.registros.ContainsKey(datos[this.buscaIndiceClavePrimaria()]))
                 {
 
                     int indiceLlavePrimaria;
