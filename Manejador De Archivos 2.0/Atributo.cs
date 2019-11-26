@@ -302,8 +302,14 @@ namespace Manejador_De_Archivos_2._0
                 bool band;
                 int idx;
                 band = this.tipo.Equals('C');
-                idx = ((HashEstatica)this.indices.First()).baja(band, MetodosAuxiliares.truncaCadena(llave).ToCharArray(), this.longitud-1,direccion);
-                this.grabaApuntadoresHash(directorio, ((HashEstatica)this.indices.First()), ((HashEstatica)this.indices.First()).Direcciones[idx], idx);
+                HashEstatica hash;
+                hash = ((HashEstatica)this.indices.First());
+                idx = hash.baja(band, MetodosAuxiliares.truncaCadena(llave).ToCharArray(), this.longitud-1,direccion);
+                this.grabaApuntadoresHash(directorio, hash, hash.Direcciones[idx], idx);
+                if(hash.vacio())
+                {
+                    this.dirIndice = -1;
+                }
             }
         }
 

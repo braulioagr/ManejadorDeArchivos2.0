@@ -168,6 +168,28 @@ namespace Manejador_De_Archivos_2._0
         {
             get { return this.longitud; }
         }
+
+        public bool vacio()
+        {
+            bool band;
+            band = true;
+            for(int i = 0 ; i < Constantes.valorHash; i++)
+            {
+                for (int j = 0; j < this.longitud; j++)
+                {
+                    if (this.apuntadores[i, j] != -1)
+                    {
+                        band = false;
+                        break;
+                    }
+                }
+                if (!band)
+                {
+                    break;
+                }
+            }
+            return band;
+        }
         #endregion
 
     }
