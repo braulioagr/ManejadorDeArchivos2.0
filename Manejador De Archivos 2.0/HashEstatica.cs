@@ -119,12 +119,16 @@ namespace Manejador_De_Archivos_2._0
         {
             int i;
             i = 0;
-            if (esCadena)
+            for (int j = 0; j < llave.Length; j++)
             {
-                for (int j = 0; j < llave.Length; j++)
+                i += (int)llave[j];
+                if(!esCadena)
                 {
-                    i += (int)llave[j];
+                    i -= 48;
                 }
+            }
+            /*if (esCadena)
+            {
             }
             else
             {
@@ -132,7 +136,7 @@ namespace Manejador_De_Archivos_2._0
                 {
                     i += ((int)llave[j])-48;
                 }
-            }
+            }*/
             i %= Constantes.valorHash;
             return i;
         }
