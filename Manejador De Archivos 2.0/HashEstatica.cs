@@ -127,16 +127,6 @@ namespace Manejador_De_Archivos_2._0
                     i -= 48;
                 }
             }
-            /*if (esCadena)
-            {
-            }
-            else
-            {
-                for (int j = 0; j < llave.Length; j++)
-                {
-                    i += ((int)llave[j])-48;
-                }
-            }*/
             i %= Constantes.valorHash;
             return i;
         }
