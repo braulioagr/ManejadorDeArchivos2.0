@@ -557,6 +557,7 @@ namespace Manejador_De_Archivos_2._0
                         }
                         writer.Write(hash.Apuntadores[i, j]);
                     }
+                    writer.Write(((long)-1));
                 }
             }
             catch (Exception e)
@@ -631,6 +632,7 @@ namespace Manejador_De_Archivos_2._0
                         }
                         hash.Apuntadores[i, j] = reader.ReadInt64();
                     }
+                    reader.ReadInt64();
                 }
             }
             catch (Exception e)
