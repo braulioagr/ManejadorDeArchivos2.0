@@ -129,6 +129,21 @@ namespace Manejador_De_Archivos_2._0
             return this.registros[llavePrimaria];
         }
 
+        public Registro buscaRegistro(long direccion)
+        {
+            Registro registro;
+            registro = null;
+            foreach (Registro reg in this.Valores)
+            {
+                if (direccion.Equals(reg.DirAct))
+                {
+                    registro = reg;
+                    break;
+                }
+            }
+            return registro;
+        }
+
         public bool existeAtributo(string nombre)
         {
             bool band;

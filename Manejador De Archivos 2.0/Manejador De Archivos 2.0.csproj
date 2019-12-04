@@ -77,11 +77,23 @@
     <Compile Include="ConsultaEntidad.Designer.cs">
       <DependentUpon>ConsultaEntidad.cs</DependentUpon>
     </Compile>
-    <Compile Include="ConsultaRegistro.cs">
+    <Compile Include="ConsultaRegistroHash.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ConsultaRegistro.Designer.cs">
-      <DependentUpon>ConsultaRegistro.cs</DependentUpon>
+    <Compile Include="ConsultaRegistroHash.Designer.cs">
+      <DependentUpon>ConsultaRegistroHash.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConsultaRegistroPrimario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConsultaRegistroPrimario.Designer.cs">
+      <DependentUpon>ConsultaRegistroPrimario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConsultaRegistroSecundario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConsultaRegistroSecundario.Designer.cs">
+      <DependentUpon>ConsultaRegistroSecundario.cs</DependentUpon>
     </Compile>
     <Compile Include="HashEstatica.cs" />
     <Compile Include="Indice.cs" />
@@ -156,8 +168,14 @@
     <EmbeddedResource Include="ConsultaEntidad.resx">
       <DependentUpon>ConsultaEntidad.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ConsultaRegistro.resx">
-      <DependentUpon>ConsultaRegistro.cs</DependentUpon>
+    <EmbeddedResource Include="ConsultaRegistroHash.resx">
+      <DependentUpon>ConsultaRegistroHash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConsultaRegistroPrimario.resx">
+      <DependentUpon>ConsultaRegistroPrimario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConsultaRegistroSecundario.resx">
+      <DependentUpon>ConsultaRegistroSecundario.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ModificaRegistro.resx">
       <DependentUpon>ModificaRegistro.cs</DependentUpon>
@@ -204,6 +222,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

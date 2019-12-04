@@ -20,5 +20,7 @@ C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Ar
 C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador De Archivos 2.0.csproj.CoreCompileInputs.cache
 C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador De Archivos 2.0.exe
 C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador De Archivos 2.0.pdb
-C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.ConsultaRegistro.resources
+C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.ConsultaRegistroHash.resources
+C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.ConsultaRegistroPrimario.resources
+C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.ConsultaRegistroSecundario.resources
 C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador De Archivos 2.0.csprojAssemblyReference.cache

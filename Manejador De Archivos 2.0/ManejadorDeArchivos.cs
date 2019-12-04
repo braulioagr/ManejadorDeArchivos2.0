@@ -362,7 +362,7 @@ namespace Manejador_De_Archivos_2._0
                             altaRegistro.Dispose();
                         }
                         seleccionEntidad.Dispose();
-                        break;
+                    break;
                     case "Modificar":
                         seleccionEntidad = new SeleccionEntidad(this.archivo);
                         if(seleccionEntidad.ShowDialog().Equals(DialogResult.OK))
@@ -385,16 +385,52 @@ namespace Manejador_De_Archivos_2._0
                         }
                         seleccionEntidad.Dispose();
                     break;
-                    case "Consulta":
+                    case "Consulta Primario":
                         seleccionEntidad = new SeleccionEntidad(this.archivo);
                         if(seleccionEntidad.ShowDialog().Equals(DialogResult.OK))
                         {
-                            ConsultaRegistro consulta;
+                            ConsultaRegistroPrimario consulta;
                             Entidad entidad;
                             entidad = this.archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(seleccionEntidad.Entidad,Constantes.tam));
+                            if(entidad.Valores.Count > 0)
+                            {
+                                consulta = new ConsultaRegistroPrimario(entidad);
+                                consulta.Show();
+                            }
+                            else
+                            {
+                                MessageBox.Show("La entidad seleccionada no contiene registros", "Error");
+                            }
+                        }
+                    break;
+                    case "Consulta Secundario":
+                        seleccionEntidad = new SeleccionEntidad(this.archivo);
+                        if(seleccionEntidad.ShowDialog().Equals(DialogResult.OK))
+                        {
+                            ConsultaRegistroSecundario consulta;
+                            Entidad entidad;
+                            entidad = this.archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(seleccionEntidad.Entidad, Constantes.tam));
                             if (entidad.Valores.Count > 0)
                             {
-                                consulta = new ConsultaRegistro(entidad);
+                                consulta = new ConsultaRegistroSecundario(entidad);
+                                consulta.Show();
+                            }
+                            else
+                            {
+                                MessageBox.Show("La entidad seleccionada no contiene registros", "Error");
+                            }
+                        }
+                    break;
+                    case "Consulta Hash":
+                        seleccionEntidad = new SeleccionEntidad(this.archivo);
+                        if(seleccionEntidad.ShowDialog().Equals(DialogResult.OK))
+                        {
+                            ConsultaRegistroHash consulta;
+                            Entidad entidad;
+                            entidad = this.archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(seleccionEntidad.Entidad, Constantes.tam));
+                            if (entidad.Valores.Count > 0)
+                            {
+                                consulta = new ConsultaRegistroHash(entidad);
                                 consulta.Show();
                             }
                             else

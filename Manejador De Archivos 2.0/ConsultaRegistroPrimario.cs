@@ -10,12 +10,12 @@ using System.Windows.Forms;
 
 namespace Manejador_De_Archivos_2._0
 {
-    partial class ConsultaRegistro : Form
+    partial class ConsultaRegistroPrimario : Form
     {
         Entidad entidad;
         bool band;
         int tam;
-        public ConsultaRegistro(Entidad entidad)
+        public ConsultaRegistroPrimario(Entidad entidad)
         {
             this.entidad = entidad;
             InitializeComponent();
@@ -33,7 +33,6 @@ namespace Manejador_De_Archivos_2._0
                 {
                     llaveAux = MetodosAuxiliares.truncaCadena(llaveAux);
                 }
-                this.comboBoxEntidades.Items.Add(llaveAux);
             }
         }
 
@@ -54,18 +53,27 @@ namespace Manejador_De_Archivos_2._0
                 {
                     llave = MetodosAuxiliares.ajustaCadena(llave, this.tam);
                 }
-                registro = this.entidad.Registros[llave];
-                this.textBoxDirAct.Text = registro.DirAct.ToString();
-                this.textBoxDirSig.Text = registro.DirSig.ToString();
-                foreach (string dato in registro.Datos)
+                    registro = this.entidad.Registros[llave];
+                if (registro != null)
                 {
-                    this.listBoxAtributos.Items.Add(MetodosAuxiliares.truncaCadena(dato));
+
+                    this.textBoxDirAct.Text = registro.DirAct.ToString();
+                    this.textBoxDirSig.Text = registro.DirSig.ToString();
+                    foreach (string dato in registro.Datos)
+                    {
+                        this.listBoxAtributos.Items.Add(MetodosAuxiliares.truncaCadena(dato));
+                    }
                 }
             }
             else
             {
                 MessageBox.Show("Por favor seleccione una entidad","Error");
             }
+        }
+
+        private void ComboBoxEntidades_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

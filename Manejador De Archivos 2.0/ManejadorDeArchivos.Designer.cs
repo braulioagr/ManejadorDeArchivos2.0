@@ -93,16 +93,18 @@
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridHashAuxiliar = new System.Windows.Forms.DataGridView();
+            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label8 = new System.Windows.Forms.Label();
             this.ComboBoxAtributosHash = new System.Windows.Forms.ComboBox();
             this.menuRegistros = new System.Windows.Forms.MenuStrip();
             this.altaRegistros = new System.Windows.Forms.ToolStripMenuItem();
             this.modificarRegistros = new System.Windows.Forms.ToolStripMenuItem();
             this.consultaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.consultaSecundarioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.consultaHashToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eliminarRegistros = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.toolBar.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabEntidades.SuspendLayout();
@@ -750,6 +752,19 @@
             this.dataGridHashAuxiliar.Size = new System.Drawing.Size(190, 219);
             this.dataGridHashAuxiliar.TabIndex = 9;
             // 
+            // Column6
+            // 
+            this.Column6.HeaderText = "Llave";
+            this.Column6.Name = "Column6";
+            this.Column6.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.HeaderText = "Direccion";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            this.dataGridViewTextBoxColumn3.Width = 186;
+            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -774,6 +789,8 @@
             this.altaRegistros,
             this.modificarRegistros,
             this.consultaToolStripMenuItem,
+            this.consultaSecundarioToolStripMenuItem,
+            this.consultaHashToolStripMenuItem,
             this.eliminarRegistros});
             this.menuRegistros.Location = new System.Drawing.Point(3, 3);
             this.menuRegistros.Name = "menuRegistros";
@@ -798,10 +815,24 @@
             // 
             // consultaToolStripMenuItem
             // 
-            this.consultaToolStripMenuItem.AccessibleName = "Consulta";
+            this.consultaToolStripMenuItem.AccessibleName = "Consulta Primario";
             this.consultaToolStripMenuItem.Name = "consultaToolStripMenuItem";
-            this.consultaToolStripMenuItem.Size = new System.Drawing.Size(66, 20);
-            this.consultaToolStripMenuItem.Text = "Consulta";
+            this.consultaToolStripMenuItem.Size = new System.Drawing.Size(114, 20);
+            this.consultaToolStripMenuItem.Text = "Consulta Primario";
+            // 
+            // consultaSecundarioToolStripMenuItem
+            // 
+            this.consultaSecundarioToolStripMenuItem.AccessibleName = "Consulta Secundario";
+            this.consultaSecundarioToolStripMenuItem.Name = "consultaSecundarioToolStripMenuItem";
+            this.consultaSecundarioToolStripMenuItem.Size = new System.Drawing.Size(128, 20);
+            this.consultaSecundarioToolStripMenuItem.Text = "Consulta Secundario";
+            // 
+            // consultaHashToolStripMenuItem
+            // 
+            this.consultaHashToolStripMenuItem.AccessibleName = "Consulta Hash";
+            this.consultaHashToolStripMenuItem.Name = "consultaHashToolStripMenuItem";
+            this.consultaHashToolStripMenuItem.Size = new System.Drawing.Size(96, 20);
+            this.consultaHashToolStripMenuItem.Text = "Consulta Hash";
             // 
             // eliminarRegistros
             // 
@@ -813,19 +844,6 @@
             // openFileDialog
             // 
             this.openFileDialog.FileName = "openFileDialog1";
-            // 
-            // Column6
-            // 
-            this.Column6.HeaderText = "Llave";
-            this.Column6.Name = "Column6";
-            this.Column6.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn3
-            // 
-            this.dataGridViewTextBoxColumn3.HeaderText = "Direccion";
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            this.dataGridViewTextBoxColumn3.ReadOnly = true;
-            this.dataGridViewTextBoxColumn3.Width = 186;
             // 
             // ManejadorDeArchivos
             // 
@@ -952,6 +970,8 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.ToolStripMenuItem consultaSecundarioToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem consultaHashToolStripMenuItem;
     }
 }
 
