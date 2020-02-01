@@ -56,7 +56,7 @@ namespace Manejador_De_Archivos_2._0
                 }
                 else if (entidad.Atributos[indice].Tipo.Equals('C'))
                 {
-                    atributos.Push(MetodosAuxiliares.ajustaCadena(textBoxDato.Text, entidad.Atributos[indice].Longitud - 1));
+                    atributos.Push(MetodosAuxiliares.ajustaCadena(textBoxDato.Text, entidad.Atributos[indice].Longitud));
                 }
                 this.Close();
             }
@@ -80,7 +80,7 @@ namespace Manejador_De_Archivos_2._0
                     }
                     else if (entidad.Atributos[indice].Tipo.Equals('C'))
                     {
-                        atributos.Push(MetodosAuxiliares.ajustaCadena(textBoxDato.Text, entidad.Atributos[indice].Longitud - 1));
+                        atributos.Push(MetodosAuxiliares.ajustaCadena(textBoxDato.Text, entidad.Atributos[indice].Longitud));
                     }
                     indice++;
                     actualizaLabel();

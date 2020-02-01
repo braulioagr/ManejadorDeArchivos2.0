@@ -24,7 +24,7 @@ namespace Manejador_De_Archivos_2._0
         private void ConsultaRegistro_Load(object sender, EventArgs e)
         {
             this.band = this.entidad.Atributos[this.entidad.buscaIndiceClavePrimaria()].Tipo.Equals('C');
-            this.tam = this.entidad.Atributos[this.entidad.buscaIndiceClavePrimaria()].Longitud - 1;
+            this.tam = this.entidad.Atributos[this.entidad.buscaIndiceClavePrimaria()].Longitud;
             string llaveAux;
             foreach(string llave in this.entidad.LlavePrimaria)
             {

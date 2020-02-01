@@ -343,7 +343,7 @@ namespace Manejador_De_Archivos_2._0
                 {
                     this.writer.Seek((int)entidad.DirActual, SeekOrigin.Current);//Posiciona el grabado del archivo en la dirección actual
                     this.writer.Write(entidad.DirActual);//Graba la dirección Actual
-                    this.writer.Write(entidad.Nombre);//Graba el nombre
+                    this.writer.Write(entidad.Nombre.ToCharArray());//Graba el nombre
                     this.writer.Write(entidad.DirAtributos);//Graba la direccion de atributos
                     this.writer.Write(entidad.DirRegistros);//Graba la Dirección de Registros
                     this.writer.Write(entidad.DirSig);//Graba la dirección de la siguiente entidad
@@ -367,7 +367,7 @@ namespace Manejador_De_Archivos_2._0
                 using (writer = new BinaryWriter(new FileStream(this.Nombre, FileMode.Open)))//Abre el archivo con el BinaryWriter
                 {
                     writer.Seek((int)atributo.DirActual, SeekOrigin.Current);//Posiciona el grabado del archivo en la dirección actual
-                    writer.Write(atributo.Nombre);//Graba el Nombre
+                    writer.Write(atributo.Nombre.ToCharArray());//Graba el Nombre
                     writer.Write(atributo.Tipo);//Graba el Tipo
                     writer.Write(atributo.Longitud);//Graba la Longitud
                     writer.Write(atributo.DirActual);//Graba la Direccion Actual
@@ -440,7 +440,7 @@ namespace Manejador_De_Archivos_2._0
                     }
                     reader.BaseStream.Seek(dirSigEntidad, SeekOrigin.Current);//Se posciona en la posición del iterador
                     actual = reader.ReadInt64();//Lee un long que de la dirección actual
-                    nombre = reader.ReadString();//Lee el string del nombre
+                    nombre = new string(reader.ReadChars(Constantes.tam));//Lee el string del nombre
                     dirAtributo = reader.ReadInt64();//Lee un long que de la dirección de los atributos
                     dirRegistros = reader.ReadInt64();//Lee un long que de la dirección de los registros
                     dirSigEntidad = reader.ReadInt64();////Lee un long que de la dirección de la siguiente entidad
@@ -476,7 +476,7 @@ namespace Manejador_De_Archivos_2._0
                     using (reader = new BinaryReader(new FileStream(this.Nombre, FileMode.Open)))//Abre el archivo con un BinaryReader
                     {
                         reader.BaseStream.Seek(dirSiguienteAtributo, SeekOrigin.Current);//Se posciona en la posición del iterador
-                        nombre = reader.ReadString();//Se lee el string del nombre
+                        nombre = new string(reader.ReadChars(Constantes.tam));//Se lee el string del nombre
                         tipo = reader.ReadChar();//Se lee el string del tipo de dato
                         longitud = reader.ReadInt32();//Se lee el int de la longitud del tipo de dato
                         dirActual = reader.ReadInt64();//Se lee el long de la dirección actual

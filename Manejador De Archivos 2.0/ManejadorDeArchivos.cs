@@ -582,7 +582,7 @@ namespace Manejador_De_Archivos_2._0
             this.dataGridSecundarioAuxiliar.Rows.Clear();
             if (atributo.Tipo.Equals('C'))
             {
-                valor = MetodosAuxiliares.ajustaCadena(cell.Value.ToString(), atributo.Longitud-1);
+                valor = MetodosAuxiliares.ajustaCadena(cell.Value.ToString(), atributo.Longitud);
             }
             else
             {

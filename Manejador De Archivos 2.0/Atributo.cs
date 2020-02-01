@@ -229,7 +229,7 @@ namespace Manejador_De_Archivos_2._0
             Secundario secundario;
             esCadena = this.tipo.Equals('C');
             secundario = ((Secundario)this.indices.First());
-            direcciones = secundario.modificacion(llaveOriginal, nuevallave, dirAct,esCadena, this.longitud-1);
+            direcciones = secundario.modificacion(llaveOriginal, nuevallave, dirAct,esCadena, this.longitud);
             for (int i = 0; i < direcciones.Length; i++)
             {
                 this.grabaApuntadoresSecundario(archivoIdx, secundario, secundario.Direcciones[direcciones[i]], direcciones[i]);
@@ -244,7 +244,7 @@ namespace Manejador_De_Archivos_2._0
             Secundario secundario;
             band = this.tipo.Equals('C');
             secundario = ((Secundario)this.indices.First());
-            idx = secundario.baja(llave, direccion,this.tipo.Equals('C'),this.longitud-1);
+            idx = secundario.baja(llave, direccion,this.tipo.Equals('C'),this.longitud);
             this.grabaApuntadoresSecundario(directorio, secundario, secundario.Direcciones[idx], idx);
             this.grabaDireccionesSecundario(directorio, secundario);
             if (secundario.estaVacio())
@@ -277,7 +277,7 @@ namespace Manejador_De_Archivos_2._0
                 this.grabaDireccionesHash(directorio, hash);
             }
             int idx;
-            idx = ((HashEstatica)this.indices.First()).alta(band, MetodosAuxiliares.truncaCadena(llave).ToCharArray(), this.longitud-1, direccion);
+            idx = ((HashEstatica)this.indices.First()).alta(band, MetodosAuxiliares.truncaCadena(llave).ToCharArray(), this.longitud, direccion);
             this.grabaApuntadoresHash(directorio, ((HashEstatica)this.indices.First()), ((HashEstatica)this.indices.First()).Direcciones[idx], idx);
         }
 
@@ -288,7 +288,7 @@ namespace Manejador_De_Archivos_2._0
             HashEstatica hash;
             esCadena = this.tipo.Equals('C');
             hash = ((HashEstatica)this.indices.First());
-            direcciones = hash.modifica(esCadena, llaveOriginal.ToCharArray(), nuevallave.ToCharArray(), dirAct,this.longitud-1);
+            direcciones = hash.modifica(esCadena, llaveOriginal.ToCharArray(), nuevallave.ToCharArray(), dirAct,this.longitud);
             for (int i = 0; i < direcciones.Length; i++)
             {
                 this.grabaApuntadoresHash(archivoIdx, hash, hash.Direcciones[direcciones[i]], direcciones[i]);
@@ -304,7 +304,7 @@ namespace Manejador_De_Archivos_2._0
                 band = this.tipo.Equals('C');
                 HashEstatica hash;
                 hash = ((HashEstatica)this.indices.First());
-                idx = hash.baja(band, MetodosAuxiliares.truncaCadena(llave).ToCharArray(), this.longitud-1,direccion);
+                idx = hash.baja(band, MetodosAuxiliares.truncaCadena(llave).ToCharArray(), this.longitud,direccion);
                 this.grabaApuntadoresHash(directorio, hash, hash.Direcciones[idx], idx);
                 if(hash.vacio())
                 {
@@ -359,9 +359,9 @@ namespace Manejador_De_Archivos_2._0
                         {
                             if (indice.Idx[i].Llave.Length != this.longitud)
                             {
-                                MetodosAuxiliares.ajustaCadena(indice.Idx[i].Llave,this.longitud -1);
+                                indice.Idx[i].Llave = MetodosAuxiliares.ajustaCadena(indice.Idx[i].Llave,this.longitud);
                             }
-                            this.writer.Write(indice.Idx[i].Llave);
+                            this.writer.Write(indice.Idx[i].Llave.ToCharArray());
                         }
                         else if (this.tipo == 'E')
                         {
@@ -403,7 +403,7 @@ namespace Manejador_De_Archivos_2._0
                         {
                             if (this.tipo == 'C')
                             {
-                                llave = this.reader.ReadString();
+                                llave = new string(this.reader.ReadChars(this.longitud));
                             }
                             else
                             {
@@ -463,7 +463,7 @@ namespace Manejador_De_Archivos_2._0
                     {
                         if(this.tipo.Equals('C'))
                         {
-                            writer.Write(secundario.Llaves[i]);
+                            writer.Write(secundario.Llaves[i].ToCharArray());
                         }
                         else if(this.tipo.Equals('E'))
                         {
@@ -497,7 +497,7 @@ namespace Manejador_De_Archivos_2._0
                     {
                         if(band)
                         {
-                            secundario.Llaves[i] = reader.ReadString();
+                            secundario.Llaves[i] = new string(reader.ReadChars(this.longitud));
                         }
                         else
                         {
@@ -555,7 +555,7 @@ namespace Manejador_De_Archivos_2._0
                     {
                         if (this.tipo.Equals('C'))
                         {
-                            writer.Write(hash.Llaves[i, j]);
+                            writer.Write(hash.Llaves[i, j].ToCharArray());
                         }
                         else if (this.tipo.Equals('E'))
                         {
@@ -630,7 +630,7 @@ namespace Manejador_De_Archivos_2._0
                     {
                         if (band)
                         {
-                            hash.Llaves[i, j] = reader.ReadString();
+                            hash.Llaves[i, j] = new string(reader.ReadChars(this.longitud));
                         }
                         else
                         {

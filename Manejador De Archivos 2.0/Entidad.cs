@@ -124,7 +124,7 @@ namespace Manejador_De_Archivos_2._0
         {
             if (this.atributos[this.buscaIndiceClavePrimaria()].Tipo.Equals('C'))
             {
-                llavePrimaria = MetodosAuxiliares.ajustaCadena(llavePrimaria, this.atributos[this.buscaIndiceClavePrimaria()].Longitud-1);
+                llavePrimaria = MetodosAuxiliares.ajustaCadena(llavePrimaria, this.atributos[this.buscaIndiceClavePrimaria()].Longitud);
             }
             return this.registros[llavePrimaria];
         }
@@ -456,7 +456,7 @@ namespace Manejador_De_Archivos_2._0
                     archivoIdx = directorio + "\\" + MetodosAuxiliares.truncaCadena(this.nombre) + ".idx";
                     if (this.atributos[this.buscaIndiceClavePrimaria()].Tipo.Equals('C'))
                     {
-                        llavePrimaria = MetodosAuxiliares.ajustaCadena(llavePrimaria, this.atributos[this.buscaIndiceClavePrimaria()].Longitud - 1);
+                        llavePrimaria = MetodosAuxiliares.ajustaCadena(llavePrimaria, this.atributos[this.buscaIndiceClavePrimaria()].Longitud);
                     }
                     else if (this.atributos[this.buscaIndiceClavePrimaria()].Tipo.Equals('E'))
                     {
@@ -533,7 +533,7 @@ namespace Manejador_De_Archivos_2._0
                         }
                         else if (this.atributos[i].Tipo.Equals('C'))
                         {
-                            this.writer.Write(registro.Datos[i]);
+                            this.writer.Write(registro.Datos[i].ToCharArray());
                         }
                     }
                     this.writer.Write(registro.DirAct);
@@ -571,7 +571,7 @@ namespace Manejador_De_Archivos_2._0
                             }
                             else if (atributo.Tipo.Equals('C'))
                             {
-                                informacion.Add(this.reader.ReadString());
+                                informacion.Add(new string(this.reader.ReadChars(atributo.Longitud)));
                             }
                             i++;
                         }
