@@ -97,6 +97,7 @@
     </Compile>
     <Compile Include="HashEstatica.cs" />
     <Compile Include="Indice.cs" />
+    <Compile Include="InvalidConsultException.cs" />
     <Compile Include="ModificaRegistro.cs">
       <SubType>Form</SubType>
     </Compile>

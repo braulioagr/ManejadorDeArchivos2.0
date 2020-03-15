@@ -489,7 +489,55 @@ namespace Manejador_De_Archivos_2._0
                 }
             }
         }
-        
+
+        public List<Atributo> ConsultaAtributosSelect(string[] sentencia, ref Entidad entidad)
+        {
+            if (sentencia.Contains("from"))
+            {
+                int i;
+                List<Atributo> atributos;
+                atributos = new List<Atributo>();
+                i = Array.IndexOf(sentencia, "from");
+                entidad = this.buscaEntidad(MetodosAuxiliares.ajustaCadena(sentencia[i+1], Constantes.tam));
+                if (sentencia.Contains("*"))
+                {
+                    if (sentencia.Length == 4)
+                    {
+                        atributos = entidad.Atributos;
+                    }
+                    else
+                    {
+                        throw new InvalidConsultException("El * debe ir solo");
+                    }
+                }
+                else
+                {
+                    for (int j = 1; j < i; j++)
+                    {
+                        sentencia[j] = sentencia[j].Replace(",", "");
+                        if (entidad.existeAtributo(MetodosAuxiliares.ajustaCadena(sentencia[j], Constantes.tam)))
+                        {
+                            atributos.Add(entidad.buscaAtributo(MetodosAuxiliares.ajustaCadena(sentencia[j], Constantes.tam)));
+                        }
+                        else
+                        {
+                            throw new InvalidConsultException("El atributo a buscar no existe");
+                        }
+                    }
+                }
+                return atributos;
+            }
+            else
+            {
+                throw new InvalidConsultException("Falta el from perro");
+            }
+        }
+
+        internal List<Registro> ConsultaRegistrosSelectWhere(List<Atributo> atributos, Entidad entidad, string condicion)
+        {
+            throw new NotImplementedException("Aun no se finaliza este pedo");
+        }
+
         #endregion
 
         #endregion
