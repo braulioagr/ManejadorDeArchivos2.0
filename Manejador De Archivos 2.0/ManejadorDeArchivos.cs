@@ -716,7 +716,7 @@ namespace Manejador_De_Archivos_2._0
                 }
             }
         }
-        private void actualizaDataGridSQL(Entidad entidad, List<Atributo> atributos, List<Registro> registros, string sentencia)
+        private void actualizaDataGridSQLConSelect(Entidad entidad, List<Atributo> atributos, List<Registro> registros)
         {
             int i;
             int j;
@@ -857,7 +857,7 @@ namespace Manejador_De_Archivos_2._0
                                     if (!sentencia.Contains("where"))
                                     {
                                         registros = entidad.Valores;
-                                        this.actualizaDataGridSQL(entidad, atributos, registros, sentencia.First());
+                                        this.actualizaDataGridSQLConSelect(entidad, atributos, registros);
                                     }
                                     else
                                     {
