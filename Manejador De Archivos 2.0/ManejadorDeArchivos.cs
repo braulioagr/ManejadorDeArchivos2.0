@@ -839,10 +839,13 @@ namespace Manejador_De_Archivos_2._0
             {
                 try
                 {
+                    string[] sentencia;
+                    sentencia = this.textBoxSQL.Text.Split((" ").ToCharArray());
+                    sentencia = MetodosAuxiliares.LimpiaSentencia(sentencia);
                     if (this.textBoxSQL.Text.Contains("select"))
                     {
-                        string[] sentencia;
-                        sentencia = this.textBoxSQL.Text.Split((" ").ToCharArray());
+                        int i;
+                        int y;
                         if (sentencia.First().Equals("select"))
                         {
                             Entidad entidad;
@@ -861,8 +864,18 @@ namespace Manejador_De_Archivos_2._0
                                     }
                                     else
                                     {
-
-                                        //registros = this.archivo.ConsultaRegistrosSelectWhere(atributos,entidad);
+                                        string[] where;
+                                        i = Array.IndexOf(sentencia, "where");
+                                        i++;
+                                        if(i != sentencia.Length)
+                                        {
+                                            where = MetodosAuxiliares.SubArray(sentencia,i,sentencia.Length-i);
+                                            registros = this.archivo.ConsultaRegistrosSelectWhere(atributos, entidad, where);
+                                        }
+                                        else
+                                        {
+                                            throw new InvalidConsultException("Por favor ponga el enunciado de la sentencia where");
+                                        }
                                     }
                                 }
                                 else

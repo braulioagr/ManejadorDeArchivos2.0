@@ -47,6 +47,30 @@ namespace Manejador_De_Archivos_2._0
             aux = cad.Replace("&", "");
             return aux;
         }
+
+        internal static string[] LimpiaSentencia(string[] sentencia)
+        {
+            string aux;
+            for (int j = 0; j < sentencia.Length; j++)
+            {
+                sentencia[j] = sentencia[j].Replace(",", "");
+                aux = sentencia[j].ToLower();
+                if (aux.Equals("select") || aux.Equals("from") || aux.Equals("where"))
+                {
+                    sentencia[j] = aux;
+                }
+            }
+            return sentencia;
+        }
+
+
+        public static string[] SubArray(string[] array, int offset, int length)
+        {
+            string[] result = new string[length];
+            Array.Copy(array, offset, result, 0, length);
+            return result;
+        }
+
         #endregion
 
         #region Indices

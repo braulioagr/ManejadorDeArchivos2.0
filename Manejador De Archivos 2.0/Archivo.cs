@@ -498,34 +498,47 @@ namespace Manejador_De_Archivos_2._0
                 List<Atributo> atributos;
                 atributos = new List<Atributo>();
                 i = Array.IndexOf(sentencia, "from");
-                entidad = this.buscaEntidad(MetodosAuxiliares.ajustaCadena(sentencia[i+1], Constantes.tam));
-                if (sentencia.Contains("*"))
+                if(!sentencia.Last().Equals("from"))
                 {
-                    if (sentencia.Length == 4)
+                    if (this.existeEntidad(MetodosAuxiliares.ajustaCadena(sentencia[i + 1], Constantes.tam)))
                     {
-                        atributos = entidad.Atributos;
+                        entidad = this.buscaEntidad(MetodosAuxiliares.ajustaCadena(sentencia[i + 1], Constantes.tam));
+                        if (sentencia.Contains("*"))
+                        {
+                            if (Array.IndexOf(sentencia, "select") == 0 && i == 2 && Array.IndexOf(sentencia, "*") == 1)
+                            {
+                                atributos = entidad.Atributos;
+                            }
+                            else
+                            {
+                                throw new InvalidConsultException("El * debe ir solo");
+                            }
+                        }
+                        else
+                        {
+                            for (int j = 1; j < i; j++)
+                            {
+                                if (entidad.existeAtributo(MetodosAuxiliares.ajustaCadena(sentencia[j], Constantes.tam)))
+                                {
+                                    atributos.Add(entidad.buscaAtributo(MetodosAuxiliares.ajustaCadena(sentencia[j], Constantes.tam)));
+                                }
+                                else
+                                {
+                                    throw new InvalidConsultException("El Atributo a buscar no existe");
+                                }
+                            }
+                        }
+                        return atributos;
                     }
                     else
                     {
-                        throw new InvalidConsultException("El * debe ir solo");
+                        throw new InvalidConsultException("La Entidad a buscar no existe o no se especifico");
                     }
                 }
                 else
                 {
-                    for (int j = 1; j < i; j++)
-                    {
-                        sentencia[j] = sentencia[j].Replace(",", "");
-                        if (entidad.existeAtributo(MetodosAuxiliares.ajustaCadena(sentencia[j], Constantes.tam)))
-                        {
-                            atributos.Add(entidad.buscaAtributo(MetodosAuxiliares.ajustaCadena(sentencia[j], Constantes.tam)));
-                        }
-                        else
-                        {
-                            throw new InvalidConsultException("El atributo a buscar no existe");
-                        }
-                    }
+                    throw new InvalidConsultException("Por favor especifique una entidad a buscar");
                 }
-                return atributos;
             }
             else
             {
@@ -533,7 +546,7 @@ namespace Manejador_De_Archivos_2._0
             }
         }
 
-        internal List<Registro> ConsultaRegistrosSelectWhere(List<Atributo> atributos, Entidad entidad, string condicion)
+        public List<Registro> ConsultaRegistrosSelectWhere(List<Atributo> atributos, Entidad entidad, string[] where)
         {
             throw new NotImplementedException("Aun no se finaliza este pedo");
         }
