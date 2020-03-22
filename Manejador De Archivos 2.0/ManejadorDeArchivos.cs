@@ -845,7 +845,6 @@ namespace Manejador_De_Archivos_2._0
                     if (this.textBoxSQL.Text.Contains("select"))
                     {
                         int i;
-                        int y;
                         if (sentencia.First().Equals("select"))
                         {
                             Entidad entidad;
@@ -871,6 +870,7 @@ namespace Manejador_De_Archivos_2._0
                                         {
                                             where = MetodosAuxiliares.SubArray(sentencia,i,sentencia.Length-i);
                                             registros = this.archivo.ConsultaRegistrosSelectWhere(atributos, entidad, where);
+                                            this.actualizaDataGridSQLConSelect(entidad, atributos, registros);
                                         }
                                         else
                                         {

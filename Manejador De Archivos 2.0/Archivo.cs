@@ -548,7 +548,129 @@ namespace Manejador_De_Archivos_2._0
 
         public List<Registro> ConsultaRegistrosSelectWhere(List<Atributo> atributos, Entidad entidad, string[] where)
         {
-            throw new NotImplementedException("Aun no se finaliza este pedo");
+            try
+            {
+                if (where.Length == 3)
+                {
+                    int i;
+                    List<Registro> registros;
+                    registros = new List<Registro>();
+                    if (entidad.existeAtributo(MetodosAuxiliares.ajustaCadena(where.First(), Constantes.tam)))
+                    {
+                        i = entidad.buscaIndiceAtributo(MetodosAuxiliares.ajustaCadena(where.First(), Constantes.tam));
+                        if (entidad.Atributos[i].Tipo.Equals('C'))
+                        {
+                            where[2] = MetodosAuxiliares.ajustaCadena(where.Last(), entidad.Atributos[i].Longitud);
+                        }
+                        foreach (Registro registro in entidad.Valores)
+                        {
+                            switch (where[1])
+                            {
+                                case "=":
+                                    if (entidad.Atributos[i].Tipo.Equals('E'))
+                                    {
+                                        if (Int32.Parse(registro.Datos[i]) == Int32.Parse(where.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (registro.Datos[i].Equals(where.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    break;
+                                case "!=":
+                                    if (entidad.Atributos[i].Tipo.Equals('E'))
+                                    {
+                                        if (Int32.Parse(registro.Datos[i]) != Int32.Parse(where.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (!registro.Datos[i].Equals(where.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    break;
+                                case ">":
+                                    if (entidad.Atributos[i].Tipo.Equals('E'))
+                                    {
+                                        if (Int32.Parse(registro.Datos[i]) > Int32.Parse(where.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        throw new InvalidConsultException("El operador no es valido con cadenas");
+                                    }
+                                    break;
+                                case "<":
+                                    if (entidad.Atributos[i].Tipo.Equals('E'))
+                                    {
+                                        if (Int32.Parse(registro.Datos[i]) < Int32.Parse(where.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        throw new InvalidConsultException("El operador no es valido con cadenas");
+                                    }
+                                    break;
+                                case ">=":
+                                    if (entidad.Atributos[i].Tipo.Equals('E'))
+                                    {
+                                        if (Int32.Parse(registro.Datos[i]) >= Int32.Parse(where.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        throw new InvalidConsultException("El operador no es valido con cadenas");
+                                    }
+                                    break;
+                                case "<=":
+                                    if (entidad.Atributos[i].Tipo.Equals('E'))
+                                    {
+                                        if (Int32.Parse(registro.Datos[i]) <= Int32.Parse(where.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        throw new InvalidConsultException("El operador no es valido con cadenas");
+                                    }
+                                    break;
+                                default:
+                                    throw new InvalidConsultException("No se utilizo un comparador valido");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        throw new InvalidConsultException("El atributo que se desea comparar no exite");
+                    }
+                    return registros;
+                    //throw new NotImplementedException("Aun no se finaliza este pedo");
+                }
+                else
+                {
+                    throw new InvalidConsultException("La sentencia where no esta buien estructuada");
+                }
+            }
+            catch (FormatException)
+            {
+                throw new InvalidConsultException("Ahorita vemos que pedo");
+            }
         }
 
         #endregion
