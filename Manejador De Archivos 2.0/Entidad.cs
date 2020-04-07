@@ -234,6 +234,22 @@ namespace Manejador_De_Archivos_2._0
             }
             return indice;
         }
+
+
+        public int buscaIndiceAtributo(string nombre, string entidad)
+        {
+            int indice;
+            indice = -1;
+            for (int i = 0; i < this.atributos.Count; i++)
+            {
+                if (this.atributos[i].Nombre.Equals(nombre) && this.atributos[i].Entidad.Equals(entidad))
+                {
+                    indice = i;
+                    break;
+                }
+            }
+            return indice;
+        }
         #endregion
 
         #region Atributos

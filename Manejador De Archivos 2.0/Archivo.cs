@@ -384,6 +384,457 @@ namespace Manejador_De_Archivos_2._0
 
         #endregion
 
+        #region Sentencias SQL
+
+        public List<Atributo> ConsultaAtributosSelect(string[] sentencia, ref Entidad entidad)
+        {
+            int i;
+            List<Atributo> atributos;
+            atributos = new List<Atributo>();
+            if (sentencia.Contains("from"))
+            {
+                i = Array.IndexOf(sentencia, "from");
+                if (!sentencia.Last().Equals("from"))
+                {
+                    if (this.existeEntidad(MetodosAuxiliares.ajustaCadena(sentencia[i + 1], Constantes.tam)))
+                    {
+                        entidad = this.buscaEntidad(MetodosAuxiliares.ajustaCadena(sentencia[i + 1], Constantes.tam));
+                        if (sentencia.Contains("*"))
+                        {
+                            if (Array.IndexOf(sentencia, "select") == 0 && i == 2 && Array.IndexOf(sentencia, "*") == 1)
+                            {
+                                atributos = entidad.Atributos;
+                            }
+                            else
+                            {
+                                throw new InvalidConsultException("El * debe ir solo");
+                            }
+                        }
+                        else
+                        {
+                            for (int j = 1; j < i; j++)
+                            {
+                                if (entidad.existeAtributo(MetodosAuxiliares.ajustaCadena(sentencia[j], Constantes.tam)))
+                                {
+                                    atributos.Add(entidad.buscaAtributo(MetodosAuxiliares.ajustaCadena(sentencia[j], Constantes.tam)));
+                                }
+                                else
+                                {
+                                    throw new InvalidConsultException("El Atributo a buscar no existe");
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        throw new InvalidConsultException("La Entidad a buscar no existe o no se especifico");
+                    }
+                }
+                else
+                {
+                    throw new InvalidConsultException("Por favor especifique una entidad a buscar");
+                }
+            }
+            else
+            {
+                throw new InvalidConsultException("Falta el from perro");
+            }
+            return atributos;
+        }
+
+        public List<Registro> ConsultaRegistrosSelectWhere(List<Atributo> atributos, Entidad entidad, string[] where)
+        {
+            try
+            {
+                if (where.Length == 3)
+                {
+                    int i;
+                    List<Registro> registros;
+                    registros = new List<Registro>();
+                    if (entidad.existeAtributo(MetodosAuxiliares.ajustaCadena(where.First(), Constantes.tam)))
+                    {
+                        i = entidad.buscaIndiceAtributo(MetodosAuxiliares.ajustaCadena(where.First(), Constantes.tam));
+                        if (entidad.Atributos[i].Tipo.Equals('C'))
+                        {
+                            where[2] = MetodosAuxiliares.ajustaCadena(where.Last(), entidad.Atributos[i].Longitud);
+                        }
+                        foreach (Registro registro in entidad.Valores)
+                        {
+                            switch (where[1])
+                            {
+                                case "=":
+                                    if (entidad.Atributos[i].Tipo.Equals('E'))
+                                    {
+                                        if (Int32.Parse(registro.Datos[i]) == Int32.Parse(where.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (registro.Datos[i].Equals(where.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    break;
+                                case "!=":
+                                    if (entidad.Atributos[i].Tipo.Equals('E'))
+                                    {
+                                        if (Int32.Parse(registro.Datos[i]) != Int32.Parse(where.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (!registro.Datos[i].Equals(where.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    break;
+                                case ">":
+                                    if (entidad.Atributos[i].Tipo.Equals('E'))
+                                    {
+                                        if (Int32.Parse(registro.Datos[i]) > Int32.Parse(where.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (registro.Datos[i].CompareTo(where.Last()) > 0)
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    break;
+                                case "<":
+                                    if (entidad.Atributos[i].Tipo.Equals('E'))
+                                    {
+                                        if (Int32.Parse(registro.Datos[i]) < Int32.Parse(where.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (registro.Datos[i].CompareTo(where.Last()) < 0)
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    break;
+                                case ">=":
+                                    if (entidad.Atributos[i].Tipo.Equals('E'))
+                                    {
+                                        if (Int32.Parse(registro.Datos[i]) >= Int32.Parse(where.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (registro.Datos[i].CompareTo(where.Last()) >= 0)
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    break;
+                                case "<=":
+                                    if (entidad.Atributos[i].Tipo.Equals('E'))
+                                    {
+                                        if (Int32.Parse(registro.Datos[i]) <= Int32.Parse(where.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (registro.Datos[i].CompareTo(where.Last()) <= 0)
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    break;
+                                default:
+                                    throw new InvalidConsultException("No se utilizo un comparador valido");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        throw new InvalidConsultException("El atributo que se desea comparar no exite");
+                    }
+                    return registros;
+                    //throw new NotImplementedException("Aun no se finaliza este pedo");
+                }
+                else
+                {
+                    throw new InvalidConsultException("La sentencia where no esta buien estructuada");
+                }
+            }
+            catch (FormatException)
+            {
+                throw new InvalidConsultException("Ahorita vemos que pedo");
+            }
+        }
+
+        public Entidad InnerJoin(string[] sentencia)
+        {
+            int i;
+            int j;
+            int x;//Indice del atributo de la tabla A 
+            int y;//Indice del atributo de la taba B
+            string A;//Nombre del atributo de la tabla A
+            string B;//Nombre del atributo de la tabla A
+            bool band;
+            string[] on;
+            Entidad tablaA;
+            Entidad tablaB;
+            Entidad innerJoin;//Entidad resultante
+            i = Array.IndexOf(sentencia, "from");
+            j = Array.IndexOf(sentencia, "join");
+            //Verificamos que existan las tablas
+            if(this.existeEntidad(MetodosAuxiliares.ajustaCadena(sentencia[i + 1], Constantes.tam)) && this.existeEntidad(MetodosAuxiliares.ajustaCadena(sentencia[j + 1], Constantes.tam)))
+            {
+                //Obtenemos la tabla A que siempre esta despues del form
+                tablaA = this.buscaEntidad(MetodosAuxiliares.ajustaCadena(sentencia[i + 1], Constantes.tam));
+                //Obtenemos la tabla B que siempre esta despues del join
+                tablaB = this.buscaEntidad(MetodosAuxiliares.ajustaCadena(sentencia[j + 1], Constantes.tam));
+                //Verificamos que ambas tablas tengan atributos
+                if (tablaA.Atributos.Count > 0 && tablaB.Atributos.Count > 0)
+                {
+                    //Obtenemos el indice desde donde se obtendra lo que contieene la sentencia On
+                    i = Array.IndexOf(sentencia, "on");
+                    i++;
+                    // Obtenemos la sentencia On
+                    on = MetodosAuxiliares.SubArray(sentencia, i, sentencia.Length - i);
+                    //Validamos la sentencia On
+                    if (on.Length == 3)
+                    {
+                        //Obtenemos el nombre del atributo de la tabla A
+                        A = MetodosAuxiliares.ajustaCadena(on.First().Split('.').Last(), Constantes.tam);
+                        //Obtenemos el nombre del atributo de la tabla B
+                        B = MetodosAuxiliares.ajustaCadena(on.Last().Split('.').Last(), Constantes.tam);
+                        //Verificamos que las tablas tengan registros
+                        if(tablaA.Registros.Count > 0 & tablaB.Registros.Count > 0)
+                        {
+                            //Verificamos que existan ambos atributoss en sus tablas
+                            if (tablaA.existeAtributo(A) && tablaB.existeAtributo(B))
+                            {
+                                if (tablaA.buscaAtributo(A).Tipo.Equals(tablaB.buscaAtributo(B).Tipo))
+                                {
+                                    //Preparamos la tablaque sera resultado de la mescla combinando los atributos de ambas tablas primero la A y luego la B
+                                    innerJoin = new Entidad(MetodosAuxiliares.truncaCadena(tablaA.Nombre) + "-" + MetodosAuxiliares.truncaCadena(tablaB.Nombre), -1, -1, -1, -1);
+                                    innerJoin.Atributos.AddRange(tablaA.Atributos);
+                                    innerJoin.Atributos.AddRange(tablaB.Atributos);
+                                    //Obtenemos los indices de ambas tablas
+                                    x = tablaA.Atributos.IndexOf(tablaA.buscaAtributo(A));
+                                    y = tablaB.Atributos.IndexOf(tablaB.buscaAtributo(B));
+                                    //Ponemos un entero para hacer una llave primaria auxiliar
+                                    int k;
+                                    k = 0;
+                                    //Empezamos a recorrer la lista de los registros de ambas tablas
+                                    foreach (Registro registroA in tablaA.Valores)
+                                    {
+                                        foreach (Registro registroB in tablaB.Valores)
+                                        {
+                                            band = false;
+                                            switch (on[1])
+                                            {
+
+                                                case "=":
+                                                    if (tablaA.Atributos[x].Tipo.Equals('E'))
+                                                    {
+                                                        if (Int32.Parse(registroA.Datos[x]) == Int32.Parse(registroB.Datos[y]))
+                                                        {
+                                                            band = true;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        //Verificamos si ambos registros coinciden en dichos atributos
+                                                        if (registroA.Datos[x].Equals(registroB.Datos[y]))
+                                                        {
+                                                            band = true;
+                                                        }
+                                                    }
+                                                    break;
+                                                case "!=":
+                                                    if (tablaA.Atributos[x].Tipo.Equals('E'))
+                                                    {
+                                                        if (Int32.Parse(registroA.Datos[x]) != Int32.Parse(registroB.Datos[y]))
+                                                        {
+                                                            band = true;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        //Verificamos si ambos registros coinciden en dichos atributos
+                                                        if (!registroA.Datos[x].Equals(registroB.Datos[y]))
+                                                        {
+                                                            band = true;
+                                                        }
+                                                    }
+                                                    break;
+                                                case ">":
+                                                    if (tablaA.Atributos[x].Tipo.Equals('E'))
+                                                    {
+                                                        if (Int32.Parse(registroA.Datos[x]) > Int32.Parse(registroB.Datos[y]))
+                                                        {
+                                                            band = true;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        //Verificamos si ambos registros coinciden en dichos atributos
+                                                        if (registroA.Datos[x].CompareTo(registroB.Datos[y]) > 0)
+                                                        {
+                                                            band = true;
+                                                        }
+                                                    }
+                                                    break;
+                                                case "<":
+                                                    if (tablaA.Atributos[x].Tipo.Equals('E'))
+                                                    {
+                                                        if (Int32.Parse(registroA.Datos[x]) < Int32.Parse(registroB.Datos[y]))
+                                                        {
+                                                            band = true;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        //Verificamos si ambos registros coinciden en dichos atributos
+                                                        if (registroA.Datos[x].CompareTo(registroB.Datos[y]) < 0)
+                                                        {
+                                                            band = true;
+                                                        }
+                                                    }
+                                                    break;
+                                                case ">=":
+                                                    if (tablaA.Atributos[x].Tipo.Equals('E'))
+                                                    {
+                                                        if (Int32.Parse(registroA.Datos[x]) >= Int32.Parse(registroB.Datos[y]))
+                                                        {
+                                                            band = true;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        //Verificamos si ambos registros coinciden en dichos atributos
+                                                        if (registroA.Datos[x].CompareTo(registroB.Datos[y]) >= 0)
+                                                        {
+                                                            band = true;
+                                                        }
+                                                    }
+                                                    break;
+                                                case "<=":
+                                                    if (tablaA.Atributos[x].Tipo.Equals('E'))
+                                                    {
+                                                        if (Int32.Parse(registroA.Datos[x]) <= Int32.Parse(registroB.Datos[y]))
+                                                        {
+                                                            band = true;
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        //Verificamos si ambos registros coinciden en dichos atributos
+                                                        if (registroA.Datos[x].CompareTo(registroB.Datos[y]) <= 0)
+                                                        {
+                                                            band = true;
+                                                        }
+                                                    }
+                                                    break;
+                                                default:
+                                                    throw new InvalidConsultException("No se utilizo un comparador valido");
+                                            }
+                                            if (band)
+                                            {
+                                                //Registro auxiliar
+                                                Registro registro;
+                                                //Si coinciden creamos un nuevo registro
+                                                registro = new Registro(-1, new List<string>());
+                                                //Le añadimos los registros de la tupla de la TablaA
+                                                registro.Datos = registro.Datos.Concat(registroA.Datos).ToList();
+                                                //Le añadimos los registros de la tupla de la TablaB
+                                                registro.Datos = registro.Datos.Concat(registroB.Datos).ToList();
+                                                //Agregamos el registro a la tabla innerJoin e incrementamos la j para no repetir claves primarias
+                                                innerJoin.Registros.Add(k.ToString(), registro);
+                                                k++;
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    throw new InvalidConsultException("Los atributos a consultar no comparten el mismo tipo de dato");
+                                }
+                            }
+                            else
+                            {
+                                throw new InvalidConsultException("Uno de los atributos que se desea compara en la sentencia \" ON \" no es valido por favor revise la sentencia");
+                            }
+                        }
+                        else
+                        {
+                            throw new InvalidConsultException("Una de las tablas que solicito no tiene registros");
+                        }
+                    }
+                    else
+                    {
+                        throw new InvalidConsultException("El formato en la sentencia \" ON \" no es valida");
+                    }
+                }
+                else
+                {
+                    throw new InvalidConsultException("Una de las tablas que solicito no tiene atributos");
+                }
+            }
+            else
+            {
+                throw new InvalidConsultException("Una de las tablas que solicito no existe por favor verifique la consulta");
+            }
+            return innerJoin;
+        }
+
+        public List<Atributo> ConsultaAtributosSelectInnerJoin(string[] sentencia, Entidad entidad)
+        {
+            int i;
+            List<Atributo> atributos;
+            atributos = new List<Atributo>();
+            i = Array.IndexOf(sentencia, "from");
+            if (sentencia.Contains("*"))
+            {
+                if (Array.IndexOf(sentencia, "select") == 0 && i == 2 && Array.IndexOf(sentencia, "*") == 1)
+                {
+                    atributos = entidad.Atributos;
+                }
+                else
+                {
+                    throw new InvalidConsultException("El * debe ir solo");
+                }
+            }
+            else
+            {
+                for (int j = 1; j < i; j++)
+                {
+                    if (entidad.existeAtributo(MetodosAuxiliares.ajustaCadena(sentencia[j], Constantes.tam)))
+                    {
+                        atributos.Add(entidad.buscaAtributo(MetodosAuxiliares.ajustaCadena(sentencia[j], Constantes.tam)));
+                    }
+                    else
+                    {
+                        throw new InvalidConsultException("El Atributo a buscar no existe");
+                    }
+                }
+            }
+            return atributos;
+        }
+
+        #endregion
+
         #region Lectura de datos
 
         /**
@@ -489,190 +940,6 @@ namespace Manejador_De_Archivos_2._0
                 }
             }
         }
-
-        public List<Atributo> ConsultaAtributosSelect(string[] sentencia, ref Entidad entidad)
-        {
-            if (sentencia.Contains("from"))
-            {
-                int i;
-                List<Atributo> atributos;
-                atributos = new List<Atributo>();
-                i = Array.IndexOf(sentencia, "from");
-                if(!sentencia.Last().Equals("from"))
-                {
-                    if (this.existeEntidad(MetodosAuxiliares.ajustaCadena(sentencia[i + 1], Constantes.tam)))
-                    {
-                        entidad = this.buscaEntidad(MetodosAuxiliares.ajustaCadena(sentencia[i + 1], Constantes.tam));
-                        if (sentencia.Contains("*"))
-                        {
-                            if (Array.IndexOf(sentencia, "select") == 0 && i == 2 && Array.IndexOf(sentencia, "*") == 1)
-                            {
-                                atributos = entidad.Atributos;
-                            }
-                            else
-                            {
-                                throw new InvalidConsultException("El * debe ir solo");
-                            }
-                        }
-                        else
-                        {
-                            for (int j = 1; j < i; j++)
-                            {
-                                if (entidad.existeAtributo(MetodosAuxiliares.ajustaCadena(sentencia[j], Constantes.tam)))
-                                {
-                                    atributos.Add(entidad.buscaAtributo(MetodosAuxiliares.ajustaCadena(sentencia[j], Constantes.tam)));
-                                }
-                                else
-                                {
-                                    throw new InvalidConsultException("El Atributo a buscar no existe");
-                                }
-                            }
-                        }
-                        return atributos;
-                    }
-                    else
-                    {
-                        throw new InvalidConsultException("La Entidad a buscar no existe o no se especifico");
-                    }
-                }
-                else
-                {
-                    throw new InvalidConsultException("Por favor especifique una entidad a buscar");
-                }
-            }
-            else
-            {
-                throw new InvalidConsultException("Falta el from perro");
-            }
-        }
-
-        public List<Registro> ConsultaRegistrosSelectWhere(List<Atributo> atributos, Entidad entidad, string[] where)
-        {
-            try
-            {
-                if (where.Length == 3)
-                {
-                    int i;
-                    List<Registro> registros;
-                    registros = new List<Registro>();
-                    if (entidad.existeAtributo(MetodosAuxiliares.ajustaCadena(where.First(), Constantes.tam)))
-                    {
-                        i = entidad.buscaIndiceAtributo(MetodosAuxiliares.ajustaCadena(where.First(), Constantes.tam));
-                        if (entidad.Atributos[i].Tipo.Equals('C'))
-                        {
-                            where[2] = MetodosAuxiliares.ajustaCadena(where.Last(), entidad.Atributos[i].Longitud);
-                        }
-                        foreach (Registro registro in entidad.Valores)
-                        {
-                            switch (where[1])
-                            {
-                                case "=":
-                                    if (entidad.Atributos[i].Tipo.Equals('E'))
-                                    {
-                                        if (Int32.Parse(registro.Datos[i]) == Int32.Parse(where.Last()))
-                                        {
-                                            registros.Add(registro);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (registro.Datos[i].Equals(where.Last()))
-                                        {
-                                            registros.Add(registro);
-                                        }
-                                    }
-                                    break;
-                                case "!=":
-                                    if (entidad.Atributos[i].Tipo.Equals('E'))
-                                    {
-                                        if (Int32.Parse(registro.Datos[i]) != Int32.Parse(where.Last()))
-                                        {
-                                            registros.Add(registro);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (!registro.Datos[i].Equals(where.Last()))
-                                        {
-                                            registros.Add(registro);
-                                        }
-                                    }
-                                    break;
-                                case ">":
-                                    if (entidad.Atributos[i].Tipo.Equals('E'))
-                                    {
-                                        if (Int32.Parse(registro.Datos[i]) > Int32.Parse(where.Last()))
-                                        {
-                                            registros.Add(registro);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        throw new InvalidConsultException("El operador no es valido con cadenas");
-                                    }
-                                    break;
-                                case "<":
-                                    if (entidad.Atributos[i].Tipo.Equals('E'))
-                                    {
-                                        if (Int32.Parse(registro.Datos[i]) < Int32.Parse(where.Last()))
-                                        {
-                                            registros.Add(registro);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        throw new InvalidConsultException("El operador no es valido con cadenas");
-                                    }
-                                    break;
-                                case ">=":
-                                    if (entidad.Atributos[i].Tipo.Equals('E'))
-                                    {
-                                        if (Int32.Parse(registro.Datos[i]) >= Int32.Parse(where.Last()))
-                                        {
-                                            registros.Add(registro);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        throw new InvalidConsultException("El operador no es valido con cadenas");
-                                    }
-                                    break;
-                                case "<=":
-                                    if (entidad.Atributos[i].Tipo.Equals('E'))
-                                    {
-                                        if (Int32.Parse(registro.Datos[i]) <= Int32.Parse(where.Last()))
-                                        {
-                                            registros.Add(registro);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        throw new InvalidConsultException("El operador no es valido con cadenas");
-                                    }
-                                    break;
-                                default:
-                                    throw new InvalidConsultException("No se utilizo un comparador valido");
-                            }
-                        }
-                    }
-                    else
-                    {
-                        throw new InvalidConsultException("El atributo que se desea comparar no exite");
-                    }
-                    return registros;
-                    //throw new NotImplementedException("Aun no se finaliza este pedo");
-                }
-                else
-                {
-                    throw new InvalidConsultException("La sentencia where no esta buien estructuada");
-                }
-            }
-            catch (FormatException)
-            {
-                throw new InvalidConsultException("Ahorita vemos que pedo");
-            }
-        }
-
         #endregion
 
         #endregion

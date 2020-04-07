@@ -716,7 +716,7 @@ namespace Manejador_De_Archivos_2._0
                 }
             }
         }
-        private void actualizaDataGridSQLConSelect(Entidad entidad, List<Atributo> atributos, List<Registro> registros)
+        private void actualizaDataGridSQLConSelect(Entidad entidad, List<Atributo> atributos, List<Registro> registros, bool band)
         {
             int i;
             int j;
@@ -729,7 +729,14 @@ namespace Manejador_De_Archivos_2._0
             dataGridSQL.ColumnCount = atributos.Count;
             foreach (Atributo atributo in atributos)
             {
-                dataGridSQL.Columns[i].Name = MetodosAuxiliares.truncaCadena(atributo.Nombre);
+                if (band)
+                {
+                    dataGridSQL.Columns[i].Name = MetodosAuxiliares.truncaCadena(atributo.Nombre) + " - " + MetodosAuxiliares.truncaCadena(atributo.Entidad);
+                }
+                else
+                {
+                    dataGridSQL.Columns[i].Name = MetodosAuxiliares.truncaCadena(atributo.Nombre);
+                }                
                 i++;
             }
 
@@ -737,7 +744,7 @@ namespace Manejador_De_Archivos_2._0
             {
                 for (int k = 0; k < tupla.Length; k++)
                 {
-                    j = entidad.buscaIndiceAtributo(atributos[k].Nombre);
+                    j = entidad.buscaIndiceAtributo(atributos[k].Nombre, atributos[k].Entidad);
                     tupla[k] = MetodosAuxiliares.truncaCadena(registro.Datos[j]);
                 }
                 dataGridSQL.Rows.Add(tupla);
@@ -842,7 +849,7 @@ namespace Manejador_De_Archivos_2._0
                     string[] sentencia;
                     sentencia = this.textBoxSQL.Text.Split((" ").ToCharArray());
                     sentencia = MetodosAuxiliares.LimpiaSentencia(sentencia);
-                    if (this.textBoxSQL.Text.Contains("select"))
+                    if (sentencia.Contains("select"))
                     {
                         int i;
                         if (sentencia.First().Equals("select"))
@@ -851,52 +858,64 @@ namespace Manejador_De_Archivos_2._0
                             List<Registro> registros;
                             List<Atributo> atributos;
                             entidad = null;
-                            atributos = this.archivo.ConsultaAtributosSelect(sentencia, ref entidad);
-                            if (entidad.Atributos.Count != 0)
+                            if (!sentencia.Contains("inner"))
                             {
-                                if (entidad.Registros.Count != 0)
+                                atributos = this.archivo.ConsultaAtributosSelect(sentencia, ref entidad);
+                                if (entidad.Atributos.Count != 0)
                                 {
-                                    if (!sentencia.Contains("where"))
+                                    if (entidad.Registros.Count != 0)
                                     {
-                                        registros = entidad.Valores;
-                                        this.actualizaDataGridSQLConSelect(entidad, atributos, registros);
-                                    }
-                                    else
-                                    {
-                                        string[] where;
-                                        i = Array.IndexOf(sentencia, "where");
-                                        i++;
-                                        if(i != sentencia.Length)
+                                        if (!sentencia.Contains("where"))
                                         {
-                                            where = MetodosAuxiliares.SubArray(sentencia,i,sentencia.Length-i);
-                                            registros = this.archivo.ConsultaRegistrosSelectWhere(atributos, entidad, where);
-                                            this.actualizaDataGridSQLConSelect(entidad, atributos, registros);
+                                            registros = entidad.Valores;
+                                            this.actualizaDataGridSQLConSelect(entidad, atributos, registros,false);
                                         }
                                         else
                                         {
-                                            throw new InvalidConsultException("Por favor ponga el enunciado de la sentencia where");
+                                            string[] where;
+                                            i = Array.IndexOf(sentencia, "where");
+                                            i++;
+                                            if (i != sentencia.Length)
+                                            {
+                                                where = MetodosAuxiliares.SubArray(sentencia, i, sentencia.Length - i);
+                                                registros = this.archivo.ConsultaRegistrosSelectWhere(atributos, entidad, where);
+                                                this.actualizaDataGridSQLConSelect(entidad, atributos, registros, false);
+                                            }
+                                            else
+                                            {
+                                                throw new InvalidConsultException("Por favor ponga el enunciado de la sentencia where");
+                                            }
                                         }
+                                    }
+                                    else
+                                    {
+                                        throw new InvalidConsultException("La entidad a consultar no tiene registros para consultar");
                                     }
                                 }
                                 else
                                 {
-                                    throw new InvalidConsultException("La entidad a consultar no tiene registros para consultar");
+                                    throw new InvalidConsultException("La entidad a consultar no tiene atributos para consultar");
+                                }
+                            }
+                            else if (sentencia.Contains("inner") && sentencia.Contains("join") && sentencia.Contains("on") && !sentencia.Contains("where"))
+                            {
+                                entidad = this.archivo.InnerJoin(sentencia);
+                                if (entidad.Registros.Count > 0)
+                                {
+                                    atributos = this.archivo.ConsultaAtributosSelectInnerJoin(sentencia, entidad);
+                                    registros = entidad.Valores;
+                                    this.actualizaDataGridSQLConSelect(entidad, atributos, registros, true);
                                 }
                             }
                             else
                             {
-                                throw new InvalidConsultException("La entidad a consultar no tiene atributos para consultar");
+                                throw new InvalidConsultException("El formato de la consulta no es valido por favor revise la sentencia");
                             }
-
                         }
                         else
                         {
                             throw new InvalidConsultException("El select debe ir al principio de la sentencia");
                         }
-                    }
-                    else if (this.textBoxSQL.Text.Contains("innner"))
-                    {
-                        throw new NotImplementedException("El comando inner aun no se implementa");
                     }
                     else
                     {
