@@ -20,8 +20,12 @@ namespace Manejador_De_Archivos_2._0
         private Dictionary<string,Registro> registros;
         private BinaryReader reader;//Objeto para leer el archivo
         private BinaryWriter writer;//Objeto para guardar el archivo
+        public delegate void ModificaLLaveForanea(long dirReferencia, string oldKey, string newKey, string directorio);
+        public event ModificaLLaveForanea modificaLLaveForanea;
+        public delegate bool ExisteReferenciaForanea(long dirReferencia, string Key);
+        public event ExisteReferenciaForanea existeReferenciaForanea;
         #endregion
-        
+
         #region Constructores
         public Entidad(string nombre, long dirActual, long dirAtributos, long dirRegistros, long dirSig)
         {
@@ -440,10 +444,11 @@ namespace Manejador_De_Archivos_2._0
                         {
                             case 2:
                                 atributo.modificaIndicePrimario(llavePrimaria, datos[indiceLlavePrimaria], archivoIdx);
-                                break;
+                                this.modificaLLaveForanea(this.dirActual, llaveOriginal, nuevallave, directorio);
+                            break;
                             case 4:
                                 atributo.modificaIndiceSecundario(infoOriginal[i], datos[i], registro1.DirAct, archivoIdx);
-                                break;
+                            break;
                             case 5:
                                 if (atributo.Tipo.Equals('C'))
                                 {
@@ -451,7 +456,7 @@ namespace Manejador_De_Archivos_2._0
                                     nuevallave = MetodosAuxiliares.truncaCadena(nuevallave);
                                 }
                                 atributo.modificaHashEstatica(llaveOriginal, nuevallave, registro1.DirAct, archivoIdx);
-                                break;
+                            break;
                         }
                         i++;
                     }
@@ -493,29 +498,36 @@ namespace Manejador_De_Archivos_2._0
                         llavePrimaria = MetodosAuxiliares.truncaCadena(llavePrimaria);
                     }
                     reg = this.registros[llavePrimaria];
-                    this.registros.Remove(llavePrimaria);
-                    int i;
-                    i = -1;
-                    foreach (Atributo atributo in this.atributos)
+                    if(!this.existeReferenciaForanea(this.dirActual,llavePrimaria))
                     {
-                        i++;
-                        switch (atributo.Indice)
+                        this.registros.Remove(llavePrimaria);
+                        int i;
+                        i = -1;
+                        foreach (Atributo atributo in this.atributos)
                         {
-                            case 2:
-                                atributo.eliminaIndicePrimario(llavePrimaria, archivoIdx);
-                                break;
-                            case 4:
-                                atributo.elimminaSecundario(reg.Datos[i], reg.DirAct, archivoIdx);
-                                break;
-                            case 5:
-                                atributo.elimminaHash(reg.Datos[i], reg.DirAct, archivoIdx);
-                                break;
+                            i++;
+                            switch (atributo.Indice)
+                            {
+                                case 2:
+                                    atributo.eliminaIndicePrimario(llavePrimaria, archivoIdx);
+                                    break;
+                                case 4:
+                                    atributo.elimminaSecundario(reg.Datos[i], reg.DirAct, archivoIdx);
+                                    break;
+                                case 5:
+                                    atributo.elimminaHash(reg.Datos[i], reg.DirAct, archivoIdx);
+                                    break;
+                            }
+                        }
+                        this.ajustaDireccionesRegistros();
+                        foreach (Registro registroAux in this.registros.Values)
+                        {
+                            this.grabaRegistro(registroAux, archivoDat);
                         }
                     }
-                    this.ajustaDireccionesRegistros();
-                    foreach (Registro registroAux in this.registros.Values)
+                    else
                     {
-                        this.grabaRegistro(registroAux, archivoDat);
+                        MessageBox.Show("Existen referencias foraneas a esta entidad por favor eliminelas antes", "Referencia Foranea detectada");
                     }
                 }
             }
@@ -548,7 +560,7 @@ namespace Manejador_De_Archivos_2._0
         #region Grabado y Lectura de Datos
 
 
-        private void grabaRegistro(Registro registro, string directorio)
+        public void grabaRegistro(Registro registro, string directorio)
         {
             try
             {

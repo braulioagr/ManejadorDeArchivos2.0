@@ -458,11 +458,9 @@ namespace Manejador_De_Archivos_2._0
             else
             {
                 MessageBox.Show("Por favor abra una base de datos o cree", "Error");
-            }
-
+            }        
+            #endregion
         }
-        
-        #endregion
 
         #endregion
 

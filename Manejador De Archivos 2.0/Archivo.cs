@@ -294,6 +294,7 @@ namespace Manejador_De_Archivos_2._0
         {
             Entidad entidad1;
             entidad1 = this.buscaEntidad(MetodosAuxiliares.ajustaCadena(entidad,Constantes.tam));
+            entidad1.modificaLLaveForanea += new Entidad.ModificaLLaveForanea(this.modificaLLaveForanea);
             entidad1.modificaRegistro(llavePrimaria,datos,directorio,infoOriginal);
             this.grabaEntidad(entidad1);
         }
@@ -302,10 +303,69 @@ namespace Manejador_De_Archivos_2._0
         {
             Entidad entidad;
             entidad = this.buscaEntidad(nombreEntidad);
+            entidad.existeReferenciaForanea += new Entidad.ExisteReferenciaForanea(this.existeReferenciaForanea);
             entidad.eliminarRegistro(directorio, llavePrimaria);
             this.grabaEntidad(entidad);
         }
-        
+
+        public bool existeReferenciaForanea(long dirReferencia, string key)
+        {
+            int i;
+            bool band;
+            band = false;
+            foreach (Entidad entidad in this.entidades)
+            {
+                foreach (Atributo atributo in entidad.Atributos)
+                {
+                    if (atributo.Indice == 3 && atributo.DirIndice == dirReferencia)
+                    {
+                        i = entidad.buscaIndiceAtributo(atributo.Nombre);
+                        foreach (Registro registro in entidad.Valores)
+                        {
+                            if (registro.Datos[i].Equals(key))
+                            {
+                                band = true;
+                                break;
+                            }
+                        }
+                        if(band)
+                        {
+                            break;
+                        }
+                    }
+                }
+                if (band)
+                {
+                    break;
+                }
+            }
+            return band;
+        }
+
+        public void modificaLLaveForanea(long dirReferencia, string oldKey, string newKey, string directorio)
+        {
+            int i;
+            foreach (Entidad entidad in this.entidades)
+            {
+                foreach(Atributo atributo in entidad.Atributos)
+                {
+                    if(atributo.Indice == 3 && atributo.DirIndice == dirReferencia)
+                    {
+                        i = entidad.buscaIndiceAtributo(atributo.Nombre);
+                        foreach(Registro registro in entidad.Valores)
+                        {
+                            if(registro.Datos[i].Equals(oldKey))
+                            {
+                                registro.Datos[i] = newKey;
+                                directorio = directorio + "\\" + MetodosAuxiliares.truncaCadena(entidad.Nombre) + ".dat";
+                                entidad.grabaRegistro(registro, directorio);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         #endregion
 
         #region Grabado de datos
