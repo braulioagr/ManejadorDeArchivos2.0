@@ -403,41 +403,14 @@ namespace Manejador_De_Archivos_2._0
                             }
                         }
                     break;
-                    case "Consulta Secundario":
-                        seleccionEntidad = new SeleccionEntidad(this.archivo);
-                        if(seleccionEntidad.ShowDialog().Equals(DialogResult.OK))
-                        {
-                            ConsultaRegistroSecundario consulta;
-                            Entidad entidad;
-                            entidad = this.archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(seleccionEntidad.Entidad, Constantes.tam));
-                            if (entidad.Valores.Count > 0)
-                            {
-                                consulta = new ConsultaRegistroSecundario(entidad);
-                                consulta.Show();
-                            }
-                            else
-                            {
-                                MessageBox.Show("La entidad seleccionada no contiene registros", "Error");
-                            }
-                        }
-                    break;
-                    case "Consulta Hash":
-                        seleccionEntidad = new SeleccionEntidad(this.archivo);
-                        if(seleccionEntidad.ShowDialog().Equals(DialogResult.OK))
-                        {
-                            ConsultaRegistroHash consulta;
-                            Entidad entidad;
-                            entidad = this.archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(seleccionEntidad.Entidad, Constantes.tam));
-                            if (entidad.Valores.Count > 0)
-                            {
-                                consulta = new ConsultaRegistroHash(entidad);
-                                consulta.Show();
-                            }
-                            else
-                            {
-                                MessageBox.Show("La entidad seleccionada no contiene registros", "Error");
-                            }
-                        }
+                    case "Consultas SQL":
+                        ConsultasSQL sql;
+                        sql = new ConsultasSQL();
+                        sql.consultaAtributosSelect += new ConsultasSQL.ConsultaAtributosSelect(this.archivo.ConsultaAtributosSelect);
+                        sql.consultaRegistrosSelectWhere += new ConsultasSQL.ConsultaRegistrosSelectWhere(this.archivo.ConsultaRegistrosSelectWhere);
+                        sql.innerJoin += new ConsultasSQL.InnerJoin(this.archivo.InnerJoin);
+                        sql.consultaAtributosSelectInnerJoin += new ConsultasSQL.ConsultaAtributosSelectInnerJoin(this.archivo.ConsultaAtributosSelectInnerJoin);
+                        sql.Show();
                     break;
                     case "Eliminar":
                         seleccionEntidad = new SeleccionEntidad(this.archivo);
@@ -714,40 +687,6 @@ namespace Manejador_De_Archivos_2._0
                 }
             }
         }
-        private void actualizaDataGridSQLConSelect(Entidad entidad, List<Atributo> atributos, List<Registro> registros, bool band)
-        {
-            int i;
-            int j;
-            string[] tupla;
-            i = 0;
-            tupla = new string[atributos.Count];
-            dataGridSQL.Columns.Clear();
-            dataGridSQL.ColumnCount = 0;
-            dataGridSQL.Rows.Clear();
-            dataGridSQL.ColumnCount = atributos.Count;
-            foreach (Atributo atributo in atributos)
-            {
-                if (band)
-                {
-                    dataGridSQL.Columns[i].Name = MetodosAuxiliares.truncaCadena(atributo.Nombre) + " - " + MetodosAuxiliares.truncaCadena(atributo.Entidad);
-                }
-                else
-                {
-                    dataGridSQL.Columns[i].Name = MetodosAuxiliares.truncaCadena(atributo.Nombre);
-                }                
-                i++;
-            }
-
-            foreach (Registro registro in registros)
-            {
-                for (int k = 0; k < tupla.Length; k++)
-                {
-                    j = entidad.buscaIndiceAtributo(atributos[k].Nombre, atributos[k].Entidad);
-                    tupla[k] = MetodosAuxiliares.truncaCadena(registro.Datos[j]);
-                }
-                dataGridSQL.Rows.Add(tupla);
-            }
-        }
         private void borraTodo()
         {
             this.dataGridAtrib.Rows.Clear();
@@ -755,8 +694,6 @@ namespace Manejador_De_Archivos_2._0
             this.label1.Text = "Cabecera = ?";
             this.dataGridRegistros.Rows.Clear();
             this.dataGridRegistros.ColumnCount = 0;
-            this.dataGridSQL.Rows.Clear();
-            this.dataGridSQL.ColumnCount = 0;
             this.comboBoxEntidad.Items.Clear();
             this.comboBoxEntidad.Text = "";
             this.comboBoxAtributosSecundarios.Items.Clear();
@@ -836,104 +773,5 @@ namespace Manejador_De_Archivos_2._0
 
         #endregion
 
-        #region SQL
-
-        private void ConsultaSQL_Click(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrEmpty(this.textBoxSQL.Text))
-            {
-                try
-                {
-                    string[] sentencia;
-                    sentencia = this.textBoxSQL.Text.Split((" ").ToCharArray());
-                    sentencia = MetodosAuxiliares.LimpiaSentencia(sentencia);
-                    if (sentencia.Contains("select"))
-                    {
-                        int i;
-                        if (sentencia.First().Equals("select"))
-                        {
-                            Entidad entidad;
-                            List<Registro> registros;
-                            List<Atributo> atributos;
-                            entidad = null;
-                            if (!sentencia.Contains("inner"))
-                            {
-                                atributos = this.archivo.ConsultaAtributosSelect(sentencia, ref entidad);
-                                if (entidad.Atributos.Count != 0)
-                                {
-                                    if (entidad.Registros.Count != 0)
-                                    {
-                                        if (!sentencia.Contains("where"))
-                                        {
-                                            registros = entidad.Valores;
-                                            this.actualizaDataGridSQLConSelect(entidad, atributos, registros,false);
-                                        }
-                                        else
-                                        {
-                                            string[] where;
-                                            i = Array.IndexOf(sentencia, "where");
-                                            i++;
-                                            if (i != sentencia.Length)
-                                            {
-                                                where = MetodosAuxiliares.SubArray(sentencia, i, sentencia.Length - i);
-                                                registros = this.archivo.ConsultaRegistrosSelectWhere(atributos, entidad, where);
-                                                this.actualizaDataGridSQLConSelect(entidad, atributos, registros, false);
-                                            }
-                                            else
-                                            {
-                                                throw new InvalidConsultException("Por favor ponga el enunciado de la sentencia where");
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        throw new InvalidConsultException("La entidad a consultar no tiene registros para consultar");
-                                    }
-                                }
-                                else
-                                {
-                                    throw new InvalidConsultException("La entidad a consultar no tiene atributos para consultar");
-                                }
-                            }
-                            else if (sentencia.Contains("inner") && sentencia.Contains("join") && sentencia.Contains("on") && !sentencia.Contains("where"))
-                            {
-                                entidad = this.archivo.InnerJoin(sentencia);
-                                if (entidad.Registros.Count > 0)
-                                {
-                                    atributos = this.archivo.ConsultaAtributosSelectInnerJoin(sentencia, entidad);
-                                    registros = entidad.Valores;
-                                    this.actualizaDataGridSQLConSelect(entidad, atributos, registros, true);
-                                }
-                            }
-                            else
-                            {
-                                throw new InvalidConsultException("El formato de la consulta no es valido por favor revise la sentencia");
-                            }
-                        }
-                        else
-                        {
-                            throw new InvalidConsultException("El select debe ir al principio de la sentencia");
-                        }
-                    }
-                    else
-                    {
-                        throw new InvalidConsultException("Formato de consulta no valido");
-                    }
-                }
-                catch (InvalidConsultException e1)
-                {
-                    MessageBox.Show(e1.Message, "Consulta Invalida");
-                }
-                catch (NotImplementedException e2)
-                {
-                    MessageBox.Show(e2.Message, "Aun no implementado");
-                }
-            }
-            else
-            {
-                MessageBox.Show("La cadena no puede estar vacia");
-            }
-        }
-        #endregion
     }
 }

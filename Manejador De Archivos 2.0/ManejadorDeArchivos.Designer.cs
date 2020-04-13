@@ -101,14 +101,9 @@
             this.altaRegistros = new System.Windows.Forms.ToolStripMenuItem();
             this.modificarRegistros = new System.Windows.Forms.ToolStripMenuItem();
             this.consultaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.consultaSecundarioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.consultaHashToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eliminarRegistros = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.ConsultaSQL = new System.Windows.Forms.Button();
-            this.textBoxSQL = new System.Windows.Forms.TextBox();
-            this.dataGridSQL = new System.Windows.Forms.DataGridView();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.consultasSQLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolBar.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabEntidades.SuspendLayout();
@@ -131,8 +126,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridHash)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridHashAuxiliar)).BeginInit();
             this.menuRegistros.SuspendLayout();
-            this.tabPage4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridSQL)).BeginInit();
             this.SuspendLayout();
             // 
             // toolBar
@@ -200,7 +193,6 @@
             this.tabControl.Controls.Add(this.tabEntidades);
             this.tabControl.Controls.Add(this.tabAtributos);
             this.tabControl.Controls.Add(this.tabRegistros);
-            this.tabControl.Controls.Add(this.tabPage4);
             this.tabControl.Location = new System.Drawing.Point(12, 44);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
@@ -796,8 +788,7 @@
             this.altaRegistros,
             this.modificarRegistros,
             this.consultaToolStripMenuItem,
-            this.consultaSecundarioToolStripMenuItem,
-            this.consultaHashToolStripMenuItem,
+            this.consultasSQLToolStripMenuItem,
             this.eliminarRegistros});
             this.menuRegistros.Location = new System.Drawing.Point(3, 3);
             this.menuRegistros.Name = "menuRegistros";
@@ -827,20 +818,6 @@
             this.consultaToolStripMenuItem.Size = new System.Drawing.Size(114, 20);
             this.consultaToolStripMenuItem.Text = "Consulta Primario";
             // 
-            // consultaSecundarioToolStripMenuItem
-            // 
-            this.consultaSecundarioToolStripMenuItem.AccessibleName = "Consulta Secundario";
-            this.consultaSecundarioToolStripMenuItem.Name = "consultaSecundarioToolStripMenuItem";
-            this.consultaSecundarioToolStripMenuItem.Size = new System.Drawing.Size(128, 20);
-            this.consultaSecundarioToolStripMenuItem.Text = "Consulta Secundario";
-            // 
-            // consultaHashToolStripMenuItem
-            // 
-            this.consultaHashToolStripMenuItem.AccessibleName = "Consulta Hash";
-            this.consultaHashToolStripMenuItem.Name = "consultaHashToolStripMenuItem";
-            this.consultaHashToolStripMenuItem.Size = new System.Drawing.Size(96, 20);
-            this.consultaHashToolStripMenuItem.Text = "Consulta Hash";
-            // 
             // eliminarRegistros
             // 
             this.eliminarRegistros.AccessibleName = "Eliminar";
@@ -848,47 +825,16 @@
             this.eliminarRegistros.Size = new System.Drawing.Size(62, 20);
             this.eliminarRegistros.Text = "Eliminar";
             // 
-            // tabPage4
-            // 
-            this.tabPage4.Controls.Add(this.ConsultaSQL);
-            this.tabPage4.Controls.Add(this.textBoxSQL);
-            this.tabPage4.Controls.Add(this.dataGridSQL);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(857, 360);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Consultas SQL";
-            this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // ConsultaSQL
-            // 
-            this.ConsultaSQL.Location = new System.Drawing.Point(776, 47);
-            this.ConsultaSQL.Name = "ConsultaSQL";
-            this.ConsultaSQL.Size = new System.Drawing.Size(75, 23);
-            this.ConsultaSQL.TabIndex = 2;
-            this.ConsultaSQL.Text = "Consultas SQL";
-            this.ConsultaSQL.UseVisualStyleBackColor = true;
-            this.ConsultaSQL.Click += new System.EventHandler(this.ConsultaSQL_Click);
-            // 
-            // textBoxSQL
-            // 
-            this.textBoxSQL.Location = new System.Drawing.Point(6, 50);
-            this.textBoxSQL.Name = "textBoxSQL";
-            this.textBoxSQL.Size = new System.Drawing.Size(764, 20);
-            this.textBoxSQL.TabIndex = 1;
-            // 
-            // dataGridSQL
-            // 
-            this.dataGridSQL.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridSQL.Location = new System.Drawing.Point(6, 76);
-            this.dataGridSQL.Name = "dataGridSQL";
-            this.dataGridSQL.Size = new System.Drawing.Size(845, 278);
-            this.dataGridSQL.TabIndex = 0;
-            // 
             // openFileDialog
             // 
             this.openFileDialog.FileName = "openFileDialog1";
+            // 
+            // consultasSQLToolStripMenuItem
+            // 
+            this.consultasSQLToolStripMenuItem.AccessibleName = "Consultas SQL";
+            this.consultasSQLToolStripMenuItem.Name = "consultasSQLToolStripMenuItem";
+            this.consultasSQLToolStripMenuItem.Size = new System.Drawing.Size(95, 20);
+            this.consultasSQLToolStripMenuItem.Text = "Consultas SQL";
             // 
             // ManejadorDeArchivos
             // 
@@ -934,9 +880,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridHashAuxiliar)).EndInit();
             this.menuRegistros.ResumeLayout(false);
             this.menuRegistros.PerformLayout();
-            this.tabPage4.ResumeLayout(false);
-            this.tabPage4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridSQL)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1018,12 +961,7 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
-        private System.Windows.Forms.ToolStripMenuItem consultaSecundarioToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem consultaHashToolStripMenuItem;
-        private System.Windows.Forms.TabPage tabPage4;
-        private System.Windows.Forms.Button ConsultaSQL;
-        private System.Windows.Forms.TextBox textBoxSQL;
-        private System.Windows.Forms.DataGridView dataGridSQL;
+        private System.Windows.Forms.ToolStripMenuItem consultasSQLToolStripMenuItem;
     }
 }
 

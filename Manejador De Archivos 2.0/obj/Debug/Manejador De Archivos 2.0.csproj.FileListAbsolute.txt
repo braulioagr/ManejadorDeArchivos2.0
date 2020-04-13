@@ -8,9 +8,8 @@ C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Ar
 C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.AltaRegistro.resources
 C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.ConsultaAtributo.resources
 C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.ConsultaEntidad.resources
-C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.ConsultaRegistroHash.resources
 C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.ConsultaRegistroPrimario.resources
-C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.ConsultaRegistroSecundario.resources
+C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.ConsultasSQL.resources
 C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.ModificaRegistro.resources
 C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.SeleccionRegistro.resources
 C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.SeleccionEntidad.resources

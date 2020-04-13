@@ -77,23 +77,17 @@
     <Compile Include="ConsultaEntidad.Designer.cs">
       <DependentUpon>ConsultaEntidad.cs</DependentUpon>
     </Compile>
-    <Compile Include="ConsultaRegistroHash.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ConsultaRegistroHash.Designer.cs">
-      <DependentUpon>ConsultaRegistroHash.cs</DependentUpon>
-    </Compile>
     <Compile Include="ConsultaRegistroPrimario.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ConsultaRegistroPrimario.Designer.cs">
       <DependentUpon>ConsultaRegistroPrimario.cs</DependentUpon>
     </Compile>
-    <Compile Include="ConsultaRegistroSecundario.cs">
+    <Compile Include="ConsultasSQL.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ConsultaRegistroSecundario.Designer.cs">
-      <DependentUpon>ConsultaRegistroSecundario.cs</DependentUpon>
+    <Compile Include="ConsultasSQL.Designer.cs">
+      <DependentUpon>ConsultasSQL.cs</DependentUpon>
     </Compile>
     <Compile Include="HashEstatica.cs" />
     <Compile Include="Indice.cs" />
@@ -169,14 +163,11 @@
     <EmbeddedResource Include="ConsultaEntidad.resx">
       <DependentUpon>ConsultaEntidad.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ConsultaRegistroHash.resx">
-      <DependentUpon>ConsultaRegistroHash.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ConsultaRegistroPrimario.resx">
       <DependentUpon>ConsultaRegistroPrimario.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ConsultaRegistroSecundario.resx">
-      <DependentUpon>ConsultaRegistroSecundario.cs</DependentUpon>
+    <EmbeddedResource Include="ConsultasSQL.resx">
+      <DependentUpon>ConsultasSQL.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ModificaRegistro.resx">
       <DependentUpon>ModificaRegistro.cs</DependentUpon>
