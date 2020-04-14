@@ -32,8 +32,10 @@
             this.toolBar = new System.Windows.Forms.ToolStrip();
             this.nuevo = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.abrir = new System.Windows.Forms.ToolStripButton();
+            this.renombrar = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.abrir = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.cerrar = new System.Windows.Forms.ToolStripButton();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabEntidades = new System.Windows.Forms.TabPage();
@@ -104,8 +106,7 @@
             this.consultasSQLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eliminarRegistros = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.renombrar = new System.Windows.Forms.ToolStripButton();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.toolBar.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabEntidades.SuspendLayout();
@@ -164,6 +165,23 @@
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 37);
             // 
+            // renombrar
+            // 
+            this.renombrar.AccessibleName = "Renombrar";
+            this.renombrar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.renombrar.Enabled = false;
+            this.renombrar.Image = ((System.Drawing.Image)(resources.GetObject("renombrar.Image")));
+            this.renombrar.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.renombrar.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.renombrar.Name = "renombrar";
+            this.renombrar.Size = new System.Drawing.Size(34, 34);
+            this.renombrar.Text = "Renombrar Bases de Datos";
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 37);
+            // 
             // abrir
             // 
             this.abrir.AccessibleName = "Abrir";
@@ -175,10 +193,10 @@
             this.abrir.Size = new System.Drawing.Size(34, 34);
             this.abrir.Text = "Abrir";
             // 
-            // toolStripSeparator2
+            // toolStripSeparator3
             // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 37);
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 37);
             // 
             // cerrar
             // 
@@ -840,23 +858,6 @@
             // 
             this.openFileDialog.FileName = "openFileDialog1";
             // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 37);
-            // 
-            // renombrar
-            // 
-            this.renombrar.AccessibleName = "Renombrar";
-            this.renombrar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.renombrar.Enabled = false;
-            this.renombrar.Image = ((System.Drawing.Image)(resources.GetObject("renombrar.Image")));
-            this.renombrar.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.renombrar.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.renombrar.Name = "renombrar";
-            this.renombrar.Size = new System.Drawing.Size(34, 34);
-            this.renombrar.Text = "Renombrar Bases de Datos";
-            // 
             // ManejadorDeArchivos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -985,6 +986,7 @@
         private System.Windows.Forms.ToolStripMenuItem consultasSQLToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton renombrar;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
     }
 }
 

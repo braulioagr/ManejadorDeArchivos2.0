@@ -90,26 +90,31 @@ namespace Manejador_De_Archivos_2._0
                         string nombre;
                         FileStream file;
                         nuevaBase = new NombreBase();
-                        if (nuevaBase.ShowDialog().Equals(DialogResult.OK))
+                        folderBrowserDialog1.SelectedPath = this.directorio;
+                        if (folderBrowserDialog1.ShowDialog().Equals(DialogResult.OK))
                         {
-                            this.directorio += @"\" + nuevaBase.Nombre;//Crea la dirección del archivo
-                            if (!Directory.Exists(this.directorio))//Verifica si la carpeta existe
+                            this.upDirectorio = this.directorio = folderBrowserDialog1.SelectedPath;
+                            if (nuevaBase.ShowDialog().Equals(DialogResult.OK))
                             {
-                                nuevo.Enabled = false;//Deshabilita la opcion de crear un nuevo archivo
-                                abrir.Enabled = false;//Des habilita la opcion de abrir un nuevo archivo
-                                renombrar.Enabled = true;
-                                cerrar.Enabled = true;//Habilita la opcion de cerrar el archivo
-                                Directory.CreateDirectory(this.directorio);//Si no existe La crea
-                                nombre = this.directorio + "\\" + nuevaBase.Nombre + ".dd";//Crea el nombre del archivo
-                                this.archivo = new Archivo(nombre);//Construye el objeto archivo
-                                file = new FileStream(nombre, FileMode.Create);//Crea el archivo en disco
-                                file.Close();
-                                archivo.grabaCabecera();//Graba la cabecera del archivo
-                                this.actualizaTodo();
-                            }
-                            else
-                            {
-                                MessageBox.Show("Ya existe esa base de datos", "Error");
+                                this.directorio += @"\" + nuevaBase.Nombre;//Crea la dirección del archivo
+                                if (!Directory.Exists(this.directorio))//Verifica si la carpeta existe
+                                {
+                                    nuevo.Enabled = false;//Deshabilita la opcion de crear un nuevo archivo
+                                    abrir.Enabled = false;//Des habilita la opcion de abrir un nuevo archivo
+                                    renombrar.Enabled = true;
+                                    cerrar.Enabled = true;//Habilita la opcion de cerrar el archivo
+                                    Directory.CreateDirectory(this.directorio);//Si no existe La crea
+                                    nombre = this.directorio + "\\" + nuevaBase.Nombre + ".dd";//Crea el nombre del archivo
+                                    this.archivo = new Archivo(nombre);//Construye el objeto archivo
+                                    file = new FileStream(nombre, FileMode.Create);//Crea el archivo en disco
+                                    file.Close();
+                                    archivo.grabaCabecera();//Graba la cabecera del archivo
+                                    this.actualizaTodo();
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Ya existe esa base de datos", "Error");
+                                }
                             }
                         }
                         nuevaBase.Dispose();

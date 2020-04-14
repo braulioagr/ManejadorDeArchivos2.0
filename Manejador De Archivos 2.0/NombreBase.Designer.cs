@@ -60,7 +60,7 @@
             this.aceptar.UseVisualStyleBackColor = true;
             this.aceptar.Click += new System.EventHandler(this.Aceptar_Click);
             // 
-            // NuevaBase
+            // NombreBase
             // 
             this.AcceptButton = this.aceptar;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -71,8 +71,8 @@
             this.Controls.Add(this.aceptar);
             this.Controls.Add(this.cancelar);
             this.Controls.Add(this.textBoxNombre);
-            this.Name = "NuevaBase";
-            this.Text = "NuevaBase";
+            this.Name = "NombreBase";
+            this.Text = "Nombre de BD";
             this.ResumeLayout(false);
             this.PerformLayout();
 
