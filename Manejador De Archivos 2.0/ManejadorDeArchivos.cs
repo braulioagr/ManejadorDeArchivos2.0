@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.FileIO;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -13,6 +14,7 @@ namespace Manejador_De_Archivos_2._0
         #region Variables de Instancia
         private Archivo archivo;
         private string directorio;
+        private string upDirectorio;
         #endregion
 
         #region Constructores
@@ -84,17 +86,18 @@ namespace Manejador_De_Archivos_2._0
                     #region Nuevo
                     if (this.archivo == null)//Verifica que no exista una base abierta
                     {
-                        NuevaBase nuevaBase;
+                        NombreBase nuevaBase;
                         string nombre;
                         FileStream file;
-                        nuevaBase = new NuevaBase();
+                        nuevaBase = new NombreBase();
                         if (nuevaBase.ShowDialog().Equals(DialogResult.OK))
                         {
-                            this.directorio += @"..\" + nuevaBase.Nombre;//Crea la dirección del archivo
+                            this.directorio += @"\" + nuevaBase.Nombre;//Crea la dirección del archivo
                             if (!Directory.Exists(this.directorio))//Verifica si la carpeta existe
                             {
                                 nuevo.Enabled = false;//Deshabilita la opcion de crear un nuevo archivo
                                 abrir.Enabled = false;//Des habilita la opcion de abrir un nuevo archivo
+                                renombrar.Enabled = true;
                                 cerrar.Enabled = true;//Habilita la opcion de cerrar el archivo
                                 Directory.CreateDirectory(this.directorio);//Si no existe La crea
                                 nombre = this.directorio + "\\" + nuevaBase.Nombre + ".dd";//Crea el nombre del archivo
@@ -131,9 +134,11 @@ namespace Manejador_De_Archivos_2._0
                         {
                             nuevo.Enabled = false;//Deshabilita la opcion de crear un nuevo archivo
                             abrir.Enabled = false;//Des habilita la opcion de abrir un nuevo archivo
+                            renombrar.Enabled = true;
                             cerrar.Enabled = true;//Habilita la opcion de cerrar el archivo
                             archivo = new Archivo(openFileDialog.FileName);//Crea el objeto archivo
-                            this.directorio += "\\" + openFileDialog.SafeFileName.Substring(0, openFileDialog.SafeFileName.Length - 3);
+                            this.directorio = Path.GetDirectoryName(openFileDialog.FileName);
+                            this.upDirectorio = Path.GetDirectoryName(this.directorio);
                             this.archivo.leeArchivo(this.directorio);//Lee el archivo y construye la lista de listas
                             this.actualizaTodo();//Manda actualizar los combo box y los data grid
                         }
@@ -144,6 +149,24 @@ namespace Manejador_De_Archivos_2._0
                     }
                     #endregion
                     break;
+                case "Renombrar":
+                    NombreBase nuevoNombre;
+                    nuevoNombre = new NombreBase();
+                    if (nuevoNombre.ShowDialog().Equals(DialogResult.OK))
+                    {
+                        if (!FileSystem.DirectoryExists(this.upDirectorio + "\\" + nuevoNombre.Nombre))
+                        {
+                            FileSystem.RenameFile(this.archivo.Nombre,nuevoNombre.Nombre + ".dd");
+                            FileSystem.RenameDirectory(this.directorio,nuevoNombre.Nombre);
+                            this.directorio = this.upDirectorio + "\\" + nuevoNombre.Nombre;
+                            this.archivo.Nombre = this.directorio + "\\" + nuevoNombre.Nombre + ".dd";
+                        }
+                        else
+                        {
+                            MessageBox.Show("La base de datos" + nuevoNombre.Nombre+" ya existe por favor elija otro nombre.","Base de datos Existente");
+                        }
+                    }
+                break;
                 case "Cerrar":
                     if (this.archivo != null)
                     {
@@ -151,6 +174,7 @@ namespace Manejador_De_Archivos_2._0
                         this.archivo = null;
                         nuevo.Enabled = true;//Habilita la opcion de crear un nuevo archivo
                         abrir.Enabled = true;//Habilita la opcion de abrir un nuevo archivo
+                        renombrar.Enabled = false;
                         cerrar.Enabled = false;//Deshabilita la opcion de cerrar el archivo
                         this.borraTodo();
                     }
@@ -194,23 +218,23 @@ namespace Manejador_De_Archivos_2._0
                         if (this.archivo.Entidades.Count > 0)
                         {
                             #region Modificar
-                        ModificaEntidad modificaEntidad;
-                        modificaEntidad = new ModificaEntidad(this.archivo);
-                        if (modificaEntidad.ShowDialog().Equals(DialogResult.OK))
-                        {
-                            string original;
-                            string nuevo;
-                            archivo.modificaEntidad(MetodosAuxiliares.ajustaCadena(modificaEntidad.Entidad, Constantes.tam),
-                                                    MetodosAuxiliares.ajustaCadena(modificaEntidad.Cambio, Constantes.tam));
-                            original = this.directorio + "\\" + modificaEntidad.Entidad + ".dat";
-                            nuevo = this.directorio + "\\" + modificaEntidad.Cambio + ".dat";
-                            File.Move(original, nuevo);
-                            original = this.directorio + "\\" + modificaEntidad.Entidad + ".idx";
-                            nuevo = this.directorio + "\\" + modificaEntidad.Cambio + ".idx";
-                            File.Move(original, nuevo);
-                            this.actualizaTodo();
-                        }
-                        modificaEntidad.Dispose();
+                            ModificaEntidad modificaEntidad;
+                            modificaEntidad = new ModificaEntidad(this.archivo);
+                            if (modificaEntidad.ShowDialog().Equals(DialogResult.OK))
+                            {
+                                string original;
+                                string nuevo;
+                                archivo.modificaEntidad(MetodosAuxiliares.ajustaCadena(modificaEntidad.Entidad, Constantes.tam),
+                                                        MetodosAuxiliares.ajustaCadena(modificaEntidad.Cambio, Constantes.tam));
+                                original = this.directorio + "\\" + modificaEntidad.Entidad + ".dat";
+                                nuevo = this.directorio + "\\" + modificaEntidad.Cambio + ".dat";
+                                File.Move(original, nuevo);
+                                original = this.directorio + "\\" + modificaEntidad.Entidad + ".idx";
+                                nuevo = this.directorio + "\\" + modificaEntidad.Cambio + ".idx";
+                                File.Move(original, nuevo);
+                                this.actualizaTodo();
+                            }
+                            modificaEntidad.Dispose();
                         #endregion
                         }
                     break;

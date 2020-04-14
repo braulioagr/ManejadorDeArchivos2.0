@@ -17,9 +17,9 @@ C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Ar
 C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.ManejadorDeArchivos.resources
 C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.ModificaAtributo.resources
 C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.ModificaEntidad.resources
-C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.NuevaBase.resources
 C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.Properties.Resources.resources
 C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador De Archivos 2.0.csproj.GenerateResource.cache
 C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador De Archivos 2.0.csproj.CoreCompileInputs.cache
 C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador De Archivos 2.0.exe
 C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador De Archivos 2.0.pdb
+C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.NombreBase.resources

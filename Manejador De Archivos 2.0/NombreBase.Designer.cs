@@ -1,6 +1,6 @@
 ﻿namespace Manejador_De_Archivos_2._0
 {
-    partial class NuevaBase
+    partial class NombreBase
     {
         /// <summary>
         /// Required designer variable.

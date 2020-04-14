@@ -32,6 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -139,11 +140,11 @@
     <Compile Include="ModificaEntidad.Designer.cs">
       <DependentUpon>ModificaEntidad.cs</DependentUpon>
     </Compile>
-    <Compile Include="NuevaBase.cs">
+    <Compile Include="NombreBase.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NuevaBase.Designer.cs">
-      <DependentUpon>NuevaBase.cs</DependentUpon>
+    <Compile Include="NombreBase.Designer.cs">
+      <DependentUpon>NombreBase.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -190,8 +191,8 @@
     <EmbeddedResource Include="ModificaEntidad.resx">
       <DependentUpon>ModificaEntidad.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NuevaBase.resx">
-      <DependentUpon>NuevaBase.cs</DependentUpon>
+    <EmbeddedResource Include="NombreBase.resx">
+      <DependentUpon>NombreBase.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

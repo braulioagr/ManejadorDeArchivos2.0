@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Manejador_De_Archivos_2._0
 {
-    public partial class NuevaBase : Form
+    public partial class NombreBase : Form
     {
-        public NuevaBase()
+        public NombreBase()
         {
             InitializeComponent();
         }

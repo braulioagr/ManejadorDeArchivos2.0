@@ -31,6 +31,7 @@ namespace Manejador_De_Archivos_2._0
         public string Nombre
         {
             get { return this.nombre; }
+            set { this.nombre = value; }
         }
         public long Cabecera
         {

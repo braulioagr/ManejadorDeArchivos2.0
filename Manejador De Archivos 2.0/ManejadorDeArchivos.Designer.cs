@@ -101,9 +101,11 @@
             this.altaRegistros = new System.Windows.Forms.ToolStripMenuItem();
             this.modificarRegistros = new System.Windows.Forms.ToolStripMenuItem();
             this.consultaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.consultasSQLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eliminarRegistros = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.consultasSQLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.renombrar = new System.Windows.Forms.ToolStripButton();
             this.toolBar.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabEntidades.SuspendLayout();
@@ -134,8 +136,10 @@
             this.toolBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.nuevo,
             this.toolStripSeparator1,
-            this.abrir,
+            this.renombrar,
             this.toolStripSeparator2,
+            this.abrir,
+            this.toolStripSeparator3,
             this.cerrar});
             this.toolBar.Location = new System.Drawing.Point(0, 0);
             this.toolBar.Name = "toolBar";
@@ -818,6 +822,13 @@
             this.consultaToolStripMenuItem.Size = new System.Drawing.Size(114, 20);
             this.consultaToolStripMenuItem.Text = "Consulta Primario";
             // 
+            // consultasSQLToolStripMenuItem
+            // 
+            this.consultasSQLToolStripMenuItem.AccessibleName = "Consultas SQL";
+            this.consultasSQLToolStripMenuItem.Name = "consultasSQLToolStripMenuItem";
+            this.consultasSQLToolStripMenuItem.Size = new System.Drawing.Size(95, 20);
+            this.consultasSQLToolStripMenuItem.Text = "Consultas SQL";
+            // 
             // eliminarRegistros
             // 
             this.eliminarRegistros.AccessibleName = "Eliminar";
@@ -829,12 +840,22 @@
             // 
             this.openFileDialog.FileName = "openFileDialog1";
             // 
-            // consultasSQLToolStripMenuItem
+            // toolStripSeparator3
             // 
-            this.consultasSQLToolStripMenuItem.AccessibleName = "Consultas SQL";
-            this.consultasSQLToolStripMenuItem.Name = "consultasSQLToolStripMenuItem";
-            this.consultasSQLToolStripMenuItem.Size = new System.Drawing.Size(95, 20);
-            this.consultasSQLToolStripMenuItem.Text = "Consultas SQL";
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 37);
+            // 
+            // renombrar
+            // 
+            this.renombrar.AccessibleName = "Renombrar";
+            this.renombrar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.renombrar.Enabled = false;
+            this.renombrar.Image = ((System.Drawing.Image)(resources.GetObject("renombrar.Image")));
+            this.renombrar.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.renombrar.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.renombrar.Name = "renombrar";
+            this.renombrar.Size = new System.Drawing.Size(34, 34);
+            this.renombrar.Text = "Renombrar Bases de Datos";
             // 
             // ManejadorDeArchivos
             // 
@@ -962,6 +983,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private System.Windows.Forms.ToolStripMenuItem consultasSQLToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton renombrar;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
     }
 }
 
