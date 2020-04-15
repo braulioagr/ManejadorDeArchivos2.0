@@ -90,15 +90,16 @@ namespace Manejador_De_Archivos_2._0
                         string nombre;
                         FileStream file;
                         nuevaBase = new NombreBase();
-                        folderBrowserDialog1.SelectedPath = this.directorio;
-                        if (folderBrowserDialog1.ShowDialog().Equals(DialogResult.OK))
+                        SelectFolder.SelectedPath = this.directorio;
+                        if (SelectFolder.ShowDialog().Equals(DialogResult.OK))
                         {
-                            this.upDirectorio = this.directorio = folderBrowserDialog1.SelectedPath;
+                            this.upDirectorio = this.directorio = SelectFolder.SelectedPath;
                             if (nuevaBase.ShowDialog().Equals(DialogResult.OK))
                             {
                                 this.directorio += @"\" + nuevaBase.Nombre;//Crea la dirección del archivo
                                 if (!Directory.Exists(this.directorio))//Verifica si la carpeta existe
                                 {
+                                    this.Text = "Manejador de Bases de Datos: " + nuevaBase.Nombre;
                                     nuevo.Enabled = false;//Deshabilita la opcion de crear un nuevo archivo
                                     abrir.Enabled = false;//Des habilita la opcion de abrir un nuevo archivo
                                     renombrar.Enabled = true;
@@ -109,6 +110,7 @@ namespace Manejador_De_Archivos_2._0
                                     file = new FileStream(nombre, FileMode.Create);//Crea el archivo en disco
                                     file.Close();
                                     archivo.grabaCabecera();//Graba la cabecera del archivo
+                                    this.Text = Path.GetFileNameWithoutExtension(this.archivo.Nombre);
                                     this.actualizaTodo();
                                 }
                                 else
@@ -145,6 +147,7 @@ namespace Manejador_De_Archivos_2._0
                             this.directorio = Path.GetDirectoryName(openFileDialog.FileName);
                             this.upDirectorio = Path.GetDirectoryName(this.directorio);
                             this.archivo.leeArchivo(this.directorio);//Lee el archivo y construye la lista de listas
+                            this.Text = Path.GetFileNameWithoutExtension(this.archivo.Nombre);
                             this.actualizaTodo();//Manda actualizar los combo box y los data grid
                         }
                     }
@@ -165,6 +168,7 @@ namespace Manejador_De_Archivos_2._0
                             FileSystem.RenameDirectory(this.directorio,nuevoNombre.Nombre);
                             this.directorio = this.upDirectorio + "\\" + nuevoNombre.Nombre;
                             this.archivo.Nombre = this.directorio + "\\" + nuevoNombre.Nombre + ".dd";
+                            this.Text = Path.GetFileNameWithoutExtension(this.archivo.Nombre);
                         }
                         else
                         {
@@ -181,6 +185,7 @@ namespace Manejador_De_Archivos_2._0
                         abrir.Enabled = true;//Habilita la opcion de abrir un nuevo archivo
                         renombrar.Enabled = false;
                         cerrar.Enabled = false;//Deshabilita la opcion de cerrar el archivo
+                        this.Text = "Manejador de Bases de Datos";
                         this.borraTodo();
                     }
                     break;

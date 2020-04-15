@@ -106,7 +106,7 @@
             this.consultasSQLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eliminarRegistros = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.SelectFolder = new System.Windows.Forms.FolderBrowserDialog();
             this.toolBar.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabEntidades.SuspendLayout();
@@ -858,6 +858,10 @@
             // 
             this.openFileDialog.FileName = "openFileDialog1";
             // 
+            // SelectFolder
+            // 
+            this.SelectFolder.Description = "Seleccione una carpeta donde se creara la base de datos por favor";
+            // 
             // ManejadorDeArchivos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -986,7 +990,7 @@
         private System.Windows.Forms.ToolStripMenuItem consultasSQLToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton renombrar;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+        private System.Windows.Forms.FolderBrowserDialog SelectFolder;
     }
 }
 

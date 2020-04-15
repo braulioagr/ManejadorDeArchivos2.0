@@ -244,12 +244,17 @@ namespace Manejador_De_Archivos_2._0
         {
             Entidad ent;
             ent = buscaEntidad(entidad);
+            bool band;
             if (ent.DirRegistros == -1)
             {
-                ent.modificaAtributo(nombre, nuevoNombre, tipo, longitud, indice,dirIndice);
                 Atributo atributo;
-                atributo = ent.buscaAtributo(MetodosAuxiliares.ajustaCadena(nuevoNombre, Constantes.tam));
-                this.grabaAtributo(atributo);
+                ent.esLlaveForanea += new Entidad.EsLlaveForanea(this.esLLaveForanea);
+                band = ent.modificaAtributo(nombre, nuevoNombre, tipo, longitud, indice,dirIndice);
+                if (band)
+                {
+                    atributo = ent.buscaAtributo(MetodosAuxiliares.ajustaCadena(nuevoNombre, Constantes.tam));
+                    this.grabaAtributo(atributo);
+                }
             }
             else
             {
@@ -263,6 +268,7 @@ namespace Manejador_De_Archivos_2._0
             ent = buscaEntidad(entidad);
             if (ent.DirRegistros == -1)
             {
+                ent.esLlaveForanea += new Entidad.EsLlaveForanea(this.esLLaveForanea);
                 ent.eliminaAtributo(nombre);
                 this.grabaEntidad(ent);
             }
@@ -270,6 +276,28 @@ namespace Manejador_De_Archivos_2._0
             {
                 MessageBox.Show("El atributo pertenece a una entidad no se puede modificar", "Error");
             }
+        }
+
+        private bool esLLaveForanea(long dirReferencia)
+        {
+            bool band;
+            band = false;
+            foreach (Entidad entidad in this.entidades)
+            {
+                foreach (Atributo atributo in entidad.Atributos)
+                {
+                    if (atributo.Indice == 3 && atributo.DirIndice == dirReferencia)
+                    {
+                        band = true;
+                        break;
+                    }
+                }
+                if (band)
+                {
+                    break;
+                }
+            }
+            return band;
         }
         #endregion
 

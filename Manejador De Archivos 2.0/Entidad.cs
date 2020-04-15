@@ -24,6 +24,8 @@ namespace Manejador_De_Archivos_2._0
         public event ModificaLLaveForanea modificaLLaveForanea;
         public delegate bool ExisteReferenciaForanea(long dirReferencia, string Key);
         public event ExisteReferenciaForanea existeReferenciaForanea;
+        public delegate bool EsLlaveForanea(long dirReferencia);
+        public event EsLlaveForanea esLlaveForanea;
         #endregion
 
         #region Constructores
@@ -272,39 +274,9 @@ namespace Manejador_De_Archivos_2._0
                             this.atributos.Add(atributo);
                             this.ajustaDireccionesAtributos();
                         }
-                    }
-                    else
-                    {
-                        MessageBox.Show("Ya existe una clave de busqueda", "Error");
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Ya existe un atributo con ese nombre", "Error");
-                }
-            }
-            else
-            {
-                MessageBox.Show("Esta entidad ya tiene registros", "Error");
-            }
-        }
-
-        public void modificaAtributo(string nombre,string nuevoNombre, char tipo, int longitud, int indice, long dirIndice)
-        {
-            if (this.dirRegistros == -1)
-            {
-                if (!this.existeAtributo(nuevoNombre))
-                {
-                    Atributo atributo;
-                    atributo = buscaAtributo(nombre);
-                    if (indice != 1|| !this.existeClaveDeBusqueda() || indice == atributo.Indice)
-                    {
-                        if (this.dirRegistros == -1)
+                        else
                         {
-                            this.atributos.Remove(atributo);
-                            atributo = new Atributo(this.nombre, nuevoNombre, atributo.DirActual, tipo, indice, longitud, dirIndice, -1);
-                            this.atributos.Add(atributo);
-                            this.ajustaDireccionesAtributos();
+                            MessageBox.Show("Ya existe una llave primaria", "Error");
                         }
                     }
                     else
@@ -323,14 +295,70 @@ namespace Manejador_De_Archivos_2._0
             }
         }
 
+        public bool modificaAtributo(string nombre,string nuevoNombre, char tipo, int longitud, int indice, long dirIndice)
+        {
+            bool band;
+            band = false;
+            if (this.dirRegistros == -1)
+            {
+                if (!this.existeAtributo(nuevoNombre))
+                {
+                    Atributo atributo;
+                    atributo = buscaAtributo(nombre);
+                    if (atributo.Indice != 2 | !this.esLlaveForanea(this.dirActual))
+                    {
+                        if (indice != 1|| !this.existeClaveDeBusqueda() || indice == atributo.Indice)
+                        {
+                            if (indice != 2 || !this.existeIndicePrimario())
+                            {
+                                this.atributos.Remove(atributo);
+                                atributo = new Atributo(this.nombre, nuevoNombre, atributo.DirActual, tipo, indice, longitud, dirIndice, -1);
+                                this.atributos.Add(atributo);
+                                this.ajustaDireccionesAtributos();
+                                band = true;
+                            }
+                            else
+                            {
+                                MessageBox.Show("Ya existe una llave primaria", "Error");
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Ya existe una clave de busqueda", "Error");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("El atributo que desea eliminar es una llave Foranea por favor elimine la referencia primero", "Error");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Ya existe un atributo con ese nombre", "Error");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Esta entidad ya tiene registros", "Error");
+            }
+            return band;
+        }
+
         public void eliminaAtributo(string nombre)
         {
             if (this.dirRegistros == -1)
             {
                 Atributo atributo;
                 atributo = this.buscaAtributo(nombre);
-                this.atributos.Remove(atributo);
-                this.ajustaDireccionesAtributos();
+                if (atributo.Indice != 2 | !this.esLlaveForanea(this.dirActual))
+                {
+                    this.atributos.Remove(atributo);
+                    this.ajustaDireccionesAtributos();
+                }
+                else
+                {
+                    MessageBox.Show("El atributo que desea eliminar es una llave Foranea por favor elimine la referencia primero", "Error");
+                }
             }
             else
             {
