@@ -130,7 +130,8 @@
             this.comboTipo.FormattingEnabled = true;
             this.comboTipo.Items.AddRange(new object[] {
             "E",
-            "C"});
+            "C",
+            "D"});
             this.comboTipo.Location = new System.Drawing.Point(82, 72);
             this.comboTipo.Name = "comboTipo";
             this.comboTipo.Size = new System.Drawing.Size(168, 21);

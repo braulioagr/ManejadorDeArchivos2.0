@@ -796,10 +796,11 @@ namespace Manejador_De_Archivos_2._0
         #endregion
 
         #region delegados
-        public List<string> obtenLllavesEntidad(long direccion)
+        public List<string> obtenLllavesEntidad(long direccion, ref string entidad)
         {
             Entidad referencia;
             referencia = this.archivo.buscaEntidad(direccion);
+            entidad = MetodosAuxiliares.truncaCadena(referencia.Nombre);
             return referencia.LlavePrimaria;
         }
 

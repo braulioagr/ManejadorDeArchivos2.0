@@ -18,7 +18,7 @@ namespace Manejador_De_Archivos_2._0
         private int indice;
         private Stack<string> atributos;
         private ComboBox comboDato;
-        public delegate List<string> ObtenLlaves(long direccion);
+        public delegate List<string> ObtenLlaves(long direccion, ref string ent);
         public event ObtenLlaves obtenLllaves;
         private string llaveOriginal;
         private string[] infoOriginal;
@@ -77,7 +77,9 @@ namespace Manejador_De_Archivos_2._0
             {
                 List<string> llaves;
                 comboDato = new ComboBox();
-                llaves = this.obtenLllaves(entidad.Atributos[indice].DirIndice);
+                string ent;
+                ent = "";
+                llaves = this.obtenLllaves(entidad.Atributos[indice].DirIndice,ref ent);
                 if (llaves.Count > 0)
                 {
                     this.textBoxDato.Visible = false;
@@ -94,7 +96,7 @@ namespace Manejador_De_Archivos_2._0
                 }
                 else
                 {
-                    MessageBox.Show("No se encuentran valores para hacer referencia", "Error");
+                    MessageBox.Show("No se encuentran valores para hacer referencia con la entidad: " + ent + ", Por favor de de alta registros en esa tabla", "Error");
                     this.DialogResult = DialogResult.Cancel;
                     this.Close();
                 }
@@ -142,6 +144,10 @@ namespace Manejador_De_Archivos_2._0
                 {
                     atributos.Push(Int32.Parse(textBoxDato.Text).ToString());
                 }
+                else if (entidad.Atributos[indice].Tipo.Equals('D'))
+                {
+                    atributos.Push(float.Parse(textBoxDato.Text).ToString());
+                }
                 else if (entidad.Atributos[indice].Tipo.Equals('C'))
                 {
                     atributos.Push(MetodosAuxiliares.ajustaCadena(textBoxDato.Text, entidad.Atributos[indice].Longitud));
@@ -164,6 +170,11 @@ namespace Manejador_De_Archivos_2._0
                     if (entidad.Atributos[indice].Tipo.Equals('E'))
                     {
                         Int32.Parse(textBoxDato.Text);
+                        atributos.Push(textBoxDato.Text);
+                    }
+                    else if (entidad.Atributos[indice].Tipo.Equals('D'))
+                    {
+                        float.Parse(textBoxDato.Text);
                         atributos.Push(textBoxDato.Text);
                     }
                     else if (entidad.Atributos[indice].Tipo.Equals('C'))

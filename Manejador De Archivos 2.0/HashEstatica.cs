@@ -121,10 +121,13 @@ namespace Manejador_De_Archivos_2._0
             i = 0;
             for (int j = 0; j < llave.Length; j++)
             {
-                i += (int)llave[j];
-                if(!esCadena)
+                if (llave[j] != '.' | esCadena)
                 {
-                    i -= 48;
+                    i += (int)llave[j];
+                    if(!esCadena)
+                    {
+                        i -= 48;
+                    }
                 }
             }
             i %= Constantes.valorHash;

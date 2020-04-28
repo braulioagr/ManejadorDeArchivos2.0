@@ -139,7 +139,7 @@ namespace Manejador_De_Archivos_2._0
 
         private void comboBoxTipo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (comboBoxTipo.Text.Equals("E"))
+            if (comboBoxTipo.Text.Equals("E") | comboBoxTipo.Text.Equals("D"))
             {
                 textBoxLong.Text = "4";
                 textBoxLong.Enabled = false;

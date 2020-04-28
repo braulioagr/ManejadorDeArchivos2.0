@@ -62,7 +62,7 @@ namespace Manejador_De_Archivos_2._0
                 band = true;
                 foreach(string llave in this.llaves)
                 {
-                    if(("-1").Equals(MetodosAuxiliares.truncaCadena(llave)))
+                    if(!("-1").Equals(MetodosAuxiliares.truncaCadena(llave)))
                     {
                         band = false;
                         break;

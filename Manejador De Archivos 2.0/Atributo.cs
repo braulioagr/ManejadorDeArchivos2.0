@@ -469,6 +469,10 @@ namespace Manejador_De_Archivos_2._0
                         {
                             writer.Write(Int32.Parse(secundario.Llaves[i]));
                         }
+                        else if (this.tipo.Equals('D'))
+                        {
+                            writer.Write(float.Parse(secundario.Llaves[i]));
+                        }
                         writer.Write(secundario.Direcciones[i]);
                     }
                     writer.Write(secundario.DirSig);
@@ -501,7 +505,14 @@ namespace Manejador_De_Archivos_2._0
                         }
                         else
                         {
-                            secundario.Llaves[i] = reader.ReadInt32().ToString();
+                            if (this.tipo.Equals('E'))
+                            {
+                                secundario.Llaves[i] = reader.ReadInt32().ToString();
+                            }
+                            else
+                            {
+                                secundario.Llaves[i] = reader.ReadSingle().ToString();
+                            }
                         }
                         secundario.Direcciones[i] = reader.ReadInt64();
                     }
@@ -560,6 +571,10 @@ namespace Manejador_De_Archivos_2._0
                         else if (this.tipo.Equals('E'))
                         {
                             writer.Write(Int32.Parse(hash.Llaves[i, j]));
+                        }
+                        else if (this.tipo.Equals('D'))
+                        {
+                            writer.Write(float.Parse(hash.Llaves[i, j]));
                         }
                         writer.Write(hash.Apuntadores[i, j]);
                     }
@@ -634,7 +649,14 @@ namespace Manejador_De_Archivos_2._0
                         }
                         else
                         {
-                            hash.Llaves[i, j] = reader.ReadInt32().ToString();
+                            if (this.tipo.Equals('E'))
+                            {
+                                hash.Llaves[i, j] = reader.ReadInt32().ToString();
+                            }
+                            else
+                            {
+                                hash.Llaves[i, j] = reader.ReadSingle().ToString();
+                            }
                         }
                         hash.Apuntadores[i, j] = reader.ReadInt64();
                     }

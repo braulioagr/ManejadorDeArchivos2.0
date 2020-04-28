@@ -24,8 +24,10 @@ namespace Manejador_De_Archivos_2._0
         public event ModificaLLaveForanea modificaLLaveForanea;
         public delegate bool ExisteReferenciaForanea(long dirReferencia, string Key);
         public event ExisteReferenciaForanea existeReferenciaForanea;
-        public delegate bool EsLlaveForanea(long dirReferencia);
+        public delegate bool EsLlaveForanea(long dirReferencia, ref string referencias);
         public event EsLlaveForanea esLlaveForanea;
+        public delegate void GrabaAtributo(Atributo atributo);
+        public event GrabaAtributo grabaAtributo;
         #endregion
 
         #region Constructores
@@ -301,11 +303,13 @@ namespace Manejador_De_Archivos_2._0
             band = false;
             if (this.dirRegistros == -1)
             {
-                if (!this.existeAtributo(nuevoNombre))
+                if (!this.existeAtributo(nuevoNombre) | nombre.Equals(nuevoNombre))
                 {
                     Atributo atributo;
+                    string referencias;
+                    referencias = "";
                     atributo = buscaAtributo(nombre);
-                    if (atributo.Indice != 2 | !this.esLlaveForanea(this.dirActual))
+                    if (atributo.Indice != 2 | !this.esLlaveForanea(this.dirActual, ref referencias))
                     {
                         if (indice != 1|| !this.existeClaveDeBusqueda() || indice == atributo.Indice)
                         {
@@ -329,7 +333,7 @@ namespace Manejador_De_Archivos_2._0
                     }
                     else
                     {
-                        MessageBox.Show("El atributo que desea eliminar es una llave Foranea por favor elimine la referencia primero", "Error");
+                        MessageBox.Show("El atributo que desea modificar es una llave Foranea con la(s) entidad(es) : " + referencias + " por favor elimine la(s) referencia(s) primero", "Error");
                     }
                 }
                 else
@@ -348,16 +352,18 @@ namespace Manejador_De_Archivos_2._0
         {
             if (this.dirRegistros == -1)
             {
+                string referencias;
                 Atributo atributo;
+                referencias = "";
                 atributo = this.buscaAtributo(nombre);
-                if (atributo.Indice != 2 | !this.esLlaveForanea(this.dirActual))
+                if (atributo.Indice != 2 | !this.esLlaveForanea(this.dirActual, ref referencias))
                 {
                     this.atributos.Remove(atributo);
                     this.ajustaDireccionesAtributos();
                 }
                 else
                 {
-                    MessageBox.Show("El atributo que desea eliminar es una llave Foranea por favor elimine la referencia primero", "Error");
+                    MessageBox.Show("El atributo que desea eliminar es una llave Foranea con la(s) entidad(es): " + referencias + " por favor elimine la(s) referencia(s) primero", "Error");
                 }
             }
             else
@@ -447,7 +453,7 @@ namespace Manejador_De_Archivos_2._0
         {
             try
             {
-                if (!this.registros.ContainsKey(datos[this.buscaIndiceClavePrimaria()]))
+                if (!this.registros.ContainsKey(datos[this.buscaIndiceClavePrimaria()]) | llavePrimaria.Equals(datos[this.buscaIndiceClavePrimaria()]))
                 {
 
                     int indiceLlavePrimaria;
@@ -457,6 +463,10 @@ namespace Manejador_De_Archivos_2._0
                     indiceLlavePrimaria = this.buscaIndiceClavePrimaria();
                     archivoDat = directorio + "\\" + MetodosAuxiliares.truncaCadena(this.nombre) + ".dat";
                     archivoIdx = directorio + "\\" + MetodosAuxiliares.truncaCadena(this.nombre) + ".idx";
+                    if (this.atributos[indiceLlavePrimaria].Tipo.Equals('C'))
+                    {
+                        llavePrimaria = MetodosAuxiliares.ajustaCadena(llavePrimaria, this.atributos[indiceLlavePrimaria].Longitud);
+                    }
                     registro1 = new Registro(this.registros[llavePrimaria].DirAct, datos);
                     this.registros.Remove(llavePrimaria);
                     this.registros.Add(datos[indiceLlavePrimaria], registro1);
@@ -509,6 +519,10 @@ namespace Manejador_De_Archivos_2._0
         {
             try
             {
+                if(this.atributos[this.buscaIndiceClavePrimaria()].Equals('C'))
+                {
+                    llavePrimaria = MetodosAuxiliares.ajustaCadena(llavePrimaria, this.atributos[this.buscaIndiceClavePrimaria()].Longitud);
+                }
                 if (this.registros.ContainsKey(llavePrimaria))
                 {
 
@@ -521,7 +535,7 @@ namespace Manejador_De_Archivos_2._0
                     {
                         llavePrimaria = MetodosAuxiliares.ajustaCadena(llavePrimaria, this.atributos[this.buscaIndiceClavePrimaria()].Longitud);
                     }
-                    else if (this.atributos[this.buscaIndiceClavePrimaria()].Tipo.Equals('E'))
+                    else if (this.atributos[this.buscaIndiceClavePrimaria()].Tipo.Equals('E') | this.atributos[this.buscaIndiceClavePrimaria()].Tipo.Equals('D'))
                     {
                         llavePrimaria = MetodosAuxiliares.truncaCadena(llavePrimaria);
                     }
@@ -545,6 +559,10 @@ namespace Manejador_De_Archivos_2._0
                                 case 5:
                                     atributo.elimminaHash(reg.Datos[i], reg.DirAct, archivoIdx);
                                     break;
+                            }
+                            if(atributo.DirIndice == -1)
+                            {
+                                this.grabaAtributo(atributo);
                             }
                         }
                         this.ajustaDireccionesRegistros();
@@ -601,6 +619,10 @@ namespace Manejador_De_Archivos_2._0
                         {
                             this.writer.Write(Int32.Parse(registro.Datos[i]));
                         }
+                        else if (this.atributos[i].Tipo.Equals('D'))
+                        {
+                            this.writer.Write(float.Parse(registro.Datos[i]));
+                        }
                         else if (this.atributos[i].Tipo.Equals('C'))
                         {
                             this.writer.Write(registro.Datos[i].ToCharArray());
@@ -638,6 +660,10 @@ namespace Manejador_De_Archivos_2._0
                             if (atributo.Tipo.Equals('E'))
                             {
                                 informacion.Add(this.reader.ReadInt32().ToString());
+                            }
+                            else if (atributo.Tipo.Equals('D'))
+                            {
+                                informacion.Add(this.reader.ReadSingle().ToString());
                             }
                             else if (atributo.Tipo.Equals('C'))
                             {

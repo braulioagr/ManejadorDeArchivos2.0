@@ -118,7 +118,8 @@
             this.comboBoxTipo.FormattingEnabled = true;
             this.comboBoxTipo.Items.AddRange(new object[] {
             "E",
-            "C"});
+            "C",
+            "D"});
             this.comboBoxTipo.Location = new System.Drawing.Point(56, 45);
             this.comboBoxTipo.Name = "comboBoxTipo";
             this.comboBoxTipo.Size = new System.Drawing.Size(207, 21);

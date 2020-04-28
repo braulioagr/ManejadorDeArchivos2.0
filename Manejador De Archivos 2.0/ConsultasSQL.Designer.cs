@@ -70,6 +70,7 @@
             this.Controls.Add(this.dataGridSQL);
             this.Name = "ConsultasSQL";
             this.Text = "ConultasSQL";
+            this.Load += new System.EventHandler(this.ConsultasSQL_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridSQL)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

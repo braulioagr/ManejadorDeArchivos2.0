@@ -82,7 +82,7 @@ namespace Manejador_De_Archivos_2._0
                                     throw new InvalidConsultException("La entidad a consultar no tiene atributos para consultar");
                                 }
                             }
-                            else if (sentencia.Contains("inner") && sentencia.Contains("join") && sentencia.Contains("on") && !sentencia.Contains("where"))
+                            else if(sentencia.Contains("inner") && sentencia.Contains("join") && sentencia.Contains("on") && !sentencia.Contains("where"))
                             {
                                 entidad = this.innerJoin(sentencia);
                                 if (entidad.Registros.Count > 0)
@@ -157,5 +157,9 @@ namespace Manejador_De_Archivos_2._0
             }
         }
 
+        private void ConsultasSQL_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

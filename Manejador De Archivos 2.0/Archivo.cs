@@ -278,10 +278,11 @@ namespace Manejador_De_Archivos_2._0
             }
         }
 
-        private bool esLLaveForanea(long dirReferencia)
+        private bool esLLaveForanea(long dirReferencia, ref string referencias)
         {
             bool band;
             band = false;
+            referencias = "";
             foreach (Entidad entidad in this.entidades)
             {
                 foreach (Atributo atributo in entidad.Atributos)
@@ -289,13 +290,13 @@ namespace Manejador_De_Archivos_2._0
                     if (atributo.Indice == 3 && atributo.DirIndice == dirReferencia)
                     {
                         band = true;
-                        break;
+                        referencias += ", \"" + MetodosAuxiliares.truncaCadena(entidad.Nombre) + "\" con el atributo: \"" + MetodosAuxiliares.truncaCadena(atributo.Nombre) + "\" ";
                     }
                 }
-                if (band)
-                {
-                    break;
-                }
+            }
+            if (referencias.Length > 2)
+            {
+                referencias = referencias.Substring(1);
             }
             return band;
         }
@@ -333,6 +334,7 @@ namespace Manejador_De_Archivos_2._0
             Entidad entidad;
             entidad = this.buscaEntidad(nombreEntidad);
             entidad.existeReferenciaForanea += new Entidad.ExisteReferenciaForanea(this.existeReferenciaForanea);
+            entidad.grabaAtributo += new Entidad.GrabaAtributo(this.grabaAtributo);
             entidad.eliminarRegistro(directorio, llavePrimaria);
             this.grabaEntidad(entidad);
         }
@@ -509,24 +511,24 @@ namespace Manejador_De_Archivos_2._0
                                 }
                                 else
                                 {
-                                    throw new InvalidConsultException("El Atributo a buscar no existe");
+                                    throw new InvalidConsultException("El Atributo: " + sentencia[j] + " no existe en la entidad "+ sentencia[i + 1]);
                                 }
                             }
                         }
                     }
                     else
                     {
-                        throw new InvalidConsultException("La Entidad a buscar no existe o no se especifico");
+                        throw new InvalidConsultException("La Entidad: "+ sentencia[i + 1] + " no existe o no se escribio correctamente");
                     }
                 }
                 else
                 {
-                    throw new InvalidConsultException("Por favor especifique una entidad a buscar");
+                    throw new InvalidConsultException("Por favor especifique una entidad a buscar despues del \"from\"");
                 }
             }
             else
             {
-                throw new InvalidConsultException("Falta el from perro");
+                throw new InvalidConsultException("Falta la sentencia \"from\"");
             }
             return atributos;
         }
@@ -559,6 +561,13 @@ namespace Manejador_De_Archivos_2._0
                                             registros.Add(registro);
                                         }
                                     }
+                                    else if (entidad.Atributos[i].Tipo.Equals('D'))
+                                    {
+                                        if (float.Parse(registro.Datos[i]) == float.Parse(where.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
                                     else
                                     {
                                         if (registro.Datos[i].Equals(where.Last()))
@@ -571,6 +580,13 @@ namespace Manejador_De_Archivos_2._0
                                     if (entidad.Atributos[i].Tipo.Equals('E'))
                                     {
                                         if (Int32.Parse(registro.Datos[i]) != Int32.Parse(where.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    else if (entidad.Atributos[i].Tipo.Equals('D'))
+                                    {
+                                        if (float.Parse(registro.Datos[i]) != float.Parse(where.Last()))
                                         {
                                             registros.Add(registro);
                                         }
@@ -591,6 +607,13 @@ namespace Manejador_De_Archivos_2._0
                                             registros.Add(registro);
                                         }
                                     }
+                                    else if (entidad.Atributos[i].Tipo.Equals('D'))
+                                    {
+                                        if (float.Parse(registro.Datos[i]) > Int32.Parse(where.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
                                     else
                                     {
                                         if (registro.Datos[i].CompareTo(where.Last()) > 0)
@@ -603,6 +626,13 @@ namespace Manejador_De_Archivos_2._0
                                     if (entidad.Atributos[i].Tipo.Equals('E'))
                                     {
                                         if (Int32.Parse(registro.Datos[i]) < Int32.Parse(where.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    else if (entidad.Atributos[i].Tipo.Equals('D'))
+                                    {
+                                        if (float.Parse(registro.Datos[i]) < float.Parse(where.Last()))
                                         {
                                             registros.Add(registro);
                                         }
@@ -623,6 +653,13 @@ namespace Manejador_De_Archivos_2._0
                                             registros.Add(registro);
                                         }
                                     }
+                                    if (entidad.Atributos[i].Tipo.Equals('D'))
+                                    {
+                                        if (float.Parse(registro.Datos[i]) >= float.Parse(where.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
                                     else
                                     {
                                         if (registro.Datos[i].CompareTo(where.Last()) >= 0)
@@ -635,6 +672,13 @@ namespace Manejador_De_Archivos_2._0
                                     if (entidad.Atributos[i].Tipo.Equals('E'))
                                     {
                                         if (Int32.Parse(registro.Datos[i]) <= Int32.Parse(where.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    else if (entidad.Atributos[i].Tipo.Equals('D'))
+                                    {
+                                        if (float.Parse(registro.Datos[i]) <= float.Parse(where.Last()))
                                         {
                                             registros.Add(registro);
                                         }
@@ -654,10 +698,9 @@ namespace Manejador_De_Archivos_2._0
                     }
                     else
                     {
-                        throw new InvalidConsultException("El atributo que se desea comparar no exite");
+                        throw new InvalidConsultException("El atributo " + where.First() + " no exite");
                     }
                     return registros;
-                    //throw new NotImplementedException("Aun no se finaliza este pedo");
                 }
                 else
                 {
@@ -686,204 +729,275 @@ namespace Manejador_De_Archivos_2._0
             i = Array.IndexOf(sentencia, "from");
             j = Array.IndexOf(sentencia, "join");
             //Verificamos que existan las tablas
-            if(this.existeEntidad(MetodosAuxiliares.ajustaCadena(sentencia[i + 1], Constantes.tam)) && this.existeEntidad(MetodosAuxiliares.ajustaCadena(sentencia[j + 1], Constantes.tam)))
+            if(this.existeEntidad(MetodosAuxiliares.ajustaCadena(sentencia[i + 1], Constantes.tam)))
             {
-                //Obtenemos la tabla A que siempre esta despues del form
-                tablaA = this.buscaEntidad(MetodosAuxiliares.ajustaCadena(sentencia[i + 1], Constantes.tam));
-                //Obtenemos la tabla B que siempre esta despues del join
-                tablaB = this.buscaEntidad(MetodosAuxiliares.ajustaCadena(sentencia[j + 1], Constantes.tam));
-                //Verificamos que ambas tablas tengan atributos
-                if (tablaA.Atributos.Count > 0 && tablaB.Atributos.Count > 0)
+                if (this.existeEntidad(MetodosAuxiliares.ajustaCadena(sentencia[j + 1], Constantes.tam)))
                 {
-                    //Obtenemos el indice desde donde se obtendra lo que contieene la sentencia On
-                    i = Array.IndexOf(sentencia, "on");
-                    i++;
-                    // Obtenemos la sentencia On
-                    on = MetodosAuxiliares.SubArray(sentencia, i, sentencia.Length - i);
-                    //Validamos la sentencia On
-                    if (on.Length == 3)
+                    //Obtenemos la tabla A que siempre esta despues del form
+                    tablaA = this.buscaEntidad(MetodosAuxiliares.ajustaCadena(sentencia[i + 1], Constantes.tam));
+                    //Obtenemos la tabla B que siempre esta despues del join
+                    tablaB = this.buscaEntidad(MetodosAuxiliares.ajustaCadena(sentencia[j + 1], Constantes.tam));
+                    //Verificamos que ambas tablas tengan atributos
+                    if (tablaA.Atributos.Count > 0)
                     {
-                        //Obtenemos el nombre del atributo de la tabla A
-                        A = MetodosAuxiliares.ajustaCadena(on.First().Split('.').Last(), Constantes.tam);
-                        //Obtenemos el nombre del atributo de la tabla B
-                        B = MetodosAuxiliares.ajustaCadena(on.Last().Split('.').Last(), Constantes.tam);
-                        //Verificamos que las tablas tengan registros
-                        if(tablaA.Registros.Count > 0 & tablaB.Registros.Count > 0)
+                        if (tablaB.Atributos.Count > 0)
                         {
-                            //Verificamos que existan ambos atributoss en sus tablas
-                            if (tablaA.existeAtributo(A) && tablaB.existeAtributo(B))
+                            //Obtenemos el indice desde donde se obtendra lo que contieene la sentencia On
+                            i = Array.IndexOf(sentencia, "on");
+                            i++;
+                            // Obtenemos la sentencia On
+                            on = MetodosAuxiliares.SubArray(sentencia, i, sentencia.Length - i);
+                            //Validamos la sentencia On
+                            if (on.Length == 3)
                             {
-                                if (tablaA.buscaAtributo(A).Tipo.Equals(tablaB.buscaAtributo(B).Tipo))
+                                //Obtenemos el nombre del atributo de la tabla A
+                                A = MetodosAuxiliares.ajustaCadena(on.First().Split('.').Last(), Constantes.tam);
+                                //Obtenemos el nombre del atributo de la tabla B
+                                B = MetodosAuxiliares.ajustaCadena(on.Last().Split('.').Last(), Constantes.tam);
+                                //Verificamos que las tablas tengan registros
+                                if (tablaA.Registros.Count > 0)
                                 {
-                                    //Preparamos la tablaque sera resultado de la mescla combinando los atributos de ambas tablas primero la A y luego la B
-                                    innerJoin = new Entidad(MetodosAuxiliares.truncaCadena(tablaA.Nombre) + "-" + MetodosAuxiliares.truncaCadena(tablaB.Nombre), -1, -1, -1, -1);
-                                    innerJoin.Atributos.AddRange(tablaA.Atributos);
-                                    innerJoin.Atributos.AddRange(tablaB.Atributos);
-                                    //Obtenemos los indices de ambas tablas
-                                    x = tablaA.Atributos.IndexOf(tablaA.buscaAtributo(A));
-                                    y = tablaB.Atributos.IndexOf(tablaB.buscaAtributo(B));
-                                    //Ponemos un entero para hacer una llave primaria auxiliar
-                                    int k;
-                                    k = 0;
-                                    //Empezamos a recorrer la lista de los registros de ambas tablas
-                                    foreach (Registro registroA in tablaA.Valores)
+                                    if (tablaB.Registros.Count > 0)
                                     {
-                                        foreach (Registro registroB in tablaB.Valores)
+                                        //Verificamos que existan ambos atributoss en sus tablas
+                                        if (tablaA.existeAtributo(A))
                                         {
-                                            band = false;
-                                            switch (on[1])
+                                            if (tablaB.existeAtributo(B))
                                             {
+                                                if (tablaA.buscaAtributo(A).Tipo.Equals(tablaB.buscaAtributo(B).Tipo))
+                                                {
+                                                    //Preparamos la tabla que sera resultado de la mescla combinando los atributos de ambas tablas primero la A y luego la B
+                                                    innerJoin = new Entidad(MetodosAuxiliares.truncaCadena(tablaA.Nombre) + "-" + MetodosAuxiliares.truncaCadena(tablaB.Nombre), -1, -1, -1, -1);
+                                                    innerJoin.Atributos.AddRange(tablaA.Atributos);
+                                                    innerJoin.Atributos.AddRange(tablaB.Atributos);
+                                                    //Obtenemos los indices de ambas tablas
+                                                    x = tablaA.Atributos.IndexOf(tablaA.buscaAtributo(A));
+                                                    y = tablaB.Atributos.IndexOf(tablaB.buscaAtributo(B));
+                                                    //Ponemos un entero para hacer una llave primaria auxiliar
+                                                    int k;
+                                                    k = 0;
+                                                    //Empezamos a recorrer la lista de los registros de ambas tablas
+                                                    foreach (Registro registroA in tablaA.Valores)
+                                                    {
+                                                        foreach (Registro registroB in tablaB.Valores)
+                                                        {
+                                                            band = false;
+                                                            switch (on[1])
+                                                            {
 
-                                                case "=":
-                                                    if (tablaA.Atributos[x].Tipo.Equals('E'))
-                                                    {
-                                                        if (Int32.Parse(registroA.Datos[x]) == Int32.Parse(registroB.Datos[y]))
-                                                        {
-                                                            band = true;
+                                                                case "=":
+                                                                    if (tablaA.Atributos[x].Tipo.Equals('E'))
+                                                                    {
+                                                                        if (Int32.Parse(registroA.Datos[x]) == Int32.Parse(registroB.Datos[y]))
+                                                                        {
+                                                                            band = true;
+                                                                        }
+                                                                    }
+                                                                    else if (tablaA.Atributos[x].Tipo.Equals('D'))
+                                                                    {
+                                                                        if (float.Parse(registroA.Datos[x]) == float.Parse(registroB.Datos[y]))
+                                                                        {
+                                                                            band = true;
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        //Verificamos si ambos registros coinciden en dichos atributos
+                                                                        if (registroA.Datos[x].Equals(registroB.Datos[y]))
+                                                                        {
+                                                                            band = true;
+                                                                        }
+                                                                    }
+                                                                    break;
+                                                                case "!=":
+                                                                    if (tablaA.Atributos[x].Tipo.Equals('E'))
+                                                                    {
+                                                                        if (Int32.Parse(registroA.Datos[x]) != Int32.Parse(registroB.Datos[y]))
+                                                                        {
+                                                                            band = true;
+                                                                        }
+                                                                    }
+                                                                    else if (tablaA.Atributos[x].Tipo.Equals('D'))
+                                                                    {
+                                                                        if (float.Parse(registroA.Datos[x]) != float.Parse(registroB.Datos[y]))
+                                                                        {
+                                                                            band = true;
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        //Verificamos si ambos registros coinciden en dichos atributos
+                                                                        if (!registroA.Datos[x].Equals(registroB.Datos[y]))
+                                                                        {
+                                                                            band = true;
+                                                                        }
+                                                                    }
+                                                                    break;
+                                                                case ">":
+                                                                    if (tablaA.Atributos[x].Tipo.Equals('E'))
+                                                                    {
+                                                                        if (Int32.Parse(registroA.Datos[x]) > Int32.Parse(registroB.Datos[y]))
+                                                                        {
+                                                                            band = true;
+                                                                        }
+                                                                    }
+                                                                    else if (tablaA.Atributos[x].Tipo.Equals('D'))
+                                                                    {
+                                                                        if (float.Parse(registroA.Datos[x]) > float.Parse(registroB.Datos[y]))
+                                                                        {
+                                                                            band = true;
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        //Verificamos si ambos registros coinciden en dichos atributos
+                                                                        if (registroA.Datos[x].CompareTo(registroB.Datos[y]) > 0)
+                                                                        {
+                                                                            band = true;
+                                                                        }
+                                                                    }
+                                                                    break;
+                                                                case "<":
+                                                                    if (tablaA.Atributos[x].Tipo.Equals('E'))
+                                                                    {
+                                                                        if (Int32.Parse(registroA.Datos[x]) < Int32.Parse(registroB.Datos[y]))
+                                                                        {
+                                                                            band = true;
+                                                                        }
+                                                                    }
+                                                                    else if (tablaA.Atributos[x].Tipo.Equals('D'))
+                                                                    {
+                                                                        if (float.Parse(registroA.Datos[x]) < float.Parse(registroB.Datos[y]))
+                                                                        {
+                                                                            band = true;
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        //Verificamos si ambos registros coinciden en dichos atributos
+                                                                        if (registroA.Datos[x].CompareTo(registroB.Datos[y]) < 0)
+                                                                        {
+                                                                            band = true;
+                                                                        }
+                                                                    }
+                                                                    break;
+                                                                case ">=":
+                                                                    if (tablaA.Atributos[x].Tipo.Equals('E'))
+                                                                    {
+                                                                        if (Int32.Parse(registroA.Datos[x]) >= Int32.Parse(registroB.Datos[y]))
+                                                                        {
+                                                                            band = true;
+                                                                        }
+                                                                    }
+                                                                    else if (tablaA.Atributos[x].Tipo.Equals('D'))
+                                                                    {
+                                                                        if (float.Parse(registroA.Datos[x]) >= float.Parse(registroB.Datos[y]))
+                                                                        {
+                                                                            band = true;
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        //Verificamos si ambos registros coinciden en dichos atributos
+                                                                        if (registroA.Datos[x].CompareTo(registroB.Datos[y]) >= 0)
+                                                                        {
+                                                                            band = true;
+                                                                        }
+                                                                    }
+                                                                    break;
+                                                                case "<=":
+                                                                    if (tablaA.Atributos[x].Tipo.Equals('E'))
+                                                                    {
+                                                                        if (Int32.Parse(registroA.Datos[x]) <= Int32.Parse(registroB.Datos[y]))
+                                                                        {
+                                                                            band = true;
+                                                                        }
+                                                                    }
+                                                                    else if (tablaA.Atributos[x].Tipo.Equals('D'))
+                                                                    {
+                                                                        if (float.Parse(registroA.Datos[x]) <= float.Parse(registroB.Datos[y]))
+                                                                        {
+                                                                            band = true;
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        //Verificamos si ambos registros coinciden en dichos atributos
+                                                                        if (registroA.Datos[x].CompareTo(registroB.Datos[y]) <= 0)
+                                                                        {
+                                                                            band = true;
+                                                                        }
+                                                                    }
+                                                                    break;
+                                                                default:
+                                                                    throw new InvalidConsultException("\""+ on[1] + "\" no es un comparador valido");
+                                                            }
+                                                            if (band)
+                                                            {
+                                                                //Registro auxiliar
+                                                                Registro registro;
+                                                                //Si coinciden creamos un nuevo registro
+                                                                registro = new Registro(-1, new List<string>());
+                                                                //Le añadimos los registros de la tupla de la TablaA
+                                                                registro.Datos = registro.Datos.Concat(registroA.Datos).ToList();
+                                                                //Le añadimos los registros de la tupla de la TablaB
+                                                                registro.Datos = registro.Datos.Concat(registroB.Datos).ToList();
+                                                                //Agregamos el registro a la tabla innerJoin e incrementamos la j para no repetir claves primarias
+                                                                innerJoin.Registros.Add(k.ToString(), registro);
+                                                                k++;
+                                                            }
                                                         }
                                                     }
-                                                    else
-                                                    {
-                                                        //Verificamos si ambos registros coinciden en dichos atributos
-                                                        if (registroA.Datos[x].Equals(registroB.Datos[y]))
-                                                        {
-                                                            band = true;
-                                                        }
-                                                    }
-                                                    break;
-                                                case "!=":
-                                                    if (tablaA.Atributos[x].Tipo.Equals('E'))
-                                                    {
-                                                        if (Int32.Parse(registroA.Datos[x]) != Int32.Parse(registroB.Datos[y]))
-                                                        {
-                                                            band = true;
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        //Verificamos si ambos registros coinciden en dichos atributos
-                                                        if (!registroA.Datos[x].Equals(registroB.Datos[y]))
-                                                        {
-                                                            band = true;
-                                                        }
-                                                    }
-                                                    break;
-                                                case ">":
-                                                    if (tablaA.Atributos[x].Tipo.Equals('E'))
-                                                    {
-                                                        if (Int32.Parse(registroA.Datos[x]) > Int32.Parse(registroB.Datos[y]))
-                                                        {
-                                                            band = true;
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        //Verificamos si ambos registros coinciden en dichos atributos
-                                                        if (registroA.Datos[x].CompareTo(registroB.Datos[y]) > 0)
-                                                        {
-                                                            band = true;
-                                                        }
-                                                    }
-                                                    break;
-                                                case "<":
-                                                    if (tablaA.Atributos[x].Tipo.Equals('E'))
-                                                    {
-                                                        if (Int32.Parse(registroA.Datos[x]) < Int32.Parse(registroB.Datos[y]))
-                                                        {
-                                                            band = true;
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        //Verificamos si ambos registros coinciden en dichos atributos
-                                                        if (registroA.Datos[x].CompareTo(registroB.Datos[y]) < 0)
-                                                        {
-                                                            band = true;
-                                                        }
-                                                    }
-                                                    break;
-                                                case ">=":
-                                                    if (tablaA.Atributos[x].Tipo.Equals('E'))
-                                                    {
-                                                        if (Int32.Parse(registroA.Datos[x]) >= Int32.Parse(registroB.Datos[y]))
-                                                        {
-                                                            band = true;
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        //Verificamos si ambos registros coinciden en dichos atributos
-                                                        if (registroA.Datos[x].CompareTo(registroB.Datos[y]) >= 0)
-                                                        {
-                                                            band = true;
-                                                        }
-                                                    }
-                                                    break;
-                                                case "<=":
-                                                    if (tablaA.Atributos[x].Tipo.Equals('E'))
-                                                    {
-                                                        if (Int32.Parse(registroA.Datos[x]) <= Int32.Parse(registroB.Datos[y]))
-                                                        {
-                                                            band = true;
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        //Verificamos si ambos registros coinciden en dichos atributos
-                                                        if (registroA.Datos[x].CompareTo(registroB.Datos[y]) <= 0)
-                                                        {
-                                                            band = true;
-                                                        }
-                                                    }
-                                                    break;
-                                                default:
-                                                    throw new InvalidConsultException("No se utilizo un comparador valido");
+                                                }
+                                                else
+                                                {
+                                                    throw new InvalidConsultException("Los atributos: " + A + "de la tabla: " + MetodosAuxiliares.truncaCadena(tablaA.Nombre) + " y " + B + "de la tabla: "
+                                                                                      + MetodosAuxiliares.truncaCadena(tablaB.Nombre) + " no comparten el mismo tipo de dato");
+                                                }
                                             }
-                                            if (band)
+                                            else
                                             {
-                                                //Registro auxiliar
-                                                Registro registro;
-                                                //Si coinciden creamos un nuevo registro
-                                                registro = new Registro(-1, new List<string>());
-                                                //Le añadimos los registros de la tupla de la TablaA
-                                                registro.Datos = registro.Datos.Concat(registroA.Datos).ToList();
-                                                //Le añadimos los registros de la tupla de la TablaB
-                                                registro.Datos = registro.Datos.Concat(registroB.Datos).ToList();
-                                                //Agregamos el registro a la tabla innerJoin e incrementamos la j para no repetir claves primarias
-                                                innerJoin.Registros.Add(k.ToString(), registro);
-                                                k++;
+                                                throw new InvalidConsultException("El atributo: " + MetodosAuxiliares.truncaCadena(B) + " no existe en la Tabla: " + MetodosAuxiliares.truncaCadena(tablaB.Nombre));
                                             }
                                         }
+                                        else
+                                        {
+                                            throw new InvalidConsultException("El atributo: " + MetodosAuxiliares.truncaCadena(A) + " no existe en la Tabla: " + MetodosAuxiliares.truncaCadena(tablaA.Nombre));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        throw new InvalidConsultException("La tabla: " + MetodosAuxiliares.truncaCadena(tablaB.Nombre) + " no contiene registros dados de alta");
                                     }
                                 }
                                 else
                                 {
-                                    throw new InvalidConsultException("Los atributos a consultar no comparten el mismo tipo de dato");
+                                    throw new InvalidConsultException("La tabla: " + MetodosAuxiliares.truncaCadena(tablaA.Nombre) + " no contiene registros dados de alta");
                                 }
                             }
                             else
                             {
-                                throw new InvalidConsultException("Uno de los atributos que se desea compara en la sentencia \" ON \" no es valido por favor revise la sentencia");
+                                throw new InvalidConsultException("El formato en la sentencia \" ON \" no es valida");
                             }
                         }
                         else
                         {
-                            throw new InvalidConsultException("Una de las tablas que solicito no tiene registros");
+                            throw new InvalidConsultException("La tabla: " + MetodosAuxiliares.truncaCadena(tablaB.Nombre) + " no tiene atributos");
                         }
                     }
                     else
                     {
-                        throw new InvalidConsultException("El formato en la sentencia \" ON \" no es valida");
+                        throw new InvalidConsultException("La tabla: " + MetodosAuxiliares.truncaCadena(tablaA.Nombre) + " no tiene atributos");
                     }
                 }
                 else
                 {
-                    throw new InvalidConsultException("Una de las tablas que solicito no tiene atributos");
+                    throw new InvalidConsultException("La tabla: \"" + sentencia[j + 1]+"\" No existe");
                 }
             }
             else
             {
-                throw new InvalidConsultException("Una de las tablas que solicito no existe por favor verifique la consulta");
+                throw new InvalidConsultException("La tabla: \"" + sentencia[i + 1] + "\" No existe");
             }
             return innerJoin;
         }
@@ -915,7 +1029,7 @@ namespace Manejador_De_Archivos_2._0
                     }
                     else
                     {
-                        throw new InvalidConsultException("El Atributo a buscar no existe");
+                        throw new InvalidConsultException("El Atributo: " + MetodosAuxiliares.ajustaCadena(sentencia[j], Constantes.tam));
                     }
                 }
             }
