@@ -747,6 +747,12 @@ namespace Manejador_De_Archivos_2._0
                             i++;
                             // Obtenemos la sentencia On
                             on = MetodosAuxiliares.SubArray(sentencia, i, sentencia.Length - i);
+                            if (on.Contains("and"))
+                            {
+                                i = Array.IndexOf(on, "and");
+                                // Obtenemos la sentencia On
+                                on = MetodosAuxiliares.SubArray(on, 0, i);
+                            }
                             //Validamos la sentencia On
                             if (on.Length == 3)
                             {
@@ -1034,6 +1040,190 @@ namespace Manejador_De_Archivos_2._0
                 }
             }
             return atributos;
+        }
+
+        public List<Registro> consultaRegistrosInnerJoinAnd(List<Atributo> atributos, Entidad entidad, string[] and)
+        {
+            try
+            {
+                if (and.Length == 3)
+                {
+                    int i;
+                    List<Registro> registros;
+                    registros = new List<Registro>();
+                    string ent;
+                    string atrib;
+                    ent = and.First().Split('.').First();
+                    atrib = and.First().Split('.').Last();
+                    if (entidad.existeAtributoInnerJoin(MetodosAuxiliares.ajustaCadena(ent, Constantes.tam), MetodosAuxiliares.ajustaCadena(atrib, Constantes.tam)))
+                    {
+                        i = entidad.buscaIndiceAtributoInnerJoin(MetodosAuxiliares.ajustaCadena(ent, Constantes.tam), MetodosAuxiliares.ajustaCadena(atrib, Constantes.tam));
+                        if (entidad.Atributos[i].Tipo.Equals('C'))
+                        {
+                            and[2] = MetodosAuxiliares.ajustaCadena(and.Last(), entidad.Atributos[i].Longitud);
+                        }
+                        foreach (Registro registro in entidad.Valores)
+                        {
+                            switch (and[1])
+                            {
+                                case "=":
+                                    if (entidad.Atributos[i].Tipo.Equals('E'))
+                                    {
+                                        if (Int32.Parse(registro.Datos[i]) == Int32.Parse(and.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    else if (entidad.Atributos[i].Tipo.Equals('D'))
+                                    {
+                                        if (float.Parse(registro.Datos[i]) == float.Parse(and.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (registro.Datos[i].Equals(and.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    break;
+                                case "!=":
+                                    if (entidad.Atributos[i].Tipo.Equals('E'))
+                                    {
+                                        if (Int32.Parse(registro.Datos[i]) != Int32.Parse(and.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    else if (entidad.Atributos[i].Tipo.Equals('D'))
+                                    {
+                                        if (float.Parse(registro.Datos[i]) != float.Parse(and.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (!registro.Datos[i].Equals(and.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    break;
+                                case ">":
+                                    if (entidad.Atributos[i].Tipo.Equals('E'))
+                                    {
+                                        if (Int32.Parse(registro.Datos[i]) > Int32.Parse(and.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    else if (entidad.Atributos[i].Tipo.Equals('D'))
+                                    {
+                                        if (float.Parse(registro.Datos[i]) > Int32.Parse(and.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (registro.Datos[i].CompareTo(and.Last()) > 0)
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    break;
+                                case "<":
+                                    if (entidad.Atributos[i].Tipo.Equals('E'))
+                                    {
+                                        if (Int32.Parse(registro.Datos[i]) < Int32.Parse(and.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    else if (entidad.Atributos[i].Tipo.Equals('D'))
+                                    {
+                                        if (float.Parse(registro.Datos[i]) < float.Parse(and.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (registro.Datos[i].CompareTo(and.Last()) < 0)
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    break;
+                                case ">=":
+                                    if (entidad.Atributos[i].Tipo.Equals('E'))
+                                    {
+                                        if (Int32.Parse(registro.Datos[i]) >= Int32.Parse(and.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    if (entidad.Atributos[i].Tipo.Equals('D'))
+                                    {
+                                        if (float.Parse(registro.Datos[i]) >= float.Parse(and.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (registro.Datos[i].CompareTo(and.Last()) >= 0)
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    break;
+                                case "<=":
+                                    if (entidad.Atributos[i].Tipo.Equals('E'))
+                                    {
+                                        if (Int32.Parse(registro.Datos[i]) <= Int32.Parse(and.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    else if (entidad.Atributos[i].Tipo.Equals('D'))
+                                    {
+                                        if (float.Parse(registro.Datos[i]) <= float.Parse(and.Last()))
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (registro.Datos[i].CompareTo(and.Last()) <= 0)
+                                        {
+                                            registros.Add(registro);
+                                        }
+                                    }
+                                    break;
+                                default:
+                                    throw new InvalidConsultException("No se utilizo un comparador valido");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        throw new InvalidConsultException("El atributo " + atrib + " de la clase "+ent+" no exite");
+                    }
+                    return registros;
+                }
+                else
+                {
+                    throw new InvalidConsultException("La sentencia AND no esta buien estructuada");
+                }
+            }
+            catch (FormatException)
+            {
+                throw new InvalidConsultException("Ahorita vemos que pedo");
+            }
         }
 
         #endregion

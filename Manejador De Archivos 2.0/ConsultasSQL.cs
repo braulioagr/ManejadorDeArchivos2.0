@@ -15,7 +15,9 @@ namespace Manejador_De_Archivos_2._0
         public delegate List<Atributo> ConsultaAtributosSelect(string[] sentencia, ref Entidad entidad);
         public event ConsultaAtributosSelect consultaAtributosSelect;
         public delegate List<Registro> ConsultaRegistrosSelectWhere(List<Atributo> atributos, Entidad entidad, string[] where);
-        public event ConsultaRegistrosSelectWhere consultaRegistrosSelectWhere;        
+        public event ConsultaRegistrosSelectWhere consultaRegistrosSelectWhere;
+        public delegate List<Registro> ConsultaRegistrosSelectAnd(List<Atributo> atributos, Entidad entidad, string[] where);
+        public event ConsultaRegistrosSelectAnd consultaRegistrosSelectAnd;
         public delegate Entidad InnerJoin(string[] sentencia);
         public event InnerJoin innerJoin;
         public delegate List<Atributo> ConsultaAtributosSelectInnerJoin(string[] sentencia, Entidad entidad);
@@ -85,11 +87,30 @@ namespace Manejador_De_Archivos_2._0
                             else if(sentencia.Contains("inner") && sentencia.Contains("join") && sentencia.Contains("on") && !sentencia.Contains("where"))
                             {
                                 entidad = this.innerJoin(sentencia);
+                                atributos = this.consultaAtributosSelectInnerJoin(sentencia, entidad);
                                 if (entidad.Registros.Count > 0)
                                 {
-                                    atributos = this.consultaAtributosSelectInnerJoin(sentencia, entidad);
-                                    registros = entidad.Valores;
-                                    this.actualizaDataGridSQLConSelect(entidad, atributos, registros, true);
+                                    if (!sentencia.Contains("and"))
+                                    {
+                                        registros = entidad.Valores;
+                                        this.actualizaDataGridSQLConSelect(entidad, atributos, registros, true);
+                                    }
+                                    else
+                                    {
+                                        string[] and;
+                                        i = Array.IndexOf(sentencia, "and");
+                                        i++;
+                                        if (i != sentencia.Length)
+                                        {
+                                            and = MetodosAuxiliares.SubArray(sentencia, i, sentencia.Length - i);
+                                            registros = this.consultaRegistrosSelectAnd(atributos, entidad, and);
+                                            this.actualizaDataGridSQLConSelect(entidad, atributos, registros, false);
+                                        }
+                                        else
+                                        {
+                                            throw new InvalidConsultException("Por favor ponga el enunciado de la sentencia where");
+                                        }
+                                    }
                                 }
                             }
                             else
@@ -157,9 +178,20 @@ namespace Manejador_De_Archivos_2._0
             }
         }
 
-        private void ConsultasSQL_Load(object sender, EventArgs e)
-        {
 
+        private void ConsultasSQL_Resize(object sender, EventArgs e)
+        {
+            Size size = new Size();
+            Point point = new Point();
+            point.Y = this.ConsultaSQL.Location.Y;
+            size.Width = this.Size.Width - 40;
+            size.Height = this.Size.Height - 92;
+            this.dataGridSQL.Size = size;
+            point.X = this.Size.Width - 103;
+            this.ConsultaSQL.Location = point;
+            size.Height = this.textBoxSQL.Height;
+            size.Width = this.Size.Width - 121;
+            this.textBoxSQL.Size = size;
         }
     }
 }

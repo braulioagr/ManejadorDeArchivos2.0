@@ -149,6 +149,15 @@ namespace Manejador_De_Archivos_2._0
             this.textBoxLong.Text = entidad.Atributos[indice].Longitud.ToString();
             if (entidad.Atributos[indice].Indice == 3)
             {
+                if (comboDato != null)
+                {
+                    comboDato.Dispose();
+                    if (this.Controls.Contains(comboDato))
+                    {
+                        this.Controls.Remove(comboDato);
+                    }
+                    comboDato = null;                
+                }
                 List<string> llaves;
                 comboDato = new ComboBox();
                 string ent;

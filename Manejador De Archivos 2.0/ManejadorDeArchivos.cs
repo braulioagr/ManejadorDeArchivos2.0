@@ -444,6 +444,7 @@ namespace Manejador_De_Archivos_2._0
                         sql.consultaRegistrosSelectWhere += new ConsultasSQL.ConsultaRegistrosSelectWhere(this.archivo.ConsultaRegistrosSelectWhere);
                         sql.innerJoin += new ConsultasSQL.InnerJoin(this.archivo.InnerJoin);
                         sql.consultaAtributosSelectInnerJoin += new ConsultasSQL.ConsultaAtributosSelectInnerJoin(this.archivo.ConsultaAtributosSelectInnerJoin);
+                        sql.consultaRegistrosSelectAnd += new ConsultasSQL.ConsultaRegistrosSelectAnd(this.archivo.consultaRegistrosInnerJoinAnd);
                         sql.Show();
                     break;
                     case "Eliminar":

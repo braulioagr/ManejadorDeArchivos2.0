@@ -55,7 +55,7 @@ namespace Manejador_De_Archivos_2._0
             {
                 sentencia[j] = sentencia[j].Replace(",", "");
                 aux = sentencia[j].ToLower();
-                if (aux.Equals("select") | aux.Equals("from") | aux.Equals("where") | aux.Equals("inner") | aux.Equals("join") | aux.Equals("on"))
+                if (aux.Equals("select") | aux.Equals("from") | aux.Equals("where") | aux.Equals("inner") | aux.Equals("join") | aux.Equals("on") | aux.Equals("and"))
                 {
                     sentencia[j] = aux;
                 }

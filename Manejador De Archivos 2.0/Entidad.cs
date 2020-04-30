@@ -243,7 +243,6 @@ namespace Manejador_De_Archivos_2._0
             return indice;
         }
 
-
         public int buscaIndiceAtributo(string nombre, string entidad)
         {
             int indice;
@@ -257,6 +256,38 @@ namespace Manejador_De_Archivos_2._0
                 }
             }
             return indice;
+        }
+
+        public bool existeAtributoInnerJoin(string entidad, string atributo)
+        {
+            bool band;
+            band = false;
+            foreach (Atributo atributo1 in this.atributos)
+            {
+                if (entidad.Equals(atributo1.Entidad) & atributo.Equals(atributo1.Nombre))
+                {
+                    band = true;
+                    break;
+                }
+            }
+            return band;
+        }
+
+
+
+        internal int buscaIndiceAtributoInnerJoin(string entidad, string atributo)
+        {
+            int i;
+            i = -1;
+            for (int j = 0; j < this.atributos.Count; j++)
+            {
+                if (entidad.Equals(this.atributos[j].Entidad) & atributo.Equals(this.atributos[j].Nombre))
+                {
+                    i = j;
+                    break;
+                }
+            }
+            return i;
         }
         #endregion
 
@@ -684,7 +715,6 @@ namespace Manejador_De_Archivos_2._0
                 MessageBox.Show(e.Message);
             }
         }
-
 
         #endregion
 

@@ -73,11 +73,11 @@ namespace Manejador_De_Archivos_2._0
             int j;
             i = this.calculaCajon(esCadena, llave);
             j = this.indiceLlave(i,direccion);
-            if (j > -1)
+            if(j > -1)
             {
                 this.apuntadores[i, j] = -1;
                 llaves[i, j] = "-1";
-                if (esCadena)
+                if(esCadena)
                 {
                     llaves[i, j] = MetodosAuxiliares.ajustaCadena(llaves[i, j], longitud);
                 }
