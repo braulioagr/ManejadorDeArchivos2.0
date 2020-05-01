@@ -168,7 +168,7 @@ namespace Manejador_De_Archivos_2._0
 
         }
 
-        private bool existeClaveDeBusqueda()
+        public bool existeClaveDeBusqueda()
         {
             bool band;
             band = false;

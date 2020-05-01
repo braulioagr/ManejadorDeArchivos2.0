@@ -63,6 +63,12 @@
     <Compile Include="AltaRegistro.Designer.cs">
       <DependentUpon>AltaRegistro.cs</DependentUpon>
     </Compile>
+    <Compile Include="AltaRegistroSQL.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AltaRegistroSQL.Designer.cs">
+      <DependentUpon>AltaRegistroSQL.cs</DependentUpon>
+    </Compile>
     <Compile Include="Archivo.cs" />
     <Compile Include="Atributo.cs" />
     <Compile Include="Constantes.cs" />
@@ -93,6 +99,7 @@
     <Compile Include="HashEstatica.cs" />
     <Compile Include="Indice.cs" />
     <Compile Include="InvalidConsultException.cs" />
+    <Compile Include="InvalidFormatException.cs" />
     <Compile Include="ModificaRegistro.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -157,6 +164,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AltaRegistro.resx">
       <DependentUpon>AltaRegistro.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AltaRegistroSQL.resx">
+      <DependentUpon>AltaRegistroSQL.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConsultaAtributo.resx">
       <DependentUpon>ConsultaAtributo.cs</DependentUpon>

@@ -62,6 +62,21 @@ namespace Manejador_De_Archivos_2._0
             return entidad;
         }
 
+
+        private bool existeLLaveForanea(long dirIndice, string llave)
+        {
+            bool band;
+            band = false;
+            foreach(Entidad entidad in this.entidades)
+            {
+                if(entidad.DirActual == dirIndice)
+                {
+                    band = entidad.Registros.ContainsKey(llave);
+                    break;
+                }
+            }
+            return band;
+        }
         public Entidad buscaEntidad(string nombre)
         {
             Entidad destino;
@@ -319,6 +334,100 @@ namespace Manejador_De_Archivos_2._0
             }
         }
 
+        public void altaSQl(string sentencia, string directorio)
+        {
+            if(!string.IsNullOrEmpty(sentencia))
+            {
+                if (sentencia.Contains("(") | !sentencia.Contains(")") | !sentencia.Contains(","))
+                {
+                    int x;
+                    x = sentencia.IndexOf('(');
+                    if (x != 0)
+                    {
+                        string nombreEntidad;
+                        nombreEntidad = sentencia.Substring(0, x);
+                        nombreEntidad = MetodosAuxiliares.ajustaCadena(nombreEntidad, Constantes.tam);
+                        if (this.existeEntidad(nombreEntidad))
+                        {
+                            List<string> atributos;
+                            Entidad entidad;
+                            entidad = this.buscaEntidad(nombreEntidad);
+                            atributos = sentencia.Substring(x+1, sentencia.Length - (x + 2)).Split(',').ToList();
+                            if (entidad.Atributos.Count == atributos.Count)
+                            {
+                                int k;
+                                float l;
+                                for(int i = 0 ; i < atributos.Count ; i++)
+                                {
+                                    switch(entidad.Atributos[i].Tipo)
+                                    {
+                                        case 'E':
+                                            if (!int.TryParse(atributos[i], out k))
+                                            {
+                                                throw new InvalidFormatException("El atributo " + MetodosAuxiliares.truncaCadena(entidad.Atributos[i].Nombre) +
+                                                                                 " es de tipo \"Entero\" este es el valor que intenta dar de alta :" + atributos[i]);
+                                            }
+                                        break;
+                                        case 'D':
+                                            if (!float.TryParse(atributos[i], out l))
+                                            {
+                                                throw new InvalidFormatException("El atributo " + MetodosAuxiliares.truncaCadena(entidad.Atributos[i].Nombre) +
+                                                                                 " es de tipo \"Decimal\" este es el valor que intenta dar de alta :" + atributos[i]);
+                                            }
+                                        break;
+                                        case 'C':
+                                            atributos[i] = MetodosAuxiliares.ajustaCadena(atributos[i], entidad.Atributos[i].Longitud);
+                                        break;
+                                    }
+                                    if (entidad.Atributos[i].Indice == 3)
+                                    {
+                                        Entidad enlace;
+                                        enlace = this.buscaEntidad(entidad.Atributos[i].DirIndice);
+                                        if (enlace.Registros.Count > 0)
+                                        {
+                                            if (!existeLLaveForanea(entidad.Atributos[i].DirIndice, atributos[i]))
+                                            {
+                                                throw new InvalidFormatException("El valor: " + atributos[i] + "No existe en la entidad: " +
+                                                                                 MetodosAuxiliares.truncaCadena(enlace.Nombre));
+                                            }
+                                        }
+                                        else
+                                        {
+                                            throw new InvalidFormatException("La entidad: " + MetodosAuxiliares.truncaCadena(enlace.Nombre)
+                                                                             + " no tiene registros por lo tanto el valor: " + atributos[i] +
+                                                                             "No existe y no se puede dar de alta el registro por favor de de alta un registro antes");
+                                        }
+                                    }
+                                }
+                                this.altaRegistro(nombreEntidad, directorio, atributos);
+                            }
+                            else
+                            {
+                                throw new InvalidFormatException("La entidad: " + MetodosAuxiliares.truncaCadena(nombreEntidad) + " tiene: " +
+                                                                 entidad.Atributos.Count.ToString()+"atributos y usted intenta dar de alta: " +
+                                                                 atributos.Count.ToString() + " por favor corrija la sentencia.");
+                            }
+                        }
+                        else
+                        {
+                            throw new InvalidFormatException("La entidad: " + MetodosAuxiliares.truncaCadena(nombreEntidad) + " no existe");
+                        }
+                    }
+                    else
+                    {
+                        throw new InvalidFormatException("Por favor especifique la entidad a dar de alta");
+                    }
+                }
+                else
+                {
+                    throw new InvalidFormatException("Se le recuerda al usuario que la estructura de la alta es: \n Entidad(atributo1, atributo2, atributo3,......, atributoN)");
+                }
+            }
+            else
+            {
+                throw new InvalidFormatException("El textBox no debe estar vacio");
+            }
+        }
 
         public void modificaRegistro(string entidad, string llavePrimaria, string[] infoOriginal, List<string> datos, string directorio)
         {

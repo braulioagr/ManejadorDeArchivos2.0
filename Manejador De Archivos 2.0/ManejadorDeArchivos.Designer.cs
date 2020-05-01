@@ -107,6 +107,7 @@
             this.eliminarRegistros = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.SelectFolder = new System.Windows.Forms.FolderBrowserDialog();
+            this.altaSQLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolBar.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabEntidades.SuspendLayout();
@@ -808,6 +809,7 @@
             // 
             this.menuRegistros.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.altaRegistros,
+            this.altaSQLToolStripMenuItem,
             this.modificarRegistros,
             this.consultaToolStripMenuItem,
             this.consultasSQLToolStripMenuItem,
@@ -861,6 +863,13 @@
             // SelectFolder
             // 
             this.SelectFolder.Description = "Seleccione una carpeta donde se creara la base de datos por favor";
+            // 
+            // altaSQLToolStripMenuItem
+            // 
+            this.altaSQLToolStripMenuItem.AccessibleName = "AltaSQL";
+            this.altaSQLToolStripMenuItem.Name = "altaSQLToolStripMenuItem";
+            this.altaSQLToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.altaSQLToolStripMenuItem.Text = "AltaSQL";
             // 
             // ManejadorDeArchivos
             // 
@@ -991,6 +1000,7 @@
         private System.Windows.Forms.ToolStripButton renombrar;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.FolderBrowserDialog SelectFolder;
+        private System.Windows.Forms.ToolStripMenuItem altaSQLToolStripMenuItem;
     }
 }
 

@@ -397,6 +397,14 @@ namespace Manejador_De_Archivos_2._0
                         }
                         seleccionEntidad.Dispose();
                     break;
+                    case "AltaSQL":
+                        AltaRegistroSQL altaRegistroSQL;
+                        altaRegistroSQL = new AltaRegistroSQL(this.directorio);
+                        altaRegistroSQL.altaSQL += new AltaRegistroSQL.AltaSQL(this.archivo.altaSQl);
+                        altaRegistroSQL.ShowDialog();
+                        this.actualizaTodo();
+                        altaRegistroSQL.Dispose();
+                    break;
                     case "Modificar":
                         seleccionEntidad = new SeleccionEntidad(this.archivo);
                         if(seleccionEntidad.ShowDialog().Equals(DialogResult.OK))
@@ -470,6 +478,11 @@ namespace Manejador_De_Archivos_2._0
             #endregion
         }
 
+        private bool AltaRegistroSQL_altaSQL(string sentencia)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         #region Area Cliente
@@ -519,6 +532,15 @@ namespace Manejador_De_Archivos_2._0
         {
             Entidad entidad;
             entidad = archivo.buscaEntidad(MetodosAuxiliares.ajustaCadena(comboBoxEntidad.Text, Constantes.tam));
+            this.dataGridHash.Rows.Clear();
+            this.dataGridHashAuxiliar.Rows.Clear();
+            this.dataGridIdxPrimmario.Rows.Clear();
+            this.dataGridSecundario.Rows.Clear();
+            this.dataGridSecundarioAuxiliar.Rows.Clear();
+            this.comboBoxAtributosSecundarios.Text = "";
+            this.ComboBoxAtributosHash.Text = "";
+            this.comboBoxAtributosSecundarios.Items.Clear();
+            this.ComboBoxAtributosHash.Items.Clear();
             this.actualizaDataGridRegistros(entidad);
             this.actualizaDataGridIndicePrimario(entidad);
             this.actualizaComboIndiceSecundario(entidad);
@@ -739,6 +761,11 @@ namespace Manejador_De_Archivos_2._0
             this.ComboBoxAtributosHash.Items.Clear();
             this.dataGridHash.Rows.Clear();
             this.dataGridHashAuxiliar.Rows.Clear();
+            this.dataGridHash.Rows.Clear();
+            this.dataGridHashAuxiliar.Rows.Clear();
+            this.dataGridIdxPrimmario.Rows.Clear();
+            this.dataGridSecundario.Rows.Clear();
+            this.dataGridSecundarioAuxiliar.Rows.Clear();
         }
 
         private void actualizaTodo()

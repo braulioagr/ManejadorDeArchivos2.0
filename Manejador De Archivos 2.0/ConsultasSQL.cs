@@ -193,5 +193,10 @@ namespace Manejador_De_Archivos_2._0
             size.Width = this.Size.Width - 121;
             this.textBoxSQL.Size = size;
         }
+
+        private void ConsultasSQL_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
