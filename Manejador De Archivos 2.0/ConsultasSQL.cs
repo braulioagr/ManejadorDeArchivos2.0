@@ -34,7 +34,7 @@ namespace Manejador_De_Archivos_2._0
                 try
                 {
                     string[] sentencia;
-                    sentencia = this.textBoxSQL.Text.Split((" ").ToCharArray());
+                    sentencia = this.textBoxSQL.Text.Split(' ');
                     sentencia = MetodosAuxiliares.LimpiaSentencia(sentencia);
                     if (sentencia.Contains("select"))
                     {
@@ -125,7 +125,7 @@ namespace Manejador_De_Archivos_2._0
                     }
                     else
                     {
-                        throw new InvalidConsultException("Formato de consulta no valido");
+                        throw new InvalidConsultException("Formato de consulta no valido no contiene un select :(");
                     }
                 }
                 catch (InvalidConsultException e1)

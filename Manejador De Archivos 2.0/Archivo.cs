@@ -899,7 +899,6 @@ namespace Manejador_De_Archivos_2._0
                                                             band = false;
                                                             switch (on[1])
                                                             {
-
                                                                 case "=":
                                                                     if (tablaA.Atributos[x].Tipo.Equals('E'))
                                                                     {
