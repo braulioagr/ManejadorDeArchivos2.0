@@ -656,7 +656,7 @@ namespace Manejador_De_Archivos_2._0
                         i = entidad.buscaIndiceAtributo(MetodosAuxiliares.ajustaCadena(where.First(), Constantes.tam));
                         if (entidad.Atributos[i].Tipo.Equals('C'))
                         {
-                            where[2] = MetodosAuxiliares.ajustaCadena(where.Last(), entidad.Atributos[i].Longitud);
+                            where[2] = MetodosAuxiliares.ajustaCadena(where[2], entidad.Atributos[i].Longitud);
                         }
                         foreach (Registro registro in entidad.Valores)
                         {
@@ -677,7 +677,7 @@ namespace Manejador_De_Archivos_2._0
                                             registros.Add(registro);
                                         }
                                     }
-                                    else
+                                    else//Es cadena
                                     {
                                         if (registro.Datos[i].Equals(where.Last()))
                                         {
@@ -813,7 +813,7 @@ namespace Manejador_De_Archivos_2._0
                 }
                 else
                 {
-                    throw new InvalidConsultException("La sentencia where no esta buien estructuada");
+                    throw new InvalidConsultException("La sentencia where no esta bien estructuada");
                 }
             }
             catch (FormatException)
