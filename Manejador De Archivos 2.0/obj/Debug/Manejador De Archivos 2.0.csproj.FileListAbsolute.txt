@@ -23,3 +23,28 @@ C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Ar
 C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\bin\Debug\Manejador De Archivos 2.0.pdb
 C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador De Archivos 2.0.exe
 C:\Users\Braulio García\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador De Archivos 2.0.pdb
+C:\Users\Braulio García R\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\bin\Debug\Manejador De Archivos 2.0.exe.config
+C:\Users\Braulio García R\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\bin\Debug\Manejador De Archivos 2.0.exe
+C:\Users\Braulio García R\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\bin\Debug\Manejador De Archivos 2.0.pdb
+C:\Users\Braulio García R\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador De Archivos 2.0.csprojAssemblyReference.cache
+C:\Users\Braulio García R\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.AltaAtributo.resources
+C:\Users\Braulio García R\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.AltaEntidad.resources
+C:\Users\Braulio García R\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.AltaRegistro.resources
+C:\Users\Braulio García R\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.AltaRegistroSQL.resources
+C:\Users\Braulio García R\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.ConsultaAtributo.resources
+C:\Users\Braulio García R\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.ConsultaEntidad.resources
+C:\Users\Braulio García R\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.ConsultaRegistroPrimario.resources
+C:\Users\Braulio García R\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.ConsultasSQL.resources
+C:\Users\Braulio García R\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.ModificaRegistro.resources
+C:\Users\Braulio García R\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.SeleccionRegistro.resources
+C:\Users\Braulio García R\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.SeleccionEntidad.resources
+C:\Users\Braulio García R\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.EliminarAtributo.resources
+C:\Users\Braulio García R\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.ManejadorDeArchivos.resources
+C:\Users\Braulio García R\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.ModificaAtributo.resources
+C:\Users\Braulio García R\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.ModificaEntidad.resources
+C:\Users\Braulio García R\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.NombreBase.resources
+C:\Users\Braulio García R\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador_De_Archivos_2._0.Properties.Resources.resources
+C:\Users\Braulio García R\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador De Archivos 2.0.csproj.GenerateResource.cache
+C:\Users\Braulio García R\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador De Archivos 2.0.csproj.CoreCompileInputs.cache
+C:\Users\Braulio García R\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador De Archivos 2.0.exe
+C:\Users\Braulio García R\Documents\GitHub\ManejadorDeArchivos2.0\Manejador De Archivos 2.0\obj\Debug\Manejador De Archivos 2.0.pdb

@@ -684,7 +684,7 @@ namespace Manejador_De_Archivos_2._0
                                             registros.Add(registro);
                                         }
                                     }
-                                    break;
+                                break;
                                 case "!=":
                                     if (entidad.Atributos[i].Tipo.Equals('E'))
                                     {
@@ -718,7 +718,7 @@ namespace Manejador_De_Archivos_2._0
                                     }
                                     else if (entidad.Atributos[i].Tipo.Equals('D'))
                                     {
-                                        if (float.Parse(registro.Datos[i]) > Int32.Parse(where.Last()))
+                                        if (float.Parse(registro.Datos[i]) > float.Parse(where.Last()))
                                         {
                                             registros.Add(registro);
                                         }
